@@ -1,0 +1,18 @@
+Game plan
+
+Loading scene
+    add animation related to Game
+Main menu scene
+    background music simple calm
+    button to disable music
+    go to game button
+
+Game Scenes
+    simple game scene/ level 1
+
+    intro scene
+    pause scene
+    end game scene
+    end level scene
+
+
