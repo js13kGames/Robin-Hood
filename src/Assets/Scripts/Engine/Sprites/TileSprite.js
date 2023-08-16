@@ -95,9 +95,10 @@ TileSprite.TILES = [
     {n:'playersidehand',x:40,y:32,w:8,h:16,c:1},
     {n:'bear',x:48,y:32,w:16,h:16,c:1},
     {n:'rabbit',x:64,y:40,w:8,h:8,c:1},
+    {n:'arrow',x:64,y:32,w:8,h:8,c:1},
     {n:'deer',x:72,y:32,w:16,h:16,c:1},
     {n:'house',x:88,y:32,w:16,h:16,c:1},
-    
-    {n:'npcgirl',x:0,y:48,w:16,h:16,c:1},
-    {n:'npcman',x:16,y:48,w:16,h:16,c:1},
+    {n:'shop',x:104,y:32,w:16,h:16,c:1},
+    {n:'npcgirl',x:120,y:32,w:16,h:16,c:1},
+    {n:'npcman',x:136,y:32,w:16,h:16,c:1},
 ];
