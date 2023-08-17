@@ -10,8 +10,9 @@ const MAPTILES = [
 export default class MapGenerator{
     constructor(microsize = 32){
         this.origincolormatrix = this.makeNewMap(microsize);
-        this.canvas = gf.colorsMatrixToSprite(this.origincolormatrix,2);
-        this.magnified = this.getMagnifiedMap(this.canvas,MAPTILES);
+        this.canvas = gf.colorsMatrixToSprite(this.origincolormatrix,4);
+        
+        this.mapcanvas = this.getMagnifiedMap(this.canvas,MAPTILES);
         document.body.append(this.magnified);
         /*
         setInterval(()=>{
