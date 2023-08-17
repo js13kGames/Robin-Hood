@@ -6,9 +6,22 @@ import * as gf from './Engine/Utils/gf.js';
 import PixelFont from './Engine/Sprites/PixelFont.js';
 import TileSprite from './Engine/Sprites/TileSprite.js';
 import MapGenerator from './Engine/Game/MapGenerator.js';
+import ForestGenerator from './Engine/Game/ForestGenerator.js';
 
 
-var test = MapGenerator.test();
+var mg = new MapGenerator(32);
+
+/*
+for(var i = 0; i < 10;i++){
+    document.body.append(i);
+    // var forest1 = new ForestGenerator(i,32);
+    document.body.append(document.createElement('br'));
+}
+
+
+// var test = MapGenerator.getForestMinimap(32,32);
+
+
 
 /*
 const spriteNames = Object.keys(TileSprite.TILES);

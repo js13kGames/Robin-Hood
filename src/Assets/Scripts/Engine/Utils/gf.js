@@ -172,6 +172,21 @@ const fuseImage = (canvas,canvas2,composite = 'source-atop')=>{
     }
     return buffer;
 }
+const fuseImageReplace = (canvas,canvas2,composite = 'source-atop')=>{
+    var colorMatrix = getColorMatrix(canvas);
+    let buffer = makeCanvas(canvas.width*canvas2.width,canvas.height * canvas2.height);
+    let ctx = getCtx(buffer);
+    for(let i = 0 ; i < canvas.height;i++){
+        for(let j = 0 ; j < canvas.width;j++){
+            if(colorMatrix[i][j]?.length > 0){
+                ctx.drawImage(canvas2,
+                    i * canvas2.width,
+                    j * canvas2.height);
+            }
+        }
+    }
+    return buffer;
+}
 const getDirection = (rotation)=>{
     if(rotation < 0) rotation = Math.abs(rotation);
     rotation = rotation % 7;
@@ -265,7 +280,7 @@ const getCanvasSkeleton = (canvas)=>{
     delete(uniqueMatrices[null]);
     return uniqueMatrices;
 }
-const combineSprites = (...sprites)=>{
+const combineSprites = (sprites)=>{
     var canvas = makeCanvas(sprites[0].width,sprites[0].height);
     var ctx = getCtx(canvas);
     for(let i in sprites){
@@ -322,6 +337,7 @@ function Lightify(canvas,opacity){
 export {
     getGrid,
     repeatCanvas,
+    fuseImageReplace,
     Lightify,
     getGridMatt,
     combineSprites,

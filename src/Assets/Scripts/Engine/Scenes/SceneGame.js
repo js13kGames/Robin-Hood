@@ -6,6 +6,7 @@ import * as gf from '../Utils/gf.js';
 import MusicPlayer from '../Utils/MusicPlayer.js';
 import KeyboardAndMouse from '../Utils/KeyboardAndMouse.js';
 import SceneInstructions from "./SceneInstructions.js";
+import MapGenerator from "../Game/MapGenerator.js";
 const bgm = 'E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3D3E3E3E3D3E3D3D3';
 // const bgm = 'E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4';
 
@@ -23,9 +24,12 @@ export default class SceneGame extends Scene{
             'grass2' : TileSprite.getMagnified('grass',2),
         }
 
-        this.water_row = gf.Lightify(gf.repeatCanvas(this.sprites.water2,2,36),0.9);
-        this.dirt_row = gf.Lightify(gf.repeatCanvas(this.sprites.dirt2,2,36),0.9);
-        this.grass_row = gf.Lightify(gf.repeatCanvas(this.sprites.grass2,2,36),0.9);
+        this.gamemap = new MapGenerator(8);
+
+
+        // this.water_row = gf.Lightify(gf.repeatCanvas(this.sprites.water2,2,36),0.9);
+        // this.dirt_row = gf.Lightify(gf.repeatCanvas(this.sprites.dirt2,2,36),0.9);
+        // this.grass_row = gf.Lightify(gf.repeatCanvas(this.sprites.grass2,2,36),0.9);
 
         this.playername = 'robin hood';
         this.playerxy = {x: 96, y: 64};
@@ -39,12 +43,13 @@ export default class SceneGame extends Scene{
         let ctx = gf.getCtx(canvas);
 
 
-        ctx.drawImage(this.water_row,0,0);
-        ctx.drawImage(this.dirt_row,0,32);
-        ctx.drawImage(this.dirt_row,0,32*2);
-        ctx.drawImage(this.grass_row,0,32*3);
-        ctx.drawImage(this.grass_row,0,32*4);
+        // ctx.drawImage(this.water_row,0,0);
+        // ctx.drawImage(this.dirt_row,0,32);
+        // ctx.drawImage(this.dirt_row,0,32*2);
+        // ctx.drawImage(this.grass_row,0,32*3);
+        // ctx.drawImage(this.grass_row,0,32*4);
 
+        ctx.drawImage(this.gamemap.mapcanvas,0,0);
         ctx.drawImage(this.sprites.house,0,0);
         ctx.drawImage(this.pixelFont1.getTextSprite('HOUSE'),14, 56,);
 

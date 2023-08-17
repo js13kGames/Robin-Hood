@@ -1,8 +1,11 @@
 import TileSprite from "./TileSprite.js";
 import * as gf from '../Utils/gf.js';
 export default class Tree{
-    constructor(){
-
+    
+    
+    constructor(config){
+        if(config.size) this.size = config.size;
+        if(config.fruit) this.fruit = config.fruit;
     }
 
     static get(scale){
