@@ -29,13 +29,13 @@ export default class Scene{
         else if(name == 'keyup' && this.keyup) this.keyup(e);
         else if(name == 'mousemove' && this.mousemove) this.mousemove(e);
         else if(name == 'click' && this.click) this.click(e);
-        else if(name == 'control' &&this.control) this.control(e.key);
+        else if(name == 'control' && this.control) this.control(e.key);
+        else if(name == 'controlts' && this.controlts) this.controlts(e.key);
+        else if(name == 'controlte' && this.controlte) this.controlte(e.key);
         else console.log(name);
     }
     mousemove(e){   }
-    keyup(e){
-        this.control(e.key);
-    }
+    keyup(e){this.control(e.key);}
 }
 
 

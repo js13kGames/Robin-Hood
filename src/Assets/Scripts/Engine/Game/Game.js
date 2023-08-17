@@ -67,6 +67,18 @@ export default class Game{
                     event   : {key:controltds[i].innerText}
                 });
             });
+            controltds[i].addEventListener('touchstart',event => {
+                this.eventManager.fireEvent({ 
+                    name    : 'controlts',
+                    event   : {key:controltds[i].innerText}
+                });
+            });
+            controltds[i].addEventListener('touchend',event => {
+                this.eventManager.fireEvent({ 
+                    name    : 'controlte',
+                    event   : {key:controltds[i].innerText}
+                });
+            });
         }
     }
 }

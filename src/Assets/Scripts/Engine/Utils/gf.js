@@ -259,8 +259,8 @@ const mirror = (canvas,hor = true) =>{
     context.restore();
     return buffer;
 }
-const getCanvasSkeleton = (canvas)=>{
-    var matrix = getColorMatrix(canvas);
+const getCanvasSkeleton = (canvas,ismatrix)=>{
+    var matrix = ismatrix ? canvas : getColorMatrix(canvas);
     const flattenedArray = matrix.flat();
     const uniqueValues = [...new Set(flattenedArray)];
     const uniqueMatrices = {};

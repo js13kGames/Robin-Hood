@@ -105,5 +105,7 @@ export default class LoadingScene extends Scene{
     keyup(e){
         this.control(e.key);
     }
-
+    loadingNewGameScene(){
+        
+    }
 }

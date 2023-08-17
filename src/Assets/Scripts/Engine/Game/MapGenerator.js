@@ -9,15 +9,9 @@ const MAPTILES = [
 ];
 export default class MapGenerator{
     constructor(microsize = 32){
-        this.origincolormatrix = this.makeNewMap(microsize);
-        this.canvas = gf.colorsMatrixToSprite(this.origincolormatrix,4);
-        
-        this.mapcanvas = this.getMagnifiedMap(this.canvas,MAPTILES);
-        document.body.append(this.magnified);
-        /*
-        setInterval(()=>{
-            // document.body.append(this.makeNewMap(gf.randInt(10,40)));
-        },10);*/
+        this.colorMatrix = this.makeNewMap(microsize);
+        this.canvas = gf.colorsMatrixToSprite(this.colorMatrix,4);
+        this.mapcanvas = this.getMagnifiedMap(MAPTILES);
     }
     makeNewMap(microsize=32){
         var largeforestcanvas = this.makeLargeForest(microsize);
@@ -41,12 +35,12 @@ export default class MapGenerator{
         }
         return colorMatrix;
     }
-    getMagnifiedMap(canvas,MAPTILES){
-        var baseground = gf.fuseImageReplace(canvas,MAPTILES[0].s);
-        var skeleton = gf.getCanvasSkeleton(canvas);
+    getMagnifiedMap(MAPTILES){
+        var baseground = gf.fuseImageReplace(this.canvas,MAPTILES[0].s);
+        var skeleton = gf.getCanvasSkeleton(this.colorMatrix,true);
         var fusedSprites = [baseground];
         for(let i in skeleton){
-            var canvasskele = gf.colorsMatrixToSprite(skeleton[i]);
+            var canvasskele = gf.colorsMatrixToSprite(skeleton[i],4);
             var sprite = MAPTILES.find(x=>x.c == i);
             var fused = gf.fuseImageReplace(canvasskele,sprite.s);
             fusedSprites.push(fused);
@@ -66,27 +60,5 @@ export default class MapGenerator{
             }
         }
         return map;
-    }
-    static getForestMap(canvas){
-        var colorMatrix = gf.getColorMatrix(canvas);
-        var canvas_8px = gf.colorsMatrixToSprite(colorMatrix,16);
-        var skeleton = gf.getCanvasSkeleton(canvas_8px);
-        var fusedSprites = [];
-        for(let i in skeleton){
-            var canvasskele = gf.colorsMatrixToSprite(skeleton[i]);
-            var sprite = MAPTILES.find(x=>x.c == i);
-            var fused = gf.fuseImage(canvasskele,sprite.s);
-            fusedSprites.push(fused);
-        }
-        var map = gf.combineSprites(fusedSprites);
-        document.body.append(map);
-        return map;
-    }
-    static getForestMinimap(w = 32,h = 32){
-        var newgenforest = this.genForestCM(w,h);
-        var canvas1 = gf.colorsMatrixToSprite(newgenforest,1);
-        var forestMap = this.getForestMap(canvas1);
-        document.body.append(canvas1);
-        document.body.append(forestMap);
     }
 }
