@@ -54,8 +54,15 @@ export default class Player{
         var center = arrow.center;
         var o = this.scene.checkObstacle(center.x,center.y);
         if(o){
-            console.log('obstacle at ',center);
             arrow.life = 0;
+        }
+        for(let i = 0 ; i < this.scene.mobs.length;i++){
+            var x = this.scene.mobs[i];
+            var d = x.center.distanceTo(arrow.center);
+            if(d < this.scene.tileSize){
+                x.life -= 1;
+                arrow.life--;
+            }
         }
     }
     draw(ctx){

@@ -21,6 +21,7 @@ export default class SceneGame extends Scene{
     init(){
         this.difficulity = 1;
         this.scalemultiplier = 2;
+        this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
         this.gamemap = new MapGenerator(this.scalemultiplier);
         this.pixelFont1 = new PixelFont({color:'white',size : 1});
@@ -35,6 +36,8 @@ export default class SceneGame extends Scene{
         this.camera.fixToCords(this.player.center);
         this.playername = 'robin hood';
         this.mobs = [];
+        this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
+        this.spawnPointsTest = this.findAllValidSpawnPoint();
     }
     getPtAtRc(r,c){
 
@@ -53,7 +56,15 @@ export default class SceneGame extends Scene{
         }
     }
     checkObstacle(x,y){
-        return this.gamemap.isObstacleAt(x/this.player.width,y/this.player.height);
+        var pt = new Point(x,y);
+        for(let i = 0 ; i < this.mobs.length;i++){
+            var mob = this.mobs[i];
+            var d = mob.center.distanceTo(pt);
+            if(d < this.tileSize){
+                return true;
+            }
+        }
+        return this.gamemap.isObstacleAt(x/this.tileSize,y/this.tileSize);
     }
     getBuffer(){
         
@@ -68,12 +79,18 @@ export default class SceneGame extends Scene{
         this.drawCoordsOnCanvas(updatedCanvas);
         var ctxmap = gf.getCtx(updatedCanvas);
         
+        ctxmap.fillStyle = '#70ff76a1';
+        this.spawnPointsTest.forEach(e=>{
+            ctxmap.fillRect(e.x,e.y,this.tileSize,this.tileSize);
+        });
+        
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
+        [...this.mobs].forEach(obj=>{
+            if(obj.update) obj.draw(ctxmap);
+        });
         this.player.draw(ctxmap);
-
         var camerascene = this.camera.getCanvas(updatedCanvas);
         ctx.drawImage(camerascene,0,0);
-
         return canvas;
     }
     update(time){
@@ -84,6 +101,7 @@ export default class SceneGame extends Scene{
         [...this.mobs].forEach(obj=>{
             if(obj.update) obj.update(time);
         });
+        this.mobs = this.mobs.filter(s => s.life > 0);
         this.player.update(time);
         for(let i in this.keyboard){
             if(this.keyboard[i]){
@@ -92,11 +110,69 @@ export default class SceneGame extends Scene{
         }
     }
     _spawnMob(){
-        let mob = new Mob();
-
-
+        if(this.mobs.length > 10) return;
+        let mob = new Mob(this);
+        this.mobs.push(mob);
     }
-
+    findValidSpawnPointInMap(){
+        var pointsList = [];
+        for(let i = 0; i < this.gamemap.colorMatrix.length ;i++){
+            for(let j = 0;j < this.gamemap.colorMatrix.length;j++){
+                var pt = new Point(i*this.tileSize,j*this.tileSize);
+                var obstacle = this.gamemap.isObstacleAt(i,j);
+                if(!obstacle){
+                    pointsList.push(pt);
+                    // this.spawnPointsTest.push(pt);
+                }
+            }
+        }
+        return pointsList;
+    }
+    findAValidSpawnPoint(near = 8,far = 13){
+        var points = this.findAllValidSpawnPoint(near,far);
+        if(points.length > 0){
+            return points[gf.randInt(0,points.length)]
+        }
+        return new Point(this.tileSize,this.tileSize);
+    }
+    findAllValidSpawnPoint(near = 8,far = 13){
+        var validpoints = this.validSpawnPointsForMobs;
+        validpoints = validpoints.filter(x=>x.distanceTo(this.player.center) > this.tileSize * near);
+        validpoints = validpoints.filter(x=>x.distanceTo(this.player.center) < this.tileSize * far);
+        return validpoints;
+    }
+    findValidSpawnPointNearPlayer(){
+        var r = this.player.center.x/this.tileSize;
+        var c = this.player.center.y/this.tileSize;
+        var distance = 9;
+        var rmin = gf.max(r-distance,0);
+        var cmin = gf.max(c-distance,0);
+        var rmax = gf.min(r+distance,this.gamemap.colorMatrix.length);
+        var cmax = gf.min(c+distance,this.gamemap.colorMatrix.length);
+        var pointsList = [];
+        for(let i = rmin; i < rmax ;i++){
+            for(let j = cmin;j<cmax;j++){
+                var pt = new Point(i*this.tileSize,j*this.tileSize);
+                // console.log(pt,this.player.center);
+                if(pt.distanceTo(this.player.center) > this.tileSize * 5){
+                    var obstacle = this.gamemap.isObstacleAt(i,j);
+                    if(!obstacle){
+                        console.log('valid spawn point ',[i,j]);
+                        pointsList.push(pt);
+                        this.spawnPointsTest.push(pt);
+                    }
+                    else{
+                        // console.log('obstacle at point ',[i,j]);
+                    }
+                }
+                else{
+                    // console.log('point close to player',[i,j]);
+                }
+            }
+        }
+        console.log(this.spawnPointsTest);
+        return pointsList;
+    }
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
             this.player.fire();

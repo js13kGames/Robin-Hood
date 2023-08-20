@@ -7,13 +7,12 @@ import MainMenuScene from './MainMenuScene.js';
 export default class LoadingScene extends Scene{
     constructor(main){
         super(main);
+        this.buffer = gf.makeCanvas(this.main.config.width,this.main.config.height);
 
 
 
         var sprites = {
             'brick1' : TileSprite.getMagnified('brick',1),
-            'brick2' : TileSprite.getMagnified('brick',2),
-            'brick3' : TileSprite.getMagnified('brick',3),
             'steel' : TileSprite.getMagnified('steel',1),
             'water' : TileSprite.getMagnified('water',1),
             'apple' : TileSprite.getMagnified('apple',1),
@@ -43,7 +42,7 @@ export default class LoadingScene extends Scene{
             'CENTURY' : pixelFont.getTextSprite('CENTURY',sprites.apple),
             'ROBIN HOOD' : pixelFont.getTextSprite('ROBIN HOOD',sprites.grass),
         }
-        this.water_row = gf.Lightify(gf.repeatCanvas(sprites.water2,2,36),0.6);
+        this.water_row = gf.Lightify(gf.repeatCanvas(sprites.water,4, this.main.config.width/sprites.water.width),0.6);
         this.dirt_row = gf.Lightify(gf.repeatCanvas(sprites.dirt2,2,36),0.4);
         this.grass_row = gf.Lightify(gf.repeatCanvas(sprites.grass2,12,36),0.4);
 
@@ -55,6 +54,9 @@ export default class LoadingScene extends Scene{
 
         this.buffer = this.getBuffer();
         this.loading = 0;
+    }
+    async prepareCanvas(){
+        
     }
     update(time){
         this.time = time;
@@ -82,45 +84,6 @@ export default class LoadingScene extends Scene{
         ctx.drawImage(this.TextSprites['TH'],textx +64,texty + 32);
         ctx.drawImage(this.TextSprites['CENTURY'],textx +32*3,texty + 32);
         ctx.drawImage(this.TextSprites['ROBIN HOOD'],textx,texty + 64);
-
-        /*
-        var marginytop = 288;
-        var marginybottom = 480;
-        
-        var marginxleft = 230;
-        var marginxright = marginxleft+300;
-
-        for(let i = 0 ; i < 2; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.bear,randx,randy);
-        }
-        for(let i = 0 ; i < 5; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.rabbit,randx,randy);
-        }
-        for(let i = 0 ; i < 5; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.deer,randx,randy);
-        }
-        for(let i = 0 ; i < 15; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.treetiny,randx,randy);
-        }
-        for(let i = 0 ; i < 15; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.tree,randx,randy);
-        }
-        for(let i = 0 ; i < 15; i++){
-            var randy = gf.randInt(marginytop,marginybottom);
-            var randx = gf.randInt(marginxleft,marginxright);
-            ctx.drawImage(this.treeshort,randx,randy);
-        }
-        */
 
         return canvas;
     }
