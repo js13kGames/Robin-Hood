@@ -103,7 +103,7 @@ export default class SceneGame extends Scene{
         }
     }
     _spawnMob(){
-        if(this.mobs.length > 10) return;
+        if(this.mobs.length > 50) return;
         let mob = new Mob(this,gf.randInt(0,5));
         this.mobs.push(mob);
     }
@@ -132,6 +132,22 @@ export default class SceneGame extends Scene{
         var validpoints = this.validSpawnPointsForMobs;
         validpoints = validpoints.filter(x=>x.distanceTo(this.player.center) > this.tileSize * near);
         validpoints = validpoints.filter(x=>x.distanceTo(this.player.center) < this.tileSize * far);
+        var validated = [];
+        for(let j in validpoints){
+            var valid = true;
+            for(let i = 0 ; i < this.mobs.length;i++){
+                var mob = this.mobs[i];
+                var d = mob.center.distanceTo(new Point(validpoints[j].x,validpoints[j].y));
+                if(d < this.tileSize){
+                    valid = false;
+                    break;
+                }
+            }
+            if(valid){
+                validated.push(validpoints[j]);
+            }
+        }
+        
         return validpoints;
     }
     applyKeyboardKey(e){
