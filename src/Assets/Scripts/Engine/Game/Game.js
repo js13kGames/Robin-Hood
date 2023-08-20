@@ -1,5 +1,7 @@
 import Timer from "../Utils/Timer.js";
 import LoadingScene from "../Scenes/LoadingScene.js";
+import MainMenuScene from "../Scenes/MainMenuScene.js";
+import SceneGame from "../Scenes/SceneGame.js";
 import EventManager from '../Event/EventManager.js';
 import * as gf from '../Utils/gf.js';
 export default class Game{
@@ -48,10 +50,35 @@ export default class Game{
     }
     toLoadingScene() {
         this.scene = new LoadingScene(this);
+        this.eventManager.clear();
         this.eventManager.sub(this.scene);
 	}
     toScene(scene){
         this.scene = scene;
+        this.eventManager.clear();
+        this.eventManager.sub(this.scene);
+    }
+    toMainMenuScene(){
+        if(this.mainmenuscene){
+            console.log('using mainmenuscene already created');
+            this.scene = this.mainmenuscene;
+        }
+        else{
+            this.mainmenuscene = new MainMenuScene(this);
+            this.scene = this.mainmenuscene;
+        }
+        this.eventManager.clear();
+        this.eventManager.sub(this.scene);
+    }
+    toGameScene(){
+        if(this.gamescene){
+            console.log('using game already created');
+            this.scene = this.gamescene;
+        }
+        else{
+            this.gamescene = new SceneGame(this);
+            this.scene = this.gamescene;
+        }
         this.eventManager.clear();
         this.eventManager.sub(this.scene);
     }

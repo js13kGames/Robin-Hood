@@ -13,6 +13,9 @@ export default class Camera{
     fixToCords(point){
         this.center = new Point(point.x,point.y);
     }
+    mapToPoint(point){
+        this.center = point;
+    }
     move(dir){
         this.center.move(dir,32);
     }

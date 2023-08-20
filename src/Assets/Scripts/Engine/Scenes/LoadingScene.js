@@ -3,13 +3,10 @@ import TileSprite from "../Sprites/TileSprite.js";
 import PixelFont from '../Sprites/PixelFont.js';
 import Tree from "../Sprites/Tree.js";
 import * as gf from '../Utils/gf.js';
-import MainMenuScene from './MainMenuScene.js';
 export default class LoadingScene extends Scene{
     constructor(main){
         super(main);
         this.buffer = gf.makeCanvas(this.main.config.width,this.main.config.height);
-
-
 
         var sprites = {
             'brick1' : TileSprite.getMagnified('brick',1),
@@ -106,7 +103,7 @@ export default class LoadingScene extends Scene{
     }
     goToMainMenuScene(){
         if(this.loading > 100){
-            this.ss(new MainMenuScene(this.main));
+            this.main.toMainMenuScene();
         };
         this.loading=100;
     }

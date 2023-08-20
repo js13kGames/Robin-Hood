@@ -85,7 +85,7 @@ export default class LoadingScene extends Scene{
         else if(e === 'a' || e === 'ArrowLeft' || e === 'd' || e === 'ArrowRight' || e === 'space' || e === ' '){
             if(this.currentcursorloc == 0){ //new game
                 // alert('new game');
-                this.ss(new SceneGame(this.main));
+                this.main.toGameScene();
             }
             else if(this.currentcursorloc == 1){ //toggle sound
                 if(!this.musicPlayer) this.musicPlayer = new MusicPlayer(bgm, 120, false, true, 2000);

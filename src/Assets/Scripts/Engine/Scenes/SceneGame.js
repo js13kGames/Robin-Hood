@@ -23,7 +23,7 @@ export default class SceneGame extends Scene{
         this.scalemultiplier = 2;
         this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
-        this.gamemap = new MapGenerator(this.scalemultiplier);
+        this.gamemap = new MapGenerator(this,this.scalemultiplier);
         this.pixelFont1 = new PixelFont({color:'white',size : 1});
         this.player = new Player(this);
         this.player.setPosition(this.gamemap.PLAYERLOCATION ? 
@@ -33,26 +33,24 @@ export default class SceneGame extends Scene{
             this.main.config.width  - 32*3,
             this.main.config.height - 32*3,
             0,0);
-        this.camera.fixToCords(this.player.center);
+        this.camera.mapToPoint(this.player.center);
         this.playername = 'robin hood';
         this.mobs = [];
+        this.drops = [];
         this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
         this.spawnPointsTest = this.findAllValidSpawnPoint();
     }
-    getPtAtRc(r,c){
-
-    }
     drawCoordsOnCanvas(canvas){
-        var rows = canvas.height / 32;
-        var cols = canvas.width / 32;
+        var rows = canvas.height / this.tileSize;
+        var cols = canvas.width / this.tileSize;
         var ctx = gf.getCtx(canvas);
         ctx.fillStyle = "black";
         ctx.font = "8px Arial";
         for(let i = 0 ; i < cols;i++){
-            ctx.fillText(i, i*32 , 32-8);
+            ctx.fillText(i, i*this.tileSize , this.tileSize-8);
         }
         for(let i = 0 ; i < rows;i++){
-            ctx.fillText(i,0 , i*32);
+            ctx.fillText(i,0 , i*this.tileSize);
         }
     }
     checkObstacle(x,y){
@@ -78,11 +76,6 @@ export default class SceneGame extends Scene{
         // var updatedCanvas = gf.Lightify(updatedCanvas,0.8);
         this.drawCoordsOnCanvas(updatedCanvas);
         var ctxmap = gf.getCtx(updatedCanvas);
-        
-        ctxmap.fillStyle = '#70ff76a1';
-        this.spawnPointsTest.forEach(e=>{
-            ctxmap.fillRect(e.x,e.y,this.tileSize,this.tileSize);
-        });
         
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
         [...this.mobs].forEach(obj=>{
@@ -111,7 +104,7 @@ export default class SceneGame extends Scene{
     }
     _spawnMob(){
         if(this.mobs.length > 10) return;
-        let mob = new Mob(this);
+        let mob = new Mob(this,gf.randInt(0,5));
         this.mobs.push(mob);
     }
     findValidSpawnPointInMap(){
@@ -141,38 +134,6 @@ export default class SceneGame extends Scene{
         validpoints = validpoints.filter(x=>x.distanceTo(this.player.center) < this.tileSize * far);
         return validpoints;
     }
-    findValidSpawnPointNearPlayer(){
-        var r = this.player.center.x/this.tileSize;
-        var c = this.player.center.y/this.tileSize;
-        var distance = 9;
-        var rmin = gf.max(r-distance,0);
-        var cmin = gf.max(c-distance,0);
-        var rmax = gf.min(r+distance,this.gamemap.colorMatrix.length);
-        var cmax = gf.min(c+distance,this.gamemap.colorMatrix.length);
-        var pointsList = [];
-        for(let i = rmin; i < rmax ;i++){
-            for(let j = cmin;j<cmax;j++){
-                var pt = new Point(i*this.tileSize,j*this.tileSize);
-                // console.log(pt,this.player.center);
-                if(pt.distanceTo(this.player.center) > this.tileSize * 5){
-                    var obstacle = this.gamemap.isObstacleAt(i,j);
-                    if(!obstacle){
-                        console.log('valid spawn point ',[i,j]);
-                        pointsList.push(pt);
-                        this.spawnPointsTest.push(pt);
-                    }
-                    else{
-                        // console.log('obstacle at point ',[i,j]);
-                    }
-                }
-                else{
-                    // console.log('point close to player',[i,j]);
-                }
-            }
-        }
-        console.log(this.spawnPointsTest);
-        return pointsList;
-    }
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
             this.player.fire();
@@ -184,7 +145,8 @@ export default class SceneGame extends Scene{
             // this.player.fire();
         }
         else if(e === 'q'){
-            this.prevss(this);
+            this.keyboard['q'] = false; 
+            this.main.toMainMenuScene();
         }
         else if(!this.player.isMoving){
             var next_playerxy = this.player.center.clone();

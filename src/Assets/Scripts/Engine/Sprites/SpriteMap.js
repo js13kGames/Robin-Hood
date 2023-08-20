@@ -23,7 +23,7 @@ const spriteMapDefinitons = [
     
     //castle 32px
     {c:1, o:0, n:'castle',  x:128,y:0,w:32,h:32},
-    {c:1, o:0, n:'fort',    x:112,y:16,w:16,h:16},
+    {c:1, o:0, n:'cave',    x:112,y:16,w:16,h:16},
 
     //mob row
     {c:1, o:0, n:'player',      x:0,y:32,w:16,h:16},
@@ -39,14 +39,12 @@ const spriteMapDefinitons = [
     {c:1, o:0, n:'direction',   x:128,y:32,w:16,h:16},
 
     //////MAPS
-    {c:0, o:0, n:'map_house',       x:0,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_villge',      x:16,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_village_2',   x:32,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_castle',      x:48,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_1',    x:64,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_2',    x:80,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_3',    x:96,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_4',    x:112,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_spawn',       x:0,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_castle',      x:16,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_forest_1',    x:32,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_forest_2',    x:48,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_forest_3',    x:64,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_forest_4',    x:80,y:48,w:16,h:16},
 
 ];
 

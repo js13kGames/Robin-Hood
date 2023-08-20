@@ -11,12 +11,16 @@ const MAPTILES = [
     {'n':'water',o:1,'c':'#8a99f6'},
     {'n':'steel',o:1,'c':'#6a6a6a'},
     {'n':'player',o:1,'c':'#130c40'},
+    {'n':'cave',o:1,'c':'#2e2b2b'},
+    {'n':'deerspawnpoint',o:0,'c':'#df7126'},
 ];
 export default class MapGenerator{
-    constructor(s=32){
+    constructor(gamescene,s=1){
         this.sMap = new SpriteMap();
+        this.caves = [];
+        this.deerspawnpoints = [];
+        
         this.getPredefinedMap1(s);
-        // this.getRandomizedMapByMicrosize(s);
     }
     isObstacleAt(x,y){
         x = Math.floor(x);
@@ -34,20 +38,31 @@ export default class MapGenerator{
         return cfg == undefined || cfg.o == 1;
     }
     getPredefinedMap1(s=1){
-        var map_house = this.sMap.get('map_house');
-        var map_villge = this.sMap.get('map_villge');
-        var map_village_2 = this.sMap.get('map_village_2');
+        var map_spawn = this.sMap.get('map_spawn');
         var map_castle = this.sMap.get('map_castle');
         var map_forest_1 = this.sMap.get('map_forest_1');
         var map_forest_2 = this.sMap.get('map_forest_2');
         var map_forest_3 = this.sMap.get('map_forest_3');
         var map_forest_4 = this.sMap.get('map_forest_4');
-        var block1 = gf.getCustomCanvas4(map_house,map_forest_1,map_forest_2,map_villge);
-        var block2 = gf.getCustomCanvas4(map_forest_1,map_forest_1,map_forest_1,map_forest_3);
-        var block3 = gf.getCustomCanvas4(map_forest_1,map_castle,map_villge,map_forest_1);
-        var block4 = gf.getCustomCanvas4(map_forest_4,map_forest_3,map_village_2,map_forest_1);
-        var map = gf.getCustomCanvas4(block1,block2,block3,block4);
+        var w = map_spawn.width;
+        var h = map_spawn.height;
+        var map = gf.makeCanvas(w*3,h*3);
+        var ctx = gf.getCtx(map);
+
+        ctx.drawImage(map_forest_2, 0 ,0);
+        ctx.drawImage(map_castle,   w ,0);
+        ctx.drawImage(map_forest_1, w+w ,0);
+
+        ctx.drawImage(map_forest_1, 0 ,w);
+        ctx.drawImage(map_spawn,   w ,w);
+        ctx.drawImage(map_forest_1, w+w ,w);
+
+        ctx.drawImage(map_forest_1, 0 ,w+w);
+        ctx.drawImage(map_forest_1,   w ,w+w);
+        ctx.drawImage(map_forest_1, w+w ,w+w);
+
         // document.body.append(map);
+        
         var mapColorMatrix = gf.getColorMatrix(map);
         this.colorMatrix = mapColorMatrix;
 
@@ -61,11 +76,13 @@ export default class MapGenerator{
             '#a9a9a9' : this.sMap.getMagnified('castle',2*s),
             '#fbf236' : this.sMap.getMagnified('house',2*s),
             '#eca732' : this.sMap.getMagnified('shop',2*s),
+            '#2e2b2b' : this.sMap.getMagnified('cave',2*s),
         }
 
         var multiplier = 8*2*s;
 
         var mapcanvas = gf.makeCanvas(mapColorMatrix.length * multiplier, mapColorMatrix.length * multiplier);
+        
         var ctx = mapcanvas.getContext("2d");
         for(var i = 0 ; i < mapColorMatrix.length;i++){
             for(var j = 0 ; j < mapColorMatrix[i].length;j++){
@@ -84,6 +101,10 @@ export default class MapGenerator{
                 else if(color == '#99e550'){//grass
                     ctx.drawImage(sprites['#99e550'],i*multiplier,j*multiplier);
                 }
+                else if(color == '#df7126'){//deer spawn point
+                    ctx.drawImage(sprites['#99e550'],i*multiplier,j*multiplier);
+                    this.deerspawnpoints.push([i,j]);
+                }
                 else if(color == '#8a99f6'){//water
                     ctx.drawImage(sprites['#8a99f6'],i*multiplier,j*multiplier);
                 }
@@ -93,6 +114,12 @@ export default class MapGenerator{
                 else if(color == '#a9a9a9'){//castle
                     ctx.drawImage(gf.repeatCanvas(this.sMap.get('grass'),8*multiplier),i*multiplier,j*multiplier);
                     ctx.drawImage(sprites['#a9a9a9'],i*multiplier,j*multiplier);
+                    this.castlelocation = [i,j];
+                }
+                else if(color == '#2e2b2b'){//cave
+                    ctx.drawImage(gf.repeatCanvas(this.sMap.get('grass'),4*multiplier),i*multiplier,j*multiplier);
+                    ctx.drawImage(sprites['#2e2b2b'],i*multiplier,j*multiplier);
+                    this.caves.push([i,j]);
                 }
                 else if(color == '#fbf236'){//house
                     ctx.drawImage(gf.repeatCanvas(this.sMap.get('grass'),4*multiplier),i*multiplier,j*multiplier);
@@ -108,7 +135,7 @@ export default class MapGenerator{
                     ctx.drawImage(sprites['#d9a066'],i*multiplier,j*multiplier);
                 }
                 else{
-
+                    console.log(color,'unclassified');
                 }
                 // colorset.add(color);
             }
@@ -116,62 +143,5 @@ export default class MapGenerator{
         this.mapcanvas = mapcanvas;
         // document.body.append(mapcanvas);
 
-    }
-
-    getRandomizedMapByMicrosize(microsize = 32){
-        this.colorMatrix = this.makeNewMap(microsize);
-        this.canvas = gf.colorsMatrixToSprite(this.colorMatrix,4);
-        this.mapcanvas = this.getMagnifiedMap(MAPTILES);
-    }
-    getTileFromColor(){
-        var tiles = {'n':'grassNbrick', c:'#d9a066', s : TileSprite.getMagnified('grassNbrick',1)}
-    }
-    makeNewMap(microsize=32){
-        var largeforestcanvas = this.makeLargeForest(microsize);
-        var colorMatrix = gf.getColorMatrix(largeforestcanvas);
-        var watercolor = '#2979ff';
-        for(let i = 0 ; i < microsize*7;i++){
-            colorMatrix[i][0] = watercolor;
-            colorMatrix[i][1] = watercolor;
-            colorMatrix[i][2] = watercolor;
-            colorMatrix[i][colorMatrix.length - 1] = watercolor;
-            colorMatrix[i][colorMatrix.length - 2] = watercolor;
-            colorMatrix[i][colorMatrix.length - 3] = watercolor;
-        }
-        for(let i = 0 ; i < microsize*7;i++){
-            colorMatrix[0][i] = watercolor;
-            colorMatrix[1][i] = watercolor;
-            colorMatrix[2][i] = watercolor;
-            colorMatrix[colorMatrix.length-1][i] = watercolor;
-            colorMatrix[colorMatrix.length-2][i] = watercolor;
-            colorMatrix[colorMatrix.length-3][i] = watercolor;
-        }
-        return colorMatrix;
-    }
-    getMagnifiedMap(MAPTILES){
-        var baseground = gf.fuseImageReplace(this.canvas,MAPTILES[0].s);
-        var skeleton = gf.getCanvasSkeleton(this.colorMatrix,true);
-        var fusedSprites = [baseground];
-        for(let i in skeleton){
-            var canvasskele = gf.colorsMatrixToSprite(skeleton[i],4);
-            var sprite = MAPTILES.find(x=>x.c == i);
-            var fused = gf.fuseImageReplace(canvasskele,sprite.s);
-            fusedSprites.push(fused);
-        }
-        var map = gf.combineSprites(fusedSprites);
-        return map;
-    }
-    makeLargeForest(microsize = 32){
-        var baseForestsLevels = '4433223,43311122,42211122,42211122,42211122,42211122,42211122'.split(',');
-        var map = gf.makeCanvas(microsize*7,microsize*7)
-        var ctx = gf.getCtx(map);
-        for(let i = 0 ; i < baseForestsLevels.length;i++){
-            for(let j = 0; j < baseForestsLevels[i].length;j++){
-                var c = baseForestsLevels[i].charAt(j);
-                var forest = new ForestGenerator(MAPTILES,parseInt(c), microsize, microsize);
-                ctx.drawImage(forest.sprite, i * microsize,j*microsize);
-            }
-        }
-        return map;
     }
 }

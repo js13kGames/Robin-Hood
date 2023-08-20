@@ -17,6 +17,8 @@ export default class Player{
         this.currentSprite = this.sprites[gf.DIRECTION.DOWN];
         this.shots = [];
         this.firecooldown = 0;
+        this.score = 0;
+        this.hunts = [];
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);
@@ -72,8 +74,10 @@ export default class Player{
         });
     }
     rotateToward(x,y){
+        console.log('rotate toward ',[x,y],'from ',[this.center.x,this.center.y]);
         var dir = this.center.getDirectionTo(new Point(x,y));
         this.direction = dir;
+        this.currentSprite = this.sprites[dir];
     }
     moveTo(x,y){
         var dir = this.center.getDirectionTo(new Point(x,y));
