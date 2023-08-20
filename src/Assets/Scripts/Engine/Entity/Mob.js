@@ -16,8 +16,6 @@ export default class Mob{
         var multiplier = this.e.scene.scalemultiplier;
         var size = 16 * multiplier;
         var Mob = SpriteMap.getByNameMagnified('Mob',multiplier);
-
-
         
         var canvas = gf.makeCanvas(size,size);
         var ctx = gf.getCtx(canvas);

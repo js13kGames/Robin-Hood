@@ -136,6 +136,7 @@ export default class LoadingScene extends Scene{
         ctx.font = "16px Arial";
         ctx.fillText("Time " + this.time, 20 , y); y+= h;
         ctx.fillText("use any key to load menu ", 20 , y); y+= h;
+        ctx.fillText("last edit : 2023-08-20 6:00 PM ", 20 , y); y+= h;
         ctx.drawImage(this.castle,32*1  ,32*8);
         ctx.drawImage(this.player,32*4,32*11);
     

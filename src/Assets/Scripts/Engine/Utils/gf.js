@@ -343,10 +343,17 @@ function getCustomCanvas4(s1,s2,s3,s4){
     ctx.drawImage(s4,s1.width,s1.height);
     return canvas;
 }
-function centerCanvasOn(canvas,img){
-    
+function centerCanvasOn(img,w,h,bg = false){
+    var canvas = makeCanvas(w,h);
+    var ctx = getCtx(canvas);
+    if(bg) ctx.fillRect(0,0,w,h);
+    ctx.drawImage(img, 
+        w / 2 - img.width/2 ,
+        h / 2 - img.height/2 );
+    return canvas;
 }
 export {
+    centerCanvasOn,
     getCustomCanvas4,
     getGrid,
     repeatCanvas,

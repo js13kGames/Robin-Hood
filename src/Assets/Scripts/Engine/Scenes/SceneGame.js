@@ -19,6 +19,7 @@ export default class SceneGame extends Scene{
         this.init();
     }
     init(){
+        this.difficulity = 1;
         this.scalemultiplier = 2;
         this.keyboard = {};
         this.gamemap = new MapGenerator(this.scalemultiplier);
@@ -27,7 +28,10 @@ export default class SceneGame extends Scene{
         this.player.setPosition(this.gamemap.PLAYERLOCATION ? 
             this.gamemap.PLAYERLOCATION : 
             new Point(32*7,32*7));
-        this.camera = new Camera(this,32*10*this.scalemultiplier,32*10*this.scalemultiplier,0,0);
+        this.camera = new Camera(this,
+            this.main.config.width  - 32*3,
+            this.main.config.height - 32*3,
+            0,0);
         this.camera.fixToCords(this.player.center);
         this.playername = 'robin hood';
         this.mobs = [];
@@ -77,7 +81,6 @@ export default class SceneGame extends Scene{
         if(this.mobs.length < 10){
             this._spawnMob();
         }
-        this.shots = this.shots.filter(s => s.life > 0);
         [...this.mobs].forEach(obj=>{
             if(obj.update) obj.update(time);
         });
@@ -91,12 +94,18 @@ export default class SceneGame extends Scene{
     _spawnMob(){
         let mob = new Mob();
 
-        
+
     }
 
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
             this.player.fire();
+        }
+        if(e === ' ' || e === 'f'){
+            this.player.useSword();
+        }
+        if(e === ' ' || e === 'e'){
+            // this.player.fire();
         }
         else if(e === 'q'){
             this.prevss(this);
@@ -121,7 +130,8 @@ export default class SceneGame extends Scene{
                 this.player.moveTo(next_playerxy.x,next_playerxy.y);
             }
             else{
-                console.log('obstacle at',next_playerxy);
+                this.player.rotateToward(next_playerxy.x,next_playerxy.y);
+                // console.log('obstacle at',next_playerxy);
             }
         }
         

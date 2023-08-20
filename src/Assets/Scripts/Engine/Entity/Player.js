@@ -47,6 +47,9 @@ export default class Player{
         console.log(this.firecooldown);
         this.shots.push(new Arrow(this));
     }
+    useSword(){
+        this.usingsword = 10;
+    }
     applyArrowEffect(arrow){
         var center = arrow.center;
         var o = this.scene.checkObstacle(center.x,center.y);
@@ -61,8 +64,15 @@ export default class Player{
             if(obj.draw) obj.draw(ctx);
         });
     }
+    rotateToward(x,y){
+        var dir = this.center.getDirectionTo(new Point(x,y));
+        this.direction = dir;
+    }
     moveTo(x,y){
         var dir = this.center.getDirectionTo(new Point(x,y));
+        this.direction = dir;
+        var distance = this.center.distanceTo(new Point(x,y));
+        if(distance==0) return;
         // console.log('moving in dir ', dir, this.center, [x,y]);
         this.currentSprite = this.sprites[dir];
         this.move(dir);
@@ -82,6 +92,9 @@ export default class Player{
         var p = SpriteMap.getByNameMagnified('player',this.scene.scalemultiplier);
         var playerb = SpriteMap.getByNameMagnified('playerb',this.scene.scalemultiplier);
         var playersRight = SpriteMap.getByNameMagnified('players',this.scene.scalemultiplier);
+        this.width = p.width;
+        this.height = p.height;
+        var playersRight = gf.centerCanvasOn(playersRight,this.width,this.height);
         var playersLeft = gf.mirror(playersRight,true);
         var sprites = [
             playerb,        //UP
@@ -93,8 +106,7 @@ export default class Player{
             playersLeft,        //LEFT
             playerb,        //UPLEFT
         ];
-        this.width = p.width;
-        this.height = p.height;
+        
         return sprites;
     }
     getSprite(){

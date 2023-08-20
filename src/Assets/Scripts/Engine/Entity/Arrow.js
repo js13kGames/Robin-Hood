@@ -10,13 +10,12 @@ export default class Arrow{
         this.width = this.sprite.width;
         this.height = this.sprite.height;
         this.center = new Point(
-            e.center.x,// - e.width/2 +this.width, 
-            e.center.y,// - e.height/2+this.height
+            e.center.x,
+            e.center.y,
             );
         console.log(this.width);
         this.speed = this.width/4;
-        this.distanceToTravel = this.e.attributes.ARCHERY * this.speed;
-        // this.center.move(this.direction,this.width/2);
+        this.distanceToTravel = this.e.attributes.ARCHERY * this.speed/2;
         this.movement = 0;
         this.life = 1;
     }
@@ -37,12 +36,8 @@ export default class Arrow{
         var multiplier = this.e.scene.scalemultiplier;
         var size = 16 * multiplier;
         var arrow = SpriteMap.getByNameMagnified('arrow',multiplier);
-        var canvas = gf.makeCanvas(size,size);
-        var ctx = gf.getCtx(canvas);
-        ctx.fillRect(0,0,size,size);
-        ctx.drawImage(arrow, 
-            canvas.width / 2 - arrow.width/2 ,
-            canvas.height / 2 - arrow.height/2 );
+        var canvas = gf.centerCanvasOn(arrow,size,size);
+        
         var r = gf.rotateCanvasCw(canvas,0);
         var d = gf.rotateCanvasCw(canvas,2);
         var l = gf.rotateCanvasCw(canvas,4);
