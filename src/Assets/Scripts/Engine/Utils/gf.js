@@ -58,10 +58,10 @@ const getColor = (r, g, b, a)=> {
     return '#' + ((r << 16) + (g << 8) + b).toString(16).padStart(6, '0');
     // return '#' + ((r << 16) | (g << 8) | b).toString(16).slice(-6);
 }
-const rotateCanvas = (canvas, rotation) => {
+const rotateCanvas = (canvas, rotation, diagonal = true) => {
     let width, height;
 
-    if (rotation % (Math.PI / 4) === 0) {
+    if(diagonal && rotation % (Math.PI / 4) != 0) {
         const diagonal = getDiagonal(canvas.width, canvas.height);
         width = height = diagonal;
     } else {
@@ -89,9 +89,9 @@ const rotateCanvas = (canvas, rotation) => {
     ctx.restore();
     return buffer;
 };
-const rotateCanvasCw = (canvas,times) => {
+const rotateCanvasCw = (canvas,times,diagonal = true) => {
     times = times % 8;
-    return rotateCanvas(canvas, times * PI/4);
+    return rotateCanvas(canvas, times * PI/4, diagonal);
 }
 const crop = (canvas,x,y,width,height)=>{
     let buffer = makeCanvas(width,height);
@@ -334,7 +334,20 @@ function Lightify(canvas,opacity){
     ctx.globalAlpha = 1;
     return buffer;
 }
+function getCustomCanvas4(s1,s2,s3,s4){
+    var canvas = makeCanvas(s1.width*2,s1.height*2);
+    var ctx = getCtx(canvas);
+    ctx.drawImage(s1,0,0);
+    ctx.drawImage(s2,s1.width,0);
+    ctx.drawImage(s3,0,s1.height);
+    ctx.drawImage(s4,s1.width,s1.height);
+    return canvas;
+}
+function centerCanvasOn(canvas,img){
+    
+}
 export {
+    getCustomCanvas4,
     getGrid,
     repeatCanvas,
     fuseImageReplace,

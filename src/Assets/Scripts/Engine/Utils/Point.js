@@ -1,4 +1,4 @@
-import {DIRECTION} from './gf.js';
+import {DIRECTION,getDirection} from './gf.js';
 export default class Point{
     constructor(x,y){
         this.x = x;
@@ -45,7 +45,17 @@ export default class Point{
         return 0;
     }
     getDirectionTo(another){
-        return getDirection(this.getAngleTo(another));
+        let x1 = this.x;
+        let y1 = this.y;
+        let x2 = another.x;
+        let y2 = another.y;
+        if(x1 == x2 && y1 == y2) return DIRECTION.DOWN;
+        if(x1 > x2) return DIRECTION.LEFT;
+        else if(x1 < x2) return DIRECTION.RIGHT;
+        else if(y1 < y2) return DIRECTION.DOWN;
+        else if(y1 > y2) return DIRECTION.UP;
+        else return DIRECTION.DOWN;
+        // return getDirection(this.getAngleTo(another));
     }
     moveClone(direction,distance){
         let c = this.clone();

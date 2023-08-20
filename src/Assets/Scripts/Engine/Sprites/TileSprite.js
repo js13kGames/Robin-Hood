@@ -1,10 +1,19 @@
 import * as gf from '../Utils/gf.js';
-
+import {spriteMapDefinitons} from './SpriteMap.js';
 export default class TileSprite{
     constructor(){
     }
+    getCustomTile4(s1,s2,s3,s4){
+        var canvas = gf.makeCanvas(s1.width*2,s1.height*2);
+        var ctx = gf.getCtx(canvas);
+        ctx.drawImage(s1,0,0);
+        ctx.drawImage(s2,s1.width,0);
+        ctx.drawImage(s3,0,s1.height);
+        ctx.drawImage(s4,s1.width,s1.height);
+        return canvas;
+    }
     static get(name){
-        var cfg = TileSprite.TILES.find(x=>x.n.toLowerCase()==name.toLowerCase());
+        var cfg = spriteMapDefinitons.find(x=>x.n.toLowerCase()==name.toLowerCase());
         let spritesheet = gf.querySelector('#spriteSheetMain');
         var sprite = gf.crop(spritesheet,
             cfg.x,
@@ -70,35 +79,9 @@ export default class TileSprite{
     }
     static getAll(scale = 1){
         var sprites = {};
-        for(let i in TileSprite.TILES){
-            sprites[TileSprite.TILES[i].n] = scale == 1 ? TileSprite.get(TileSprite.TILES[i].n) : TileSprite.getMagnified(TileSprite.TILES[i].n,scale);
+        for(let i in spriteMapDefinitons){
+            sprites[spriteMapDefinitons[i].n] = scale == 1 ? TileSprite.get(spriteMapDefinitons[i].n) : TileSprite.getMagnified(spriteMapDefinitons[i].n,scale);
         }
         return sprites;
     }
 }
-TileSprite.TILES = [
-    {n:'brick',x:88,y:0,w:8,h:8,c:0},
-    {n:'grass',x:96,y:0,w:8,h:8,c:0},
-    {n:'water',x:104,y:0,w:8,h:8,c:0},
-    {n:'steel',x:112,y:0,w:8,h:8,c:0},
-    {n:'dirt',x:88,y:8,w:8,h:8,c:1},
-    {n:'tree',x:96,y:8,w:8,h:8,c:1},
-    {n:'log',x:104,y:8,w:8,h:8,c:1},
-    {n:'magic',x:112,y:8,w:8,h:8,c:1},
-    {n:'castle',x:120,y:0,w:32,h:32,c:1},
-    {n:'apple',x:88,y:16,w:8,h:8,c:1},
-    {n:'lemon',x:96,y:16,w:8,h:8,c:1},
-    {n:'fort',x:104,y:16,w:16,h:16,c:1},
-    {n:'player',x:0,y:32,w:16,h:16,c:1},
-    {n:'playerback',x:16,y:32,w:16,h:16,c:1},
-    {n:'playerside',x:32,y:32,w:8,h:16,c:1},
-    {n:'playersidehand',x:40,y:32,w:8,h:16,c:1},
-    {n:'bear',x:48,y:32,w:16,h:16,c:1},
-    {n:'rabbit',x:64,y:40,w:8,h:8,c:1},
-    {n:'arrow',x:64,y:32,w:8,h:8,c:1},
-    {n:'deer',x:72,y:32,w:16,h:16,c:1},
-    {n:'house',x:88,y:32,w:16,h:16,c:1},
-    {n:'shop',x:104,y:32,w:16,h:16,c:1},
-    {n:'npcgirl',x:120,y:32,w:16,h:16,c:1},
-    {n:'npcman',x:136,y:32,w:16,h:16,c:1},
-];

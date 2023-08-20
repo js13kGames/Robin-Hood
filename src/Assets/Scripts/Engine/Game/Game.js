@@ -57,7 +57,9 @@ export default class Game{
     }
     enablePhoneControls(){
         var table = Object.assign(document.createElement('div'), {className: 'controls_container'});
-        table.innerHTML = `<table><tr><td>q</td><td>w</td><td>e</td><td class="padding"></td><td>space</td> </tr><tr><td>a</td><td>s</td><td>d</td><td class="padding"></td> <td>e</td> </tr></table>`;
+        table.innerHTML = `<table>
+        <tr><td id='q'>q</td><td id='w'>w</td><td id='e'>e</td><td class="padding"></td><td id='space'>space</td> </tr>
+        <tr><td id='a'>a</td><td id='s'>s</td><td id='d'>d</td><td class="padding"></td><td id='f'>f</td></tr></table>`;
         this.container.appendChild(table);
         var controltds = gf.getDomElements('.controls_container td');
         for(let i = 0 ; i < controltds.length;i++){

@@ -34,7 +34,7 @@ export default class LoadingScene extends Scene{
         var canvas = gf.makeCanvas(this.main.config.width,this.main.config.height);
         let ctx = gf.getCtx(canvas);
         ctx.drawImage(
-            this.pixelFont1.getTextSprite('NEW GAME',this.sprites.steel),
+            this.pixelFont1.getTextSprite('PLAY GAME',this.sprites.steel),
             this.cursorLocations[0].x + 20,
             this.cursorLocations[0].y,
         );

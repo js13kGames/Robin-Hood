@@ -19,8 +19,13 @@ export default class Scene{
         });
     }
     ss(scene){
+        this.main.previousScene = this.main.scene;
         scene.main = this.main;
         this.main.toScene(scene);
+    }
+    prevss(scene){
+        this.main.toScene(this.main.previousScene);
+        this.main.previousScene = scene;
     }
     notify(event){
         let name = event.name;

@@ -9,7 +9,7 @@
 <body>
     <div class="canvas_container"></div>
     <div class="assets_container">
-        <img id="spriteSheetMain" src="gif.gif" style="display: none">
+        <img id="spriteSheetMain" src="gif.gif?<?= time() ?>" style="display: none">
     </div>
     <script src="release.js?<?= time() ?>" defer=""></script>
 </body>

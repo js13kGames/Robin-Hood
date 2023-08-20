@@ -17,10 +17,17 @@ export default class Camera{
         this.center.move(dir,32);
     }
     getCanvas(canvasToCrop){
+        var cxy = {
+            x:this.center.x-this.w/2,
+            y:this.center.y-this.h/2
+        }
+        var sx = cxy.x < 0 ? 0 : cxy.x;
+        var sy = cxy.y < 0 ? 0 : cxy.y;
+
         var crop = gf.crop(canvasToCrop,
-            this.center.x-this.w/2,this.center.y-this.h/2,
+            sx,sy,
             this.w,this.h
-            );
+        );
         return crop;
 
         var canvas = gf.makeCanvas(this.w,this.h);

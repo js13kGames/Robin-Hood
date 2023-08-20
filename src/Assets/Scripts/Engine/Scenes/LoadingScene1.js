@@ -7,9 +7,6 @@ import MainMenuScene from './MainMenuScene.js';
 export default class LoadingScene extends Scene{
     constructor(main){
         super(main);
-
-
-
         var sprites = {
             'brick1' : TileSprite.getMagnified('brick',1),
             'brick2' : TileSprite.getMagnified('brick',2),
@@ -53,12 +50,14 @@ export default class LoadingScene extends Scene{
         this.deer = sprites.deer2;
         this.rabbit = sprites.rabbit2;
 
+        this.gridMatt = gf.getGridMatt(sprites.grass2, sprites.dirt2, 40,40, 2);
+        this.gridMatt = gf.Lightify(this.gridMatt,0.3);
+
         this.buffer = this.getBuffer();
-        this.loading = 0;
+
     }
     update(time){
         this.time = time;
-        this.loading++;
     }
     getBuffer(){
         let canvas = gf.makeCanvas(600,600);
@@ -83,7 +82,6 @@ export default class LoadingScene extends Scene{
         ctx.drawImage(this.TextSprites['CENTURY'],textx +32*3,texty + 32);
         ctx.drawImage(this.TextSprites['ROBIN HOOD'],textx,texty + 64);
 
-        /*
         var marginytop = 288;
         var marginybottom = 480;
         
@@ -120,8 +118,6 @@ export default class LoadingScene extends Scene{
             var randx = gf.randInt(marginxleft,marginxright);
             ctx.drawImage(this.treeshort,randx,randy);
         }
-        */
-
         return canvas;
     }
     draw(ctx){
@@ -132,6 +128,7 @@ export default class LoadingScene extends Scene{
         ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
         ctx.drawImage(this.buffer,0,0);
         // ctx.drawImage(this.water_row,0,64);
+
         ctx.fillStyle = "green";
         ctx.font = "16px Arial";
         ctx.fillText("Time " + this.time, 20 , y); y+= h;
@@ -140,22 +137,27 @@ export default class LoadingScene extends Scene{
         ctx.drawImage(this.player,32*4,32*11);
     
     }
-    goToMainMenuScene(){
-        if(this.loading > 100){
-            this.ss(new MainMenuScene(this.main));
-        };
-        this.loading=100;
-    }
+    // notify(event){
+    //     let name = event.name;
+    //     let e = event.event;
+    //     if(name == 'keydown') this.keydown(e);
+    //     else if(name == 'keyup') this.keyup(e);
+    //     else if(name == 'mousemove') this.mousemove(e);
+    //     else if(name == 'click') this.click(e);
+    //     else console.log(name);
+    // }
     control(e){
-        this.goToMainMenuScene();
+        // console.log(e);
+        this.ss(new MainMenuScene(this.main));
     }
     click(e){
-        this.goToMainMenuScene();
+        // this.goToMainMenuScene();
     }
     keydown(e){
-        this.goToMainMenuScene();
+        // this.goToMainMenuScene();
     }
     keyup(e){
-        this.goToMainMenuScene();
+        this.control(e.key);
+        // console.log(e);
     }
 }
