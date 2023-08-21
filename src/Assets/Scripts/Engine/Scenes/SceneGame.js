@@ -32,12 +32,12 @@ export default class SceneGame extends Scene{
             this.gamemap.PLAYERLOCATION : 
             new Point(32*7,32*7));
         this.camera = new Camera(this,
-            this.main.config.width  - 32*3,
-            this.main.config.height - 32*3,
+            this.main.config.width,
+            this.main.config.height,
             0,0);
         this.camera.mapToPoint(this.player.center);
         this.playername = 'robin hood';
-        this.mobs = [];
+        this.mobs = [...this.gamemap.presetmobs];
         this.drops = [];
         this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
         this.spawnPointsTest = this.findAllValidSpawnPoint();
@@ -100,7 +100,7 @@ export default class SceneGame extends Scene{
     }
     _spawnMob(){
         if(this.mobs.length > MOBCOUNT) return;
-        let mob = new Mob(this,gf.randInt(0,5));
+        let mob = new Mob(this,gf.randInt(0,3));
         this.mobs.push(mob);
     }
     findValidSpawnPointInMap(){

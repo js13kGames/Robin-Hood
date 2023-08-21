@@ -39,10 +39,10 @@ export default class LoadingScene extends Scene{
             'CENTURY' : pixelFont.getTextSprite('CENTURY',sprites.apple),
             'ROBIN HOOD' : pixelFont.getTextSprite('ROBIN HOOD',sprites.grass),
         }
-        this.water_row = gf.Lightify(gf.repeatCanvas(sprites.water,4, this.main.config.width/sprites.water.width),0.6);
-        this.dirt_row = gf.Lightify(gf.repeatCanvas(sprites.dirt2,2,36),0.4);
-        this.grass_row = gf.Lightify(gf.repeatCanvas(sprites.grass2,12,36),0.4);
-
+        this.water_row = gf.Lightify(gf.repeatCanvas(sprites.water,4, this.main.config.width/8),0.6);
+        this.dirt_row = gf.Lightify(gf.repeatCanvas(sprites.dirt2,2,this.main.config.width/8),0.4);
+        this.grass_row = gf.Lightify(gf.repeatCanvas(sprites.grass2,12,this.main.config.width/8),0.4);
+        
         this.castle = sprites.castle3;
         this.player = sprites.player2;
         this.bear = sprites.bear3;
@@ -60,7 +60,7 @@ export default class LoadingScene extends Scene{
         this.loading++;
     }
     getBuffer(){
-        let canvas = gf.makeCanvas(600,600);
+        let canvas = gf.makeCanvas(this.main.config.width,this.main.config.height);
         let ctx = gf.getCtx(canvas);
 
         ctx.drawImage(this.water_row,0,32*6);
@@ -72,6 +72,9 @@ export default class LoadingScene extends Scene{
         ctx.drawImage(this.grass_row,0,32*9);
 
         var textx = 32*4;
+        if(this.main.config.width < 400){
+            textx = 16;
+        }
         var texty = 32*3;
         
         ctx.drawImage(this.TextSprites['JS'],textx,texty);
@@ -91,7 +94,6 @@ export default class LoadingScene extends Scene{
         ctx.fillStyle = "black";
         ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
         ctx.drawImage(this.buffer,0,0);
-        // ctx.drawImage(this.water_row,0,64);
         ctx.fillStyle = "green";
         ctx.font = "16px Arial";
         ctx.fillText("Time " + this.time, 20 , y); y+= h;

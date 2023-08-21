@@ -19,11 +19,15 @@ export default class LoadingScene extends Scene{
             'grass' : TileSprite.getMagnified('grass',1),
             'player' : TileSprite.getMagnified('player',1)
         }
+        var textx = 100;
+        if(this.main.config.width < 400){
+            textx = 32;
+        }
         this.cursorLocations = [
-            {x:100,y:32*4},// 0 new game
-            {x:100,y:32*5},// 1 sound
-            {x:100,y:32*6},// 2 instructions
-            {x:100,y:32*7},// 3 name
+            {x:textx,y:32*4},// 0 new game
+            {x:textx,y:32*5},// 1 sound
+            {x:textx,y:32*6},// 2 instructions
+            {x:textx,y:32*7},// 3 name
         ];
         this.playername = 'robin hood';
         this.currentcursorloc = 0;

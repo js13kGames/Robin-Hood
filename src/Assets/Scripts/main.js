@@ -6,7 +6,7 @@ const config = {
     tile:32,
     aspect:1,
     framerate:1/15,
-    width : 32*18,
+    width : parseInt(window.innerWidth/32)*32,
     height : 32*18,
     assets:"Assets",
     spritesheet: gf.querySelector('#spriteSheetMain'),

@@ -83,6 +83,7 @@ export default class Game{
         this.eventManager.sub(this.scene);
     }
     enablePhoneControls(){
+        if(this.config.width > 400) return;
         var table = Object.assign(document.createElement('div'), {className: 'controls_container'});
         table.innerHTML = `<table>
         <tr><td id='q'>q</td><td id='w'>w</td><td id='e'>e</td><td class="padding"></td><td id='space'>space</td> </tr>

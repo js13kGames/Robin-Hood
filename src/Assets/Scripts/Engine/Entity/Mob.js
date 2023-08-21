@@ -2,23 +2,22 @@ import * as gf from '../Utils/gf.js';
 import SpriteMap from "../Sprites/SpriteMap.js";
 import Point from '../Utils/Point.js';
 const MOBSPECS = [
-    {mcd : 50},
-    {mcd : 50},
-    {mcd : 50},
-    {mcd : 50},
-    {mcd : 50},
-    {mcd : 50},
-    {mcd : 50},
-]
+    {mcd : 15,attack : 1, life:1,name:'rabbit'},
+    {mcd : 50,attack : 4, life:5,name:'wolf'},
+    {mcd : 50,attack : 10, life:8,name:'deer'},
+    {mcd : 50,attack : 20, life:10,name:'bear'},
+    {mcd : 10,attack : 15, life:10,name:'npcman'},
+    {mcd : 10,attack : 10, life:10,name:'npcgirl'},
+];
 export default class Mob{
 
-    constructor(gamescene,type = 0){
+    constructor(gamescene,type = 0,center = null){
         this.type = type;
         this.scene = gamescene;
         this.sprites = this.getSprites();
         this.sprite = this.sprites[this.type];
-        this.center = gamescene.findAValidSpawnPoint(8,25);
-        this.life = 1 + this.type * 2;
+        this.center = center || gamescene.findAValidSpawnPoint(8,25);
+        this.life = MOBSPECS[this.type].life;
         this.moveCountDown = MOBSPECS[this.type].mcd;
     }
     getPossibleNextMove(){

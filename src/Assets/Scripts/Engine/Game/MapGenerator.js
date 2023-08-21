@@ -1,3 +1,4 @@
+import Mob from "../Entity/Mob.js";
 import SpriteMap from "../Sprites/SpriteMap.js";
 import TileSprite from "../Sprites/TileSprite.js";
 import Point from "../Utils/Point.js";
@@ -10,16 +11,18 @@ const MAPTILES = [
     {'n':'grass',o:0,'c':'#99e550'},
     {'n':'water',o:2,'c':'#8a99f6'},
     {'n':'steel',o:1,'c':'#6a6a6a'},
-    {'n':'player',o:1,'c':'#130c40'},
+    {'n':'player',o:0,'c':'#130c40'},
+    {'n':'army',o:0,'c':'#ff0000'},
     {'n':'cave',o:1,'c':'#2e2b2b'},
     {'n':'deerspawnpoint',o:0,'c':'#df7126'},
 ];
 export default class MapGenerator{
     constructor(gamescene,s=1){
+        this.gamescene = gamescene;
         this.sMap = new SpriteMap();
+        this.presetmobs = [];
         this.caves = [];
         this.deerspawnpoints = [];
-        
         this.getPredefinedMap1(s);
     }
     getColorAt(x,y){
@@ -142,6 +145,9 @@ export default class MapGenerator{
                     this.PLAYERLOCATION = new Point(i*multiplier,j*multiplier);
                     mapColorMatrix[i][j] = '#d9a066';
                     ctx.drawImage(sprites['#d9a066'],i*multiplier,j*multiplier);
+                }
+                else if(color == '#ff0000'){//player location
+                    this.presetmobs.push(new Mob(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
                 }
                 else{
                     console.log(color,'unclassified');
