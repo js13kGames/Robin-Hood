@@ -1,12 +1,13 @@
 import * as gf from '../Utils/gf.js';
 import SpriteMap from "../Sprites/SpriteMap.js";
 import Point from '../Utils/Point.js';
-export default class Drop{
+import EObject from './EObject.js';
+export default class Drop extends EObject{
     constructor(gamescene,center,type=0){
+        super(center);
         this.scene = gamescene;
         this.sprites = this.getSprites();
         this.sprite = this.sprites[type];
-        this.center = new Point(center.x,center.y);
     }
     obtain(player){
         

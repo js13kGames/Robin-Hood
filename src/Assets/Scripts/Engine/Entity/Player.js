@@ -7,6 +7,8 @@ import Arrow from './Arrow.js';
 export default class Player{
     constructor(gamescene){
         this.scene = gamescene;
+        this.life = 100;
+        this.score = 0;
         this.attributes = new PlayerAttribute(1);
         this.center = new Point(0,0);
         this.destination = new Point(0,0);
@@ -14,11 +16,11 @@ export default class Player{
         this.time = 0;
         this.direction = gf.DIRECTION.DOWN;
         this.sprites = this.getSprites();
-        this.currentSprite = this.sprites[gf.DIRECTION.DOWN];
+        this.sprite = this.sprites[gf.DIRECTION.DOWN];
         this.shots = [];
         this.firecooldown = 0;
-        this.score = 0;
         this.hunts = [];
+        this.ArrowsCount = 100000000;
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);
@@ -39,14 +41,15 @@ export default class Player{
         }
         else{
             this.isMoving = false;
-            // this.currentSprite = this.sprites[gf.DIRECTION.DOWN];
+            // this.sprite = this.sprites[gf.DIRECTION.DOWN];
             this.scene.camera.fixToCords(this.center);
         }
     }
     fire(){
         if(this.firecooldown > 0) return;
         this.firecooldown = 20 - this.attributes.ARCHERY*2;
-        console.log(this.firecooldown);
+        // console.log(this.firecooldown);
+        this.ArrowsCount--;
         this.shots.push(new Arrow(this));
     }
     useSword(){
@@ -54,30 +57,37 @@ export default class Player{
     }
     applyArrowEffect(arrow){
         var center = arrow.center;
-        var o = this.scene.checkObstacle(center.x,center.y);
-        if(o){
+        var o = this.scene.gamemap.isObstacleAt(center.x/this.scene.tileSize,center.y/this.scene.tileSize);
+        if((o == 1 || o == true) && o != 2){
             arrow.life = 0;
         }
         for(let i = 0 ; i < this.scene.mobs.length;i++){
             var x = this.scene.mobs[i];
             var d = x.center.distanceTo(arrow.center);
             if(d < this.scene.tileSize){
-                x.life -= 1;
-                arrow.life--;
+                x.life -= arrow.life;
+                if(x.life <= 0){
+                    if(x.type == 4 || x.type == 5){
+                        this.score -= x.type+1;
+                    }
+                    else{
+                        this.score += x.type+1;
+                    }
+                }
+                arrow.life = 0;
             }
         }
     }
     draw(ctx){
-        ctx.drawImage(this.currentSprite,this.center.x,this.center.y);
+        ctx.drawImage(this.sprite,this.center.x,this.center.y);
         [...this.shots].forEach(obj=>{
             if(obj.draw) obj.draw(ctx);
         });
     }
     rotateToward(x,y){
-        console.log('rotate toward ',[x,y],'from ',[this.center.x,this.center.y]);
         var dir = this.center.getDirectionTo(new Point(x,y));
         this.direction = dir;
-        this.currentSprite = this.sprites[dir];
+        this.sprite = this.sprites[dir];
     }
     moveTo(x,y){
         var dir = this.center.getDirectionTo(new Point(x,y));
@@ -85,7 +95,7 @@ export default class Player{
         var distance = this.center.distanceTo(new Point(x,y));
         if(distance==0) return;
         // console.log('moving in dir ', dir, this.center, [x,y]);
-        this.currentSprite = this.sprites[dir];
+        this.sprite = this.sprites[dir];
         this.move(dir);
     }
     move(dir){
@@ -117,11 +127,9 @@ export default class Player{
             playersLeft,        //LEFT
             playerb,        //UPLEFT
         ];
-        
         return sprites;
     }
     getSprite(){
-        return this.currentSprite;
-        return this.sprites.find(x=>x.d==this.direction)?.s;
+        return this.sprite;
     }
 }

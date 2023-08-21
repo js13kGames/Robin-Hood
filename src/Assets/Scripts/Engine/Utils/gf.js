@@ -352,7 +352,14 @@ function centerCanvasOn(img,w,h,bg = false){
         h / 2 - img.height/2 );
     return canvas;
 }
+function getNumAsText(n){
+    if(n > 1000000000) return parseInt(n/1000000) + 'B';
+    if(n > 1000000) return parseInt(n/1000000) + 'M';
+    if(n > 1000) return parseInt(n/1000) + 'K';
+    return n;
+}
 export {
+    getNumAsText,
     centerCanvasOn,
     getCustomCanvas4,
     getGrid,

@@ -1,10 +1,13 @@
 import * as gf from "../Utils/gf.js";
 
 var presetNPC={
+    'man':[
 
+    ],
+    'girl':[
+
+    ]
 };
-
-
 export default class Villager{
     constructor(){
         this.name = 'Villager';

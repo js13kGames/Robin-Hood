@@ -1,19 +1,16 @@
 import SpriteMap from "../Sprites/SpriteMap.js";
 import * as gf from '../Utils/gf.js';
 import Point from '../Utils/Point.js';
-export default class Arrow{
+import EObject from './EObject.js';
+export default class Arrow extends EObject{
     constructor(e){
+        super(e.center);
         this.e = e;
         this.direction = e.direction;
         this.sprites = this.getSprites();
         this.sprite = this.sprites[this.direction];
         this.width = this.sprite.width;
         this.height = this.sprite.height;
-        this.center = new Point(
-            e.center.x,
-            e.center.y,
-            );
-        console.log(this.width);
         this.speed = this.width/4;
         this.distanceToTravel = this.e.attributes.ARCHERY * this.speed/2;
         this.movement = 0;
@@ -27,7 +24,6 @@ export default class Arrow{
             this.e.applyArrowEffect(this);
         }
         else{
-            console.log('dead ', this);
             this.life = 0;
         }
     }
@@ -61,11 +57,5 @@ export default class Arrow{
         ];
         Arrow.SPRITES = sprites;
         return Arrow.SPRITES;
-    }
-    draw(ctx){
-        ctx.drawImage(this.sprite,
-            (this.center).x,// - (this.width)/2,
-            (this.center).y,// -(this.height)/2
-        );
     }
 }

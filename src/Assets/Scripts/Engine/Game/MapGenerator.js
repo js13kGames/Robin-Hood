@@ -8,7 +8,7 @@ const MAPTILES = [
     {'n':'brick' ,o:1,'c':'#bf0a0a'},
     {'n':'dirt' ,o:0,'c':'#d9a066'},
     {'n':'grass',o:0,'c':'#99e550'},
-    {'n':'water',o:1,'c':'#8a99f6'},
+    {'n':'water',o:2,'c':'#8a99f6'},
     {'n':'steel',o:1,'c':'#6a6a6a'},
     {'n':'player',o:1,'c':'#130c40'},
     {'n':'cave',o:1,'c':'#2e2b2b'},
@@ -22,6 +22,16 @@ export default class MapGenerator{
         
         this.getPredefinedMap1(s);
     }
+    getColorAt(x,y){
+        x = Math.floor(x);
+        y = Math.floor(y);
+        if(x < 0) return null;
+        if(x > this.colorMatrix.length-1) return null;
+        if(y < 0) return null;
+        if(y > this.colorMatrix.length-1) return null;
+        // return this.colorMatrix[x][y];
+        return this.colorMatrix[y][x];
+    }
     isObstacleAt(x,y){
         x = Math.floor(x);
         y = Math.floor(y);
@@ -29,13 +39,15 @@ export default class MapGenerator{
         if(x > this.colorMatrix.length-1) return true;
         if(y < 0) return true;
         if(y > this.colorMatrix.length-1) return true;
-        var c = this.colorMatrix[x][y];
+        if(!this.colorMatrix[x]) return true;
+        // var c = this.colorMatrix[x][y];
+        var c = this.colorMatrix[y][x];
         return this.isObstacle(c);
     }
     isObstacle(color){
         var cfg = MAPTILES.find(x=>x.c == color);
         // console.log(cfg,color);
-        return cfg == undefined || cfg.o == 1;
+        return cfg == undefined ? 1 : cfg.o;
     }
     getPredefinedMap1(s=1){
         var map_spawn = this.sMap.get('map_spawn');
@@ -80,14 +92,11 @@ export default class MapGenerator{
         }
 
         var multiplier = 8*2*s;
-
         var mapcanvas = gf.makeCanvas(mapColorMatrix.length * multiplier, mapColorMatrix.length * multiplier);
-        
         var ctx = mapcanvas.getContext("2d");
         for(var i = 0 ; i < mapColorMatrix.length;i++){
             for(var j = 0 ; j < mapColorMatrix[i].length;j++){
-                
-                var color = mapColorMatrix[i][j];
+                var color = mapColorMatrix[j][i];
                 if(color == '#0d3702'){ //tree
                     ctx.drawImage(gf.rand()>0.5? sprites['#d9a066'] : sprites['#99e550'],i*multiplier,j*multiplier);//dirt or grass before tree
                     ctx.drawImage(sprites['#0d3702'],i*multiplier,j*multiplier);

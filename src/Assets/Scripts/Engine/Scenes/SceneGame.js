@@ -13,6 +13,8 @@ import Arrow from "../Entity/Arrow.js";
 import MainMenuScene from './MainMenuScene.js';
 import Player from "../Entity/Player.js";
 import Mob from "../Entity/Mob.js";
+
+const MOBCOUNT = 100;
 export default class SceneGame extends Scene{
     constructor(main){
         super(main);
@@ -40,28 +42,23 @@ export default class SceneGame extends Scene{
         this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
         this.spawnPointsTest = this.findAllValidSpawnPoint();
     }
-    drawCoordsOnCanvas(canvas){
-        var rows = canvas.height / this.tileSize;
-        var cols = canvas.width / this.tileSize;
-        var ctx = gf.getCtx(canvas);
-        ctx.fillStyle = "black";
-        ctx.font = "8px Arial";
-        for(let i = 0 ; i < cols;i++){
-            ctx.fillText(i, i*this.tileSize , this.tileSize-8);
-        }
-        for(let i = 0 ; i < rows;i++){
-            ctx.fillText(i,0 , i*this.tileSize);
-        }
-    }
-    checkObstacle(x,y){
+    haveEntityAt(x,y){
         var pt = new Point(x,y);
         for(let i = 0 ; i < this.mobs.length;i++){
             var mob = this.mobs[i];
             var d = mob.center.distanceTo(pt);
             if(d < this.tileSize){
-                return true;
+                return mob;
             }
         }
+        return null;
+    }
+    checkObstacle(x,y){
+
+    }
+    checkObstacle(x,y){
+        var mob = this.haveEntityAt(x,y);
+        if(mob != null) return true;
         return this.gamemap.isObstacleAt(x/this.tileSize,y/this.tileSize);
     }
     getBuffer(){
@@ -74,7 +71,6 @@ export default class SceneGame extends Scene{
         ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
         var updatedCanvas = gf.cloneCanvas(this.gamemap.mapcanvas);
         // var updatedCanvas = gf.Lightify(updatedCanvas,0.8);
-        this.drawCoordsOnCanvas(updatedCanvas);
         var ctxmap = gf.getCtx(updatedCanvas);
         
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
@@ -88,7 +84,7 @@ export default class SceneGame extends Scene{
     }
     update(time){
         this.time = time;
-        if(this.mobs.length < 10){
+        if(this.mobs.length < MOBCOUNT){
             this._spawnMob();
         }
         [...this.mobs].forEach(obj=>{
@@ -103,7 +99,7 @@ export default class SceneGame extends Scene{
         }
     }
     _spawnMob(){
-        if(this.mobs.length > 50) return;
+        if(this.mobs.length > MOBCOUNT) return;
         let mob = new Mob(this,gf.randInt(0,5));
         this.mobs.push(mob);
     }
@@ -199,7 +195,16 @@ export default class SceneGame extends Scene{
         ctx.fillStyle = "green";
         ctx.font = "16px Arial";
         ctx.drawImage(this.getBuffer(),0,0);
-        ctx.fillText("Time " + this.time, 20 , y); y+= h;
+
+        ctx.fillStyle = '#004b52d6';
+        ctx.fillRect(0,0,ctx.canvas.width,32);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText("LIFE " + this.player.life, 15,15);
+        ctx.fillText("SCORE " + this.player.score, 15,30);
+        
+        ctx.fillText("Arrows " + gf.getNumAsText(this.player.ArrowsCount), 64*3,15);
+
+        // ctx.fillText("Time " + this.time, 20 , y); y+= h;
     }
     click(e){}
     control(e){
