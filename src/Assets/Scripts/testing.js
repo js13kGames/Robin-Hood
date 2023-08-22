@@ -6,23 +6,54 @@ import * as gf from './Engine/Utils/gf.js';
 import PixelFont from './Engine/Sprites/PixelFont.js';
 import TileSprite from './Engine/Sprites/TileSprite.js';
 import MapGenerator from './Engine/Game/MapGenerator.js';
-import ForestGenerator from './Engine/Game/ForestGenerator.js';
 import Font from './Engine/Sprites/Font.js';
 import SpriteMap from './Engine/Sprites/SpriteMap.js';
 
 
-
 var sMap = new SpriteMap();
-var font16 = new Font({size:16,color:'#ff00aa'});
-
 var brick = sMap.get('brick');
+var steel = sMap.get('steel');
+var grass = sMap.get('grass');
+var water = sMap.get('water');
 
-// var bfont = font16.getTextSprite('JS13K',brick);
-var bfont = font16.getTextSprite('JS13K');
+var lines = [
+    `███JS13K██████████`,
+    `ღ♧♂♀♥♡☜☞☎☏⊙◎`,
+    `▨♨◐◑↔↕℡™№◈§ξ∮￥`,
+    `￡♠♣●•｡๑∞◦◊▣▤▥▦▩▧`,
+    `♬♪♩♭∏۩۞юЮㄨ※彡乀∑⌒@▓`,
+    `↑↓←→↘↙ω‰Ωжф`,
+    `べあぃ┣┓┏┫▄█▌▒『』〖〗`,
+    `◢◣◥◤△▲▼☆★〓▽▂︿`,
+    `°ิ.ஐஇ*○▫♦©¤®╠═╝■□`,
+    `»«¶†εïз±җ۝ั回≡╚Θˇ˙【】`,
+    `►◄░√╮╭╯╰ァじ´¯>-[]<▪`,
+    `のCfé㊣凸س(‧')ⓛⓞⓥⓔ`,
+    `◇◆їIし#ψ⊕☼O♋㊝✿`,
+    `✲☃╬❣➸❝❞﹌✎✟➹❀☂∵∴∷`,
+    `♟✖☀☁⊹⊱⋛⋋⋌⋚⊰﹎╱╲`,
+    `₪✱㋡ஓ❆━╃╄┛┗`,
+    `☄☇∈❤✏▶^_◕￼ζ⅝⅞❦☺`,
+    `☻▀◙♫‿¨–~ҳ̸ҲsՖศДקツ|`
+];
+var sss = {}
+for(var j in lines){
+    for(let k = 0 ; k < lines[j].length;k++){
+        sss[lines[j].charAt(k)] = sss[lines[j].charAt(k)] ? sss[lines[j].charAt(k)] +1 : 1 ;
+    }
+}
+console.log(JSON.stringify(sss));
+
 
 document.body.append(brick);
-document.body.append(bfont);
 
+for(let i = 11 ; i < 12;i++){
+    for(var j in lines){
+        document.body.append(Font.getSpriteForText(lines[j],8*i,'green',brick));
+        // document.body.append(Font.getSpriteForText(lines[j],8*i,'green',grass));
+        // document.body.append(Font.getSpriteForText(lines[j],8*i,'green',water));
+    }
+}
 console.log(sMap);
 
 // var mg = new MapGenerator(32);
@@ -30,7 +61,6 @@ console.log(sMap);
 /*
 for(var i = 0; i < 10;i++){
     document.body.append(i);
-    // var forest1 = new ForestGenerator(i,32);
     document.body.append(document.createElement('br'));
 }
 

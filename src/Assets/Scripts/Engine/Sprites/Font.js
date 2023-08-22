@@ -23,33 +23,26 @@ export default class Font{
         this.size = config.size ? config.size : 8;
         this.color = config.color ? config.color : '#ff00ff';
     }
-    getTextSprite(word,fuseImage){
-        let canvas = gf.makeCanvas(this.size * 8 * word.length,this.size * 8);
-        let ctx = gf.getCtx(canvas);
-        word = word.toUpperCase();
-        // ctx.fillStyle = this.color;
-        ctx.fillStyle = "green";
-        ctx.font = "16px Arial";
-        ctx.fillText(word,0,0);
-        if(fuseImage){
-            canvas = gf.fuseImage(canvas,fuseImage);
+    static getSpriteForText(word,size,color,fuseImage,family = 'Arial'){
+        let ctx = gf.makeCanvas(1, 1).getContext("2d"); // Create a temporary canvas context
+        ctx.font = size + "px "+family;
+        const textWidth = ctx.measureText(word.toUpperCase()).width || 1;
+        const textHeight = size*1.25+1; 
+        let canvas = gf.makeCanvas(parseInt(textWidth), textHeight);
+        ctx = gf.getCtx(canvas);
+        
+        ctx.font = size + "px "+family;
+        ctx.fillStyle = color;
+        ctx.fillText(word.toUpperCase(),0, size);
+        if (fuseImage) {
+            canvas = gf.fuseImage(canvas, fuseImage);
         }
-        return canvas;
-    }
-    getCharsArrayFromSpriteMap(canvas,size){
-        var chars = {};
-        let y = 0;
-        let x = 0;
-        for(let i = 0 ; i < CHARS.length;i++){
-            let char = CHARS[i];
-            if(i >= 11 && i % 11 == 0){
-                x = 0;
-                y+= size;
-            }
-            let c = gf.crop(canvas, x * size, y, size, size);
-            chars[char] = c;
-            x++;
-        }
-        return chars;
+
+        var c2 = gf.makeCanvas(canvas.width,canvas.height);
+        var cx2 = gf.getCtx(c2);
+        // cx2.fillStyle = '#ffffff';
+        // cx2.fillRect(0,0,c2.width,c2.height);
+        cx2.drawImage(canvas,0,0);
+        return c2;
     }
 }

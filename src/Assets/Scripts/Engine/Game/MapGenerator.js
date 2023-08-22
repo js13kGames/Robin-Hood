@@ -4,7 +4,6 @@ import SpriteMap from "../Sprites/SpriteMap.js";
 import TileSprite from "../Sprites/TileSprite.js";
 import Point from "../Utils/Point.js";
 import * as gf from '../Utils/gf.js';
-import ForestGenerator from "./ForestGenerator.js";
 const MAPTILES = [
     {'n':'tree' ,o:1,'c':'#0d3702'},
     {'n':'brick' ,o:1,'c':'#bf0a0a'},
