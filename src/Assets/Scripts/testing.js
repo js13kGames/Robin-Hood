@@ -7,9 +7,25 @@ import PixelFont from './Engine/Sprites/PixelFont.js';
 import TileSprite from './Engine/Sprites/TileSprite.js';
 import MapGenerator from './Engine/Game/MapGenerator.js';
 import ForestGenerator from './Engine/Game/ForestGenerator.js';
+import Font from './Engine/Sprites/Font.js';
+import SpriteMap from './Engine/Sprites/SpriteMap.js';
 
 
-var mg = new MapGenerator(32);
+
+var sMap = new SpriteMap();
+var font16 = new Font({size:16,color:'#ff00aa'});
+
+var brick = sMap.get('brick');
+
+// var bfont = font16.getTextSprite('JS13K',brick);
+var bfont = font16.getTextSprite('JS13K');
+
+document.body.append(brick);
+document.body.append(bfont);
+
+console.log(sMap);
+
+// var mg = new MapGenerator(32);
 
 /*
 for(var i = 0; i < 10;i++){

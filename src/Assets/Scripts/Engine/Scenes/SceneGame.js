@@ -163,26 +163,30 @@ export default class SceneGame extends Scene{
         else if(!this.player.isMoving){
             var next_playerxy = this.player.center.clone();
             // console.log(next_playerxy);
+            var move = false;
             if(e === 's' || e ==='ArrowDown'){
-                next_playerxy.move(gf.DIRECTION.DOWN,this.player.height);
+                next_playerxy.move(gf.DIRECTION.DOWN,this.player.height);move=true;
             }
             else if(e === 'w' || e === 'ArrowUp'){
-                next_playerxy.move(gf.DIRECTION.UP,this.player.height);
+                next_playerxy.move(gf.DIRECTION.UP,this.player.height);move=true;
             }
             else if(e === 'd' || e === 'ArrowRight'){
-                next_playerxy.move(gf.DIRECTION.RIGHT,this.player.height);
+                next_playerxy.move(gf.DIRECTION.RIGHT,this.player.height);move=true;
             }
             else if(e === 'a' || e === 'ArrowLeft'){
-                next_playerxy.move(gf.DIRECTION.LEFT,this.player.height);
+                next_playerxy.move(gf.DIRECTION.LEFT,this.player.height);move=true;
             }
-            if(!this.checkObstacle(next_playerxy.x,next_playerxy.y)){
-                // console.log('move player');
-                this.player.moveTo(next_playerxy.x,next_playerxy.y);
+            if(move){
+                if(!this.checkObstacle(next_playerxy.x,next_playerxy.y)){
+                    // console.log('move player');
+                    this.player.moveTo(next_playerxy.x,next_playerxy.y);
+                }
+                else{
+                    this.player.rotateToward(next_playerxy.x,next_playerxy.y);
+                    // console.log('obstacle at',next_playerxy);
+                }
             }
-            else{
-                this.player.rotateToward(next_playerxy.x,next_playerxy.y);
-                // console.log('obstacle at',next_playerxy);
-            }
+            
         }
         
     }

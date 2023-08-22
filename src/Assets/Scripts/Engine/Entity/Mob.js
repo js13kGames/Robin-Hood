@@ -10,7 +10,6 @@ const MOBSPECS = [
     {mcd : 10,attack : 10, life:10,name:'npcgirl'},
 ];
 export default class Mob{
-
     constructor(gamescene,type = 0,center = null){
         this.type = type;
         this.scene = gamescene;
@@ -18,6 +17,7 @@ export default class Mob{
         this.sprite = this.sprites[this.type];
         this.center = center || gamescene.findAValidSpawnPoint(8,25);
         this.life = MOBSPECS[this.type].life;
+        this.maxLife = MOBSPECS[this.type].life;
         this.moveCountDown = MOBSPECS[this.type].mcd;
     }
     getPossibleNextMove(){
@@ -55,12 +55,28 @@ export default class Mob{
             this.getPossibleNextMove();
             if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*2){
                 this.scene.player.life -= this.type+1;
+                this.scene.player.showDamageEffect = 10;
                 console.log('attack player');
             }
         }
     }
+    getHealthBar(){
+        var canvas = gf.makeCanvas(this.sprite.width,3);
+        var ctx = gf.getCtx(canvas);
+        // ctx.fillStyle = 'white';
+        // ctx.fillRect(0,0,this.sprite.width,3);
+        ctx.fillStyle = 'green';
+        var barw = this.sprite.width * (this.life / this.maxLife);
+        // console.log(barw);
+        ctx.fillRect(0,0,barw,3);
+        return canvas;
+    }
     draw(ctx){
         ctx.drawImage(this.sprite,
+            (this.center).x,// - (this.width)/2,
+            (this.center).y,// -(this.height)/2
+        );
+        ctx.drawImage(this.getHealthBar(),
             (this.center).x,// - (this.width)/2,
             (this.center).y,// -(this.height)/2
         );
@@ -75,16 +91,7 @@ export default class Mob{
         var bear = SpriteMap.getByNameMagnified('bear',multiplier);
         var npcman = SpriteMap.getByNameMagnified('npcman',multiplier);
         var npcgirl = SpriteMap.getByNameMagnified('npcgirl',multiplier);
-
-        // document.body.append(rabbit);
-        // document.body.append(wolf);
-        // document.body.append(deer);
-        // document.body.append(bear);
-        // document.body.append(bear2);
-        // document.body.append(bear2);
-        // document.body.append(npcman);
-        // document.body.append(npcgirl);
-
+        var sword = SpriteMap.getByNameMagnified('sword',this.scene.scalemultiplier);
         this.w = size;
         this.h = size;
         var sprites = [
@@ -93,7 +100,8 @@ export default class Mob{
             deer,
             bear,
             npcman,
-            npcgirl
+            npcgirl,
+            sword
         ];
         Mob.SPRITES = sprites;
         return Mob.SPRITES;

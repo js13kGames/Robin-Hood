@@ -61,6 +61,7 @@ export default class SpriteMap{
             spriteMapFormated[i].s3 = this.getMagnified(spriteMapFormated[i].n,3);
         }
         SpriteMap.MAP = spriteMapFormated;
+        return SpriteMap.MAP;
     }
     async prepareSprites(){
 

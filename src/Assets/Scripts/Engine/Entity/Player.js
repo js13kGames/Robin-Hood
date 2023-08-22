@@ -7,7 +7,7 @@ import Arrow from './Arrow.js';
 export default class Player{
     constructor(gamescene){
         this.scene = gamescene;
-        this.life = 100;
+        this.life = this.maxLife = 100;
         this.score = 0;
         this.attributes = new PlayerAttribute(1);
         this.center = new Point(0,0);
@@ -52,6 +52,9 @@ export default class Player{
         this.ArrowsCount--;
         this.shots.push(new Arrow(this));
     }
+    damageEffect(){
+        this.showDamageEffect = 10;
+    }
     useSword(){
         this.usingsword = 10;
     }
@@ -78,11 +81,51 @@ export default class Player{
             }
         }
     }
+    getHealthBar(){
+        var canvas = gf.makeCanvas(this.sprite.width,3);
+        var ctx = gf.getCtx(canvas);
+        // ctx.fillStyle = 'white';
+        // ctx.fillRect(0,0,this.sprite.width,3);
+        ctx.fillStyle = 'green';
+        if(this.life < this.maxLife/2){
+            ctx.fillStyle = 'orange';
+        }
+        if(this.life < this.maxLife/2){
+            ctx.fillStyle = 'red';
+        }
+        var barw = this.sprite.width * (this.life / this.maxLife);
+        // console.log(barw);
+        ctx.fillRect(0,0,barw,3);
+        return canvas;
+    }
     draw(ctx){
         ctx.drawImage(this.sprite,this.center.x,this.center.y);
+        if(this.direction == DIRECTION.DOWN){
+            ctx.drawImage(this.bow,this.center.x + this.sprite.width - this.bow.width,this.center.y + this.sprite.height - this.bow.height * 1.5);
+        }
+        if(this.direction == DIRECTION.LEFT){
+            ctx.drawImage(gf.mirror(this.bow),this.center.x + this.sprite.width - this.bow.width * 1.6,this.center.y + this.sprite.height - this.bow.height * 1.3);
+        }
+        if(this.direction == DIRECTION.RIGHT){
+            ctx.drawImage(this.bow,this.center.x + this.sprite.width - this.bow.width * 1.2,this.center.y + this.sprite.height - this.bow.height * 1.3);
+        }
         [...this.shots].forEach(obj=>{
             if(obj.draw) obj.draw(ctx);
         });
+        ctx.drawImage(this.getHealthBar(),
+            (this.center).x,// - (this.width)/2,
+            (this.center).y,// -(this.height)/2
+        );
+        if(this.showDamageEffect > 0){
+            ctx.fillStyle = '#ff0000aa';
+            ctx.fillRect(
+            (this.center).x,// - (this.width)/2,
+            (this.center).y,// -(this.height)/2
+            this.sprite.width,
+            this.sprite.height,
+        );
+            this.showDamageEffect--;
+        }
     }
     rotateToward(x,y){
         var dir = this.center.getDirectionTo(new Point(x,y));
@@ -110,6 +153,7 @@ export default class Player{
         }
     }
     getSprites(){
+        this.bow = SpriteMap.getByNameMagnified('bow',this.scene.scalemultiplier);
         var p = SpriteMap.getByNameMagnified('player',this.scene.scalemultiplier);
         var playerb = SpriteMap.getByNameMagnified('playerb',this.scene.scalemultiplier);
         var playersRight = SpriteMap.getByNameMagnified('players',this.scene.scalemultiplier);

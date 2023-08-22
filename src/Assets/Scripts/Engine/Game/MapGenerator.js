@@ -1,4 +1,5 @@
 import Mob from "../Entity/Mob.js";
+import NPC from "../Entity/NPC.js";
 import SpriteMap from "../Sprites/SpriteMap.js";
 import TileSprite from "../Sprites/TileSprite.js";
 import Point from "../Utils/Point.js";
@@ -147,7 +148,7 @@ export default class MapGenerator{
                     ctx.drawImage(sprites['#d9a066'],i*multiplier,j*multiplier);
                 }
                 else if(color == '#ff0000'){//player location
-                    this.presetmobs.push(new Mob(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
+                    this.presetmobs.push(new NPC(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
                 }
                 else{
                     console.log(color,'unclassified');
