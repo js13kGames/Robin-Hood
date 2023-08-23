@@ -2,49 +2,52 @@ import * as gf from '../Utils/gf.js';
 
 const spriteMapDefinitons = [
     //row 1
-    {c:0, o:0, n:'dirt',    x:88,y:0,w:8,h:8},
-    {c:0, o:0, n:'grass',   x:96,y:0,w:8,h:8},
-    {c:0, o:0, n:'water',   x:104,y:0,w:8,h:8},
-    {c:0, o:0, n:'steel',   x:112,y:0,w:8,h:8},
-    {c:0, o:0, n:'brick',   x:120,y:0,w:8,h:8},
+    {c:0, o:0, n:'dirt',    x:0,y:0,w:8,h:8},
+    {c:0, o:0, n:'grass',   x:1,y:0,w:8,h:8},
+    {c:0, o:0, n:'water',   x:2,y:0,w:8,h:8},
+    {c:0, o:0, n:'steel',   x:3,y:0,w:8,h:8},
+    {c:0, o:0, n:'brick',   x:4,y:0,w:8,h:8},
     //row 2
-    {c:1, o:0, n:'magic',   x:88,y:8,w:8,h:8},
-    {c:1, o:1, n:'tree',    x:96,y:8,w:8,h:8},
-    {c:1, o:0, n:'log',     x:104,y:8,w:8,h:8},
-    {c:1, o:0, n:'apple',   x:112,y:8,w:8,h:8},
-    {c:1, o:0, n:'lemon',   x:120,y:8,w:8,h:8},
-    
-    {c:1, o:0, n:'sword',   x:88,y:16,w:8,h:8},
-    {c:1, o:0, n:'bow',     x:96,y:16,w:8,h:8},
-    {c:1, o:0, n:'arrow',   x:104,y:16,w:8,h:8},
-
-    {c:1, o:0, n:'rabbit',   x:88,y:24,w:8,h:8},
-    {c:1, o:0, n:'wolf',     x:96,y:24,w:16,h:8},
+    {c:1, o:0, n:'sword',   x:0,y:1,w:8,h:8},
+    {c:1, o:0, n:'bow',     x:1,y:1,w:8,h:8},
+    {c:1, o:0, n:'arrow',   x:2,y:1,w:8,h:8},
+    {c:1, o:0, n:'magic',   x:3,y:1,w:8,h:8},
+    {c:1, o:1, n:'tree',    x:4,y:1,w:8,h:8},
+    //row 3
+    {c:1, o:0, n:'coin',    x:0,y:2,w:8,h:8},
+    {c:1, o:0, n:'apple',   x:1,y:2,w:8,h:8},
+    {c:1, o:0, n:'lemon',   x:2,y:2,w:8,h:8},
+    //row 4
+    {c:1, o:0, n:'rabbit',   x:0,y:3,w:8,h:8},
+    {c:1, o:0, n:'wolf',     x:1,y:3,w:16,h:8},
     
     //castle 32px
-    {c:1, o:0, n:'castle',  x:128,y:0,w:32,h:32},
-    {c:1, o:0, n:'cave',    x:112,y:16,w:16,h:16},
+    {c:1, o:0, n:'castle',  x:9,y:0,w:32,h:32},
+    {c:1, o:0, n:'cave',    x:3,y:2,w:16,h:16},
 
     //mob row
-    {c:1, o:0, n:'player',      x:0,y:32,w:16,h:16},
-    {c:1, o:0, n:'playerb',     x:16,y:32,w:16,h:16},
-    {c:1, o:0, n:'players',     x:32,y:32,w:8,h:16},
-    {c:1, o:0, n:'playerh',     x:40,y:32,w:8,h:16},
-    {c:1, o:0, n:'bear',        x:48,y:32,w:16,h:16},
-    {c:1, o:0, n:'deer',        x:64,y:32,w:16,h:16},
-    {c:1, o:0, n:'house',       x:80,y:32,w:16,h:16},
-    {c:1, o:0, n:'shop',        x:96,y:32,w:16,h:16},
-    {c:1, o:0, n:'npcgirl',     x:112,y:32,w:16,h:16},
-    {c:1, o:0, n:'npcman',      x:128,y:32,w:16,h:16},
-    {c:1, o:0, n:'direction',   x:128,y:32,w:16,h:16},
+    {c:1, o:0, n:'player',      x:0,y:4,w:16,h:16},
+    {c:1, o:0, n:'playerb',     x:2,y:4,w:16,h:16},
+    {c:1, o:0, n:'players',     x:4,y:4,w:8,h:16},
+    {c:1, o:0, n:'playerh',     x:5,y:4,w:8,h:16},
+    {c:1, o:0, n:'wizzard',     x:6,y:4,w:8,h:16},
+    {c:1, o:0, n:'bear',        x:7,y:4,w:16,h:16},
+    {c:1, o:0, n:'deer',        x:9,y:4,w:16,h:16},
+
+
+    {c:1, o:0, n:'house',       x:5,y:0,w:16,h:16},
+    {c:1, o:0, n:'shop',        x:5,y:2,w:16,h:16},
+    {c:1, o:0, n:'npcman',      x:7,y:0,w:16,h:16},
+    {c:1, o:0, n:'npcgirl',     x:7,y:2,w:16,h:16},
+    {c:1, o:0, n:'direction',   x:11,y:4,w:16,h:16},
 
     //////MAPS
-    {c:0, o:0, n:'map_spawn',       x:0,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_castle',      x:16,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_1',    x:32,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_2',    x:48,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_3',    x:64,y:48,w:16,h:16},
-    {c:0, o:0, n:'map_forest_4',    x:80,y:48,w:16,h:16},
+    {c:0, o:0, n:'map_spawn',       x:0,y:6,w:16,h:16},
+    {c:0, o:0, n:'map_castle',      x:2,y:6,w:16,h:16},
+    {c:0, o:0, n:'map_forest_1',    x:4,y:6,w:16,h:16},
+    {c:0, o:0, n:'map_forest_2',    x:6,y:6,w:16,h:16},
+    {c:0, o:0, n:'map_forest_3',    x:8,y:6,w:16,h:16},
+    {c:0, o:0, n:'map_forest_4',    x:10,y:6,w:16,h:16},
 
 ];
 
@@ -80,7 +83,7 @@ export default class SpriteMap{
         if(!cfg || cfg.x == undefined) return this.getSpecialTile(name);
         if(cfg.s) return cfg.s;
         let spritesheet = gf.querySelector('#spriteSheetMain');
-        var sprite = gf.crop(spritesheet,cfg.x,cfg.y,cfg.w,cfg.h);
+        var sprite = gf.crop(spritesheet,cfg.x * 8,cfg.y * 8,cfg.w,cfg.h);
         if(cfg.c){
             var colorMatrix = gf.getColorMatrix(sprite,(e)=>{
                 if(e === "#ffffff") return '';
@@ -132,8 +135,8 @@ export default class SpriteMap{
         if(cfg.s) return cfg.s;
         let spritesheet = gf.querySelector('#spriteSheetMain');
         var sprite = gf.crop(spritesheet,
-            cfg.x,
-            cfg.y,
+            cfg.x*8,
+            cfg.y*8,
             cfg.w,
             cfg.h);
         if(cfg.c){

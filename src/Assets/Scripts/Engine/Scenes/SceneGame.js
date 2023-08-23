@@ -1,20 +1,13 @@
 import Scene from "./Scene.js";
-import TileSprite from "../Sprites/TileSprite.js";
 import PixelFont from '../Sprites/PixelFont.js';
-import Tree from "../Sprites/Tree.js";
 import * as gf from '../Utils/gf.js';
-import MusicPlayer from '../Utils/MusicPlayer.js';
-import KeyboardAndMouse from '../Utils/KeyboardAndMouse.js';
-import SceneInstructions from "./SceneInstructions.js";
 import MapGenerator from "../Game/MapGenerator.js";
 import Camera from "../Utils/Camera.js";
 import Point from "../Utils/Point.js";
-import Arrow from "../Entity/Arrow.js";
-import MainMenuScene from './MainMenuScene.js';
 import Player from "../Entity/Player.js";
 import Mob from "../Entity/Mob.js";
 
-const MOBCOUNT = 100;
+const MOBCOUNT = 35;
 export default class SceneGame extends Scene{
     constructor(main){
         super(main);
@@ -96,6 +89,11 @@ export default class SceneGame extends Scene{
             if(this.keyboard[i]){
                 this.applyKeyboardKey(i);
             }
+        }
+        if(this.player.life <= 0){
+            alert('game over');
+            this.main.gamescene = null;
+            this.main.toMainMenuScene();
         }
     }
     _spawnMob(){

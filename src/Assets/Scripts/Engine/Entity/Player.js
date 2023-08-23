@@ -20,7 +20,7 @@ export default class Player{
         this.shots = [];
         this.firecooldown = 0;
         this.hunts = [];
-        this.ArrowsCount = 100000000;
+        this.ArrowsCount = 10000;
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);

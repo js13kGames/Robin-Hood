@@ -4,33 +4,34 @@ import Tree from "../Sprites/Tree.js";
 import * as gf from '../Utils/gf.js';
 import MusicPlayer from '../Utils/MusicPlayer.js';
 import KeyboardAndMouse from '../Utils/KeyboardAndMouse.js';
-import SceneInstructions from "./SceneInstructions.js";
 import SceneGame from "./SceneGame.js";
 import Font from "../Sprites/Font.js";
 // const bgm = 'E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3D3E3E3E3D3E3D3D3';
 const bgm = 'E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4';
 
-export default class LoadingScene extends Scene{
+export default class MainMenuScene extends Scene{
     constructor(main){
         super(main);
+        var grass = this.main.spriteMap.getMagnified('grass',1);
+        var dirt =  this.main.spriteMap.getMagnified('dirt',1);
+        var steel = this.main.spriteMap.getMagnified('steel',1);
+
         this.sprites = {
-            'steel' : TileSprite.getMagnified('steel',1),
-            'water' : TileSprite.getMagnified('water',1),
-            'grass' : TileSprite.getMagnified('grass',1),
-            'dirt' : TileSprite.getMagnified('dirt',1),
-            'magic' : TileSprite.getMagnified('magic',1),
-            'player' : TileSprite.getMagnified('player',1)
+            'steel' :   this.main.spriteMap.getMagnified('steel',1),
+            'water' :   this.main.spriteMap.getMagnified('water',1),
+            'grass' :   this.main.spriteMap.getMagnified('grass',1),
+            'dirt' :    this.main.spriteMap.getMagnified('dirt',1),
+            'magic' :   this.main.spriteMap.getMagnified('magic',1),
+            'player' :  this.main.spriteMap.getMagnified('player',1)
         }
-        var textx = 100;
-        if(this.main.config.width < 400){
-            textx = 32;
-        }
+        var textx = this.main.config.width < 400 ? 32 : 100;
+
         this.cursorLocations = [
             {x:textx,y:32*4},// 0 new game
             {x:textx,y:32*5},// 1 sound
             {x:textx,y:32*6},// 2 Music
-            {x:textx,y:32*7},// 2 instructions
-            {x:textx,y:32*8},// 3 name
+            {x:textx,y:32*7},// 3 name
+            {x:textx,y:32*8},// 4 instructions
         ];
         this.playername = 'robin hood';
         this.currentcursorloc = 0;
@@ -40,9 +41,6 @@ export default class LoadingScene extends Scene{
     staticBuffer(){
         var canvas = gf.makeCanvas(this.main.config.width,this.main.config.height);
         let ctx = gf.getCtx(canvas);
-
-        
-        
         return canvas;
     }
     update(time){
@@ -64,9 +62,9 @@ export default class LoadingScene extends Scene{
             this.cursorLocations[0].y,
         );
         ctx.drawImage(
-            Font.getSpriteForText('█ INSTRUCTIONS ㋡',24,'green',this.sprites.dirt,'Roboto'),
+            Font.getSpriteForText(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[1].x + 20,
-            this.cursorLocations[1].y,
+            this.cursorLocations[1].y
         );
         ctx.drawImage(
             Font.getSpriteForText(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
@@ -74,14 +72,14 @@ export default class LoadingScene extends Scene{
             this.cursorLocations[2].y
         );
         ctx.drawImage(
-            Font.getSpriteForText(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
+            Font.getSpriteForText(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[3].x + 20,
             this.cursorLocations[3].y
         );
         ctx.drawImage(
-            Font.getSpriteForText(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
+            Font.getSpriteForText('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
             this.cursorLocations[4].x + 20,
-            this.cursorLocations[4].y
+            this.cursorLocations[4].y,
         );
         ctx.drawImage(this.sprites.player,
             this.cursorLocations[this.currentcursorloc].x,
@@ -100,7 +98,7 @@ export default class LoadingScene extends Scene{
             if(this.currentcursorloc == 0){ //new game
                 this.main.toGameScene();
             }
-            else if(this.currentcursorloc == 3){ //toggle music
+            else if(this.currentcursorloc == 1){ //toggle music
                 if(this.sound) this.sound = false;
                 else this.sound = true;
             }
@@ -108,13 +106,13 @@ export default class LoadingScene extends Scene{
                 if(!this.musicPlayer) this.musicPlayer = new MusicPlayer(bgm, 120, false, true, 2000);
                 this.musicPlayer.toggle();
             }
-            else if(this.currentcursorloc == 4){ //change name
+            else if(this.currentcursorloc == 3){ //change name
                 var name = prompt('name',this.playername);
-                this.playername = name && name.length > 0 ? name.substring(0,10) : 'robin';
+                this.playername = name && name.length > 0 ? name.substring(0,10) : this.playername;
             }
-            else if(this.currentcursorloc == 2){ // instructions
+            else if(this.currentcursorloc == 4){ //stats page
                 if(this.musicPlayer) this.musicPlayer.stop();
-                this.ss(new SceneInstructions(this.main));
+                alert('under construction');
             }
         }
     }

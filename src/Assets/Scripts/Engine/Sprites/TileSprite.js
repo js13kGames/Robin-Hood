@@ -16,8 +16,8 @@ export default class TileSprite{
         var cfg = spriteMapDefinitons.find(x=>x.n.toLowerCase()==name.toLowerCase());
         let spritesheet = gf.querySelector('#spriteSheetMain');
         var sprite = gf.crop(spritesheet,
-            cfg.x,
-            cfg.y,
+            cfg.x*8,
+            cfg.y*8,
             cfg.w,
             cfg.h);
         if(cfg.c){

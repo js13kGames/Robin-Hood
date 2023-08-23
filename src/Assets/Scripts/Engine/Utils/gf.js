@@ -158,6 +158,15 @@ const getColorMatrix = (canvas,changefct)=>{
     }
     return matrix;
 }
+function fuseColor(canvas,color,composite = 'source-atop'){
+    let buffer = makeCanvas(canvas.width,canvas.height);
+    let ctx = getCtx(buffer);
+    ctx.drawImage(canvas,0,0);
+    ctx.globalCompositeOperation = composite;
+    ctx.fillStyle = color;
+    ctx.fillRect(0,0,buffer.width,buffer.height);
+    return buffer;
+}
 const fuseImage = (canvas,canvas2,composite = 'source-atop')=>{
     let buffer = makeCanvas(canvas.width,canvas.height);
     let ctx = getCtx(buffer);
@@ -334,6 +343,13 @@ function Lightify(canvas,opacity){
     ctx.globalAlpha = 1;
     return buffer;
 }
+function concatCanvas(c1,c2){
+    var canvas = makeCanvas(c1.width + c2.width,max(c1.height,c2.height));
+    var ctx = getCtx(canvas);
+    ctx.drawImage(c1,0,0);
+    ctx.drawImage(c2,c1.width,0);
+    return canvas;
+}
 function getCustomCanvas4(s1,s2,s3,s4){
     var canvas = makeCanvas(s1.width*2,s1.height*2);
     var ctx = getCtx(canvas);
@@ -359,6 +375,8 @@ function getNumAsText(n){
     return n;
 }
 export {
+    fuseColor,
+    concatCanvas,
     getNumAsText,
     centerCanvasOn,
     getCustomCanvas4,

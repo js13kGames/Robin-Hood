@@ -27,13 +27,13 @@ export default class Font{
     static getSpriteForText(word,size,color,fuseImage,family = 'Arial',w=0,h=0){
         let ctx = gf.makeCanvas(1, 1).getContext("2d"); // Create a temporary canvas context
         ctx.font = size + "px "+family;
-        const textWidth = w || ctx.measureText(word.toUpperCase()).width || 1;
+        const textWidth = w || ctx.measureText(word).width || 1;
         const textHeight = h ||size+2; 
         let canvas = gf.makeCanvas(parseInt(textWidth), textHeight);
         ctx = gf.getCtx(canvas);
         ctx.font = size + "px "+family;
         ctx.fillStyle = color;
-        ctx.fillText(word.toUpperCase(),0, size-2);
+        ctx.fillText(word,0, size-2);
         if (fuseImage) {
             canvas = gf.fuseImage(canvas, fuseImage);
         }
