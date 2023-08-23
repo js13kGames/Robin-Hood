@@ -25,7 +25,7 @@ export default class Font{
         this.color = config.color ? config.color : '#ff00ff';
     }
     static getSpriteForText(word,size,color,fuseImage,family = 'Arial',w=0,h=0){
-        let ctx = gf.makeCanvas(1, 1).getContext("2d"); // Create a temporary canvas context
+        let ctx = gf.getCtx(gf.makeCanvas(1, 1)); // Create a temporary canvas context
         ctx.font = size + "px "+family;
         const textWidth = w || ctx.measureText(word).width || 1;
         const textHeight = h ||size+2; 

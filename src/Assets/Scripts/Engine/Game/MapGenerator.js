@@ -102,7 +102,7 @@ export default class MapGenerator{
 
         var multiplier = 8*2*s;
         var mapcanvas = gf.makeCanvas(mapColorMatrix.length * multiplier, mapColorMatrix.length * multiplier);
-        var ctx = mapcanvas.getContext("2d");
+        var ctx = gf.getCtx(mapcanvas);
         for(var i = 0 ; i < mapColorMatrix.length;i++){
             for(var j = 0 ; j < mapColorMatrix[i].length;j++){
                 var color = mapColorMatrix[j][i];

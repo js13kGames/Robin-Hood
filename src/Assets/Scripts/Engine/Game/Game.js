@@ -28,7 +28,7 @@ export default class Game{
             if(this.scene){
                 try{
                     this.scene.update(time);
-                    this.scene.draw(this.canvas.getContext('2d'));
+                    this.scene.draw( gf.getCtx(this.canvas));
                 }
                 catch(e){
                     console.log(e);

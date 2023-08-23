@@ -1,8 +1,9 @@
 import { makeCanvas } from "../GE/gf.js";
+import { getCtx } from "../Utils/gf.js";
 export default class Grid{
     static getGridBase(w,h,step,emphcenter = false, gridcolor='#343434'){
         let canvas = makeCanvas(w,h);
-        let ctx = canvas.getContext('2d');
+        let ctx = getCtx(canvas);
 		// Set up the grid parameters
 		var width = canvas.width;
 		var height = canvas.height;
