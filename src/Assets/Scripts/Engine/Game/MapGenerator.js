@@ -2,6 +2,7 @@ import NPC from "../Entity/NPC.js";
 import SpriteMap from "../Sprites/SpriteMap.js";
 import Point from "../Utils/Point.js";
 import * as gf from '../Utils/gf.js';
+import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 const MAPTILES = [
     {'n':'tree' ,o:1,'c':'#0d3702'},
     {'n':'brick' ,o:1,'c':'#bf0a0a'},
@@ -14,23 +15,40 @@ const MAPTILES = [
     {'n':'cave',o:1,'c':'#2e2b2b'},
     {'n':'deerspawnpoint',o:0,'c':'#df7126'},
     {'n':'rabbitspawnpoint',o:0,'c':'#d1d1d1'},
-    {'n':'wolfpawnpoint',o:0,'c':'#898898'},
+    {'n':'wolfspawnpoint',o:0,'c':'#898898'},
 ];
-export default class MapGenerator{
-    constructor(gamescene,s=1){
+const colorSpriteMap = {
+    '#0d3702': 'tree',
+    '#d9a066': 'dirt',
+    '#bf0a0a': 'brick',
+    '#99e550': 'grass',
+    '#8a99f6': 'water',
+    '#6a6a6a': 'steel',
+    '#a9a9a9': 'castle',
+    '#fbf236': 'house',
+    '#eca732': 'shop',
+    '#2e2b2b': 'cave',
+};
+ 
+export default class MapGenerator {
+    constructor(gamescene, s = 1) {
         this.gamescene = gamescene;
-        this.sMap = new SpriteMap();
+        this.sMap = SpriteMap.fromO(this.gamescene.main.spriteMap);
         this.presetmobs = [];
         this.caves = [];
         this.deerspawnpoints = [];
         this.houseLocations = [];
         this.shopLocations = [];
+        
+        console.log(SPRITECOLORMATRIX);
+        console.log(SPRITECOLORMATRIX.dirt);
+        console.log(SPRITECOLORMATRIX.steel);
+        console.log(SPRITES_1.dirt);
+
         this.getPredefinedMap1(s);
     }
-    getObstacleMatrix(){
 
-    }
-    getColorAt(x,y){
+    getColorAt(x, y) {
         x = Math.floor(x);
         y = Math.floor(y);
         if(x < 0) return null;
@@ -40,6 +58,7 @@ export default class MapGenerator{
         // return this.colorMatrix[x][y];
         return this.colorMatrix[y][x];
     }
+
     isObstacleAt(x,y){
         x = Math.floor(x);
         y = Math.floor(y);
@@ -57,13 +76,14 @@ export default class MapGenerator{
         // console.log(cfg,color);
         return cfg == undefined ? 1 : cfg.o;
     }
-    getPredefinedMap1(s=1){
-        var map_spawn = this.sMap.get('map_spawn');
-        var map_castle = this.sMap.get('map_castle');
-        var map_forest_1 = this.sMap.get('map_forest_1');
-        var map_forest_2 = this.sMap.get('map_forest_2');
-        var map_forest_3 = this.sMap.get('map_forest_3');
-        var map_forest_4 = this.sMap.get('map_forest_4');
+    getPredefinedMap1(s = 1) {
+        var map_spawn = SPRITES_1.map_spawn;
+        var map_castle =    SPRITES_1.map_castle;
+        var map_forest_1 =  SPRITES_1.map_forest_1;
+        var map_forest_2 =  SPRITES_1.map_forest_2;
+        var map_forest_3 =  SPRITES_1.map_forest_3;
+        var map_forest_4 =  SPRITES_1.map_forest_4;
+
         var w = map_spawn.width;
         var h = map_spawn.height;
         var map = gf.makeCanvas(w*3,h*3);
@@ -88,16 +108,16 @@ export default class MapGenerator{
 
         var sprites = {
             '#0d3702' : this.sMap.getMagnified('tree',2*s),
-            '#d9a066' : gf.repeatCanvas(this.sMap.get('dirt'),2*s),
-            '#bf0a0a' : gf.repeatCanvas(this.sMap.get('brick'),2*s),
-            '#99e550' : gf.repeatCanvas(this.sMap.get('grass'),2*s),
-            '#8a99f6' : gf.repeatCanvas(this.sMap.get('water'),2*s),
-            '#6a6a6a' : gf.repeatCanvas(this.sMap.get('steel'),2*s),
-            '#a9a9a9' : this.sMap.getMagnified('castle',2*s),
-            '#fbf236' : this.sMap.getMagnified('house',2*s),
-            '#eca732' : this.sMap.getMagnified('shop',2*s),
-            '#2e2b2b' : this.sMap.getMagnified('cave',2*s),
-        }
+            '#d9a066' : gf.repeatCanvas(SPRITES_1.dirt,2*s),
+            '#bf0a0a' : gf.repeatCanvas(SPRITES_1.brick,2*s),
+            '#99e550' : gf.repeatCanvas(SPRITES_1.grass,2*s),
+            '#8a99f6' : gf.repeatCanvas(SPRITES_1.water,2*s),
+            '#6a6a6a' : gf.repeatCanvas(SPRITES_1.steel,2*s),
+            '#a9a9a9' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,2*s),
+            '#fbf236' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.house,2*s),
+            '#eca732' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,2*s),
+            '#2e2b2b' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,2*s),
+        };
 
         var multiplier = 8*2*s;
         var mapcanvas = gf.makeCanvas(mapColorMatrix.length * multiplier, mapColorMatrix.length * multiplier);

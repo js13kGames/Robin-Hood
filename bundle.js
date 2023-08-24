@@ -84,9 +84,9 @@
     }
     const i = Math.PI
       , s = (t,e=document)=>e.querySelector(t)
-      , a = t=>t < 0 ? -t : t
-      , r = (t=1,e=0)=>e + (t - e) * Math.random()
-      , h = (t=1,e=0)=>0 | r(t, e)
+      , r = t=>t < 0 ? -t : t
+      , a = (t=1,e=0)=>e + (t - e) * Math.random()
+      , h = (t=1,e=0)=>0 | a(t, e)
       , n = (t=0,e=0)=>{
         let i = document.createElement("canvas");
         return i.width = t,
@@ -96,17 +96,17 @@
       , o = t=>t.getContext("2d")
       , c = (t,e,i,s)=>t + e + i + s == 0 ? null : t + e + i == 0 || t > 255 || e > 255 || i > 255 ? "#000000" : "#" + ((t << 16) + (e << 8) + i).toString(16).padStart(6, "0")
       , l = (t,e,s=!0)=>((t,e,i=!0)=>{
-        let s, a;
-        var r, h;
-        i && e % (Math.PI / 4) != 0 ? (r = t.width,
+        let s, r;
+        var a, h;
+        i && e % (Math.PI / 4) != 0 ? (a = t.width,
         h = t.height,
-        s = a = Math.sqrt(r * r + h * h)) : (s = t.width,
-        a = t.height);
-        const c = n(s, a)
+        s = r = Math.sqrt(a * a + h * h)) : (s = t.width,
+        r = t.height);
+        const c = n(s, r)
           , l = o(c)
           , d = {
             x: s / 2,
-            y: a / 2
+            y: r / 2
         };
         return l.imageSmoothingQuality = "high",
         l.save(),
@@ -117,28 +117,28 @@
         c
     }
     )(t, (e %= 8) * i / 4, s)
-      , d = (t,e,i,s,a)=>{
-        let r = n(s, a);
-        return o(r).drawImage(t, e, i, s, a, 0, 0, s, a),
-        r
+      , d = (t,e,i,s,r)=>{
+        let a = n(s, r);
+        return o(a).drawImage(t, e, i, s, r, 0, 0, s, r),
+        a
     }
       , g = (t,e=1,i=null)=>{
         let s = t.length
-          , a = Math.max(...t.map((t=>t.length)));
-        var r = n(a * e, s * e)
-          , h = o(r);
-        for (let r = 0; r < s; r++)
-            for (let s = 0; s < a; s++) {
-                var c = t[r][s];
+          , r = Math.max(...t.map((t=>t.length)));
+        var a = n(r * e, s * e)
+          , h = o(a);
+        for (let a = 0; a < s; a++)
+            for (let s = 0; s < r; s++) {
+                var c = t[a][s];
                 i && (c = i(c)),
                 c && "" != c && (h.fillStyle = c,
-                h.fillRect(s * e, r * e, e, e))
+                h.fillRect(s * e, a * e, e, e))
             }
-        return r
+        return a
     }
       , p = (t,e)=>{
-        for (var i = o(t), s = t.width, a = t.height, r = i.getImageData(0, 0, s, a).data, h = [], n = 0; n < r.length; n += 4)
-            h.push(c(r[n], r[n + 1], r[n + 2], r[n + 3]));
+        for (var i = o(t), s = t.width, r = t.height, a = i.getImageData(0, 0, s, r).data, h = [], n = 0; n < a.length; n += 4)
+            h.push(c(a[n], a[n + 1], a[n + 2], a[n + 3]));
         var l = [];
         for (let e = 0; e < t.height; e++)
             l[e] = [];
@@ -155,29 +155,29 @@
     ;
     function m(t, e, i="source-atop") {
         let s = n(t.width, t.height)
-          , a = o(s);
-        return a.drawImage(t, 0, 0),
-        a.globalCompositeOperation = i,
-        a.fillStyle = e,
-        a.fillRect(0, 0, s.width, s.height),
+          , r = o(s);
+        return r.drawImage(t, 0, 0),
+        r.globalCompositeOperation = i,
+        r.fillStyle = e,
+        r.fillRect(0, 0, s.width, s.height),
         s
     }
     const u = (t,e,i="source-atop")=>{
         let s = n(t.width, t.height)
-          , a = o(s);
-        a.drawImage(t, 0, 0),
-        a.globalCompositeOperation = i;
+          , r = o(s);
+        r.drawImage(t, 0, 0),
+        r.globalCompositeOperation = i;
         for (let i = 0; i < t.width / e.width; i++)
             for (let s = 0; s < t.height / e.height; s++)
-                a.drawImage(e, i * e.width, s * e.height);
+                r.drawImage(e, i * e.width, s * e.height);
         return s
     }
       , w = 0
       , f = 1
       , y = 2
-      , v = 3
-      , x = 4
-      , M = 5
+      , x = 3
+      , M = 4
+      , v = 5
       , b = 6
       , S = 7
       , T = (t,e=!0)=>{
@@ -190,7 +190,7 @@
         s.restore(),
         i
     }
-      , I = t=>{
+      , C = t=>{
         var e = n(t[0].width, t[0].height)
           , i = o(e);
         for (let e in t)
@@ -198,7 +198,7 @@
         return e
     }
     ;
-    function A(t, e) {
+    function I(t, e) {
         let i = n(t.width + e.width, t.height + e.height)
           , s = o(i);
         return s.drawImage(t, 0, 0),
@@ -207,16 +207,16 @@
         s.drawImage(e, 0, t.height),
         i
     }
-    function E(t, e, i=0) {
+    function A(t, e, i=0) {
         0 == i && (i = e);
         var s = n(t.width * i, t.height * e)
-          , a = o(s);
+          , r = o(s);
         for (let s = 0; s < e; s++)
             for (let e = 0; e < i; e++)
-                a.drawImage(t, e * t.width, s * t.height);
+                r.drawImage(t, e * t.width, s * t.height);
         return s
     }
-    function k(t, e) {
+    function E(t, e) {
         let i = n(t.width, t.height)
           , s = o(i);
         return s.globalAlpha = e,
@@ -224,23 +224,28 @@
         s.globalAlpha = 1,
         i
     }
-    function C(t, e, i, s=!1) {
-        var a = n(e, i)
-          , r = o(a);
-        return s && r.fillRect(0, 0, e, i),
-        r.drawImage(t, e / 2 - t.width / 2, i / 2 - t.height / 2),
-        a
+    function k(t, e, i, s=!1) {
+        var r = n(e, i)
+          , a = o(r);
+        return s && a.fillRect(0, 0, e, i),
+        a.drawImage(t, e / 2 - t.width / 2, i / 2 - t.height / 2),
+        r
     }
-    class L {
+    function L(t, e, i, r) {
+        let a = s("#spriteSheetMain");
+        var h = d(a, 8 * t, 8 * e, 8 * i, 8 * r);
+        return p(h, (t=>"#ffffff" === t ? "" : t))
+    }
+    class P {
         constructor(t={}) {}
-        static get(t, e, i, s, a="Arial", r=0, h=0) {
+        static get(t, e, i, s, r="Arial", a=0, h=0) {
             let c = o(n(1, 1));
-            c.font = e + "px " + a;
-            const l = r || c.measureText(t).width || 1
+            c.font = e + "px " + r;
+            const l = a || c.measureText(t).width || 1
               , d = h || e + 2;
             let g = n(parseInt(l), d);
             c = o(g),
-            c.font = e + "px " + a,
+            c.font = e + "px " + r,
             c.fillStyle = i,
             c.fillText(t, 0, e - 2),
             s && (g = u(g, s));
@@ -251,7 +256,85 @@
             p
         }
     }
-    const P = [{
+    const _ = {
+        dirt: L(0, 0, 1, 1),
+        grass: L(1, 0, 1, 1),
+        water: L(2, 0, 1, 1),
+        steel: L(3, 0, 1, 1),
+        brick: L(4, 0, 1, 1),
+        sword: L(0, 1, 1, 1),
+        bow: L(1, 1, 1, 1),
+        arrow: L(2, 1, 1, 1),
+        magic: L(3, 1, 1, 1),
+        tree: L(4, 1, 1, 1),
+        coin: L(0, 2, 1, 1),
+        apple: L(1, 2, 1, 1),
+        lemon: L(2, 2, 1, 1),
+        rabbit: L(0, 3, 1, 1),
+        wolf: L(1, 3, 2, 1),
+        castle: L(9, 0, 4, 4),
+        cave: L(3, 2, 2, 2),
+        player: L(0, 4, 2, 2),
+        playerb: L(2, 4, 2, 2),
+        players: L(4, 4, 1, 2),
+        playerh: L(5, 4, 1, 2),
+        wizzard: L(6, 4, 1, 2),
+        bear: L(7, 4, 2, 2),
+        deer: L(9, 4, 2, 2),
+        house: L(5, 0, 2, 2),
+        shop: L(5, 2, 2, 2),
+        npcman: L(7, 0, 2, 2),
+        npcgirl: L(7, 2, 2, 2),
+        direction: L(11, 4, 2, 2),
+        map_spawn: L(0, 6, 2, 2),
+        map_castle: L(2, 6, 2, 2),
+        map_forest_1: L(4, 6, 2, 2),
+        map_forest_2: L(6, 6, 2, 2),
+        map_forest_3: L(8, 6, 2, 2),
+        map_forest_4: L(10, 6, 2, 2)
+    }
+      , R = {
+        dirt: g(_.dirt, 1),
+        grass: g(_.grass, 1),
+        water: g(_.water, 1),
+        steel: g(_.steel, 1),
+        brick: g(_.brick, 1),
+        sword: g(_.sword, 1),
+        bow: g(_.bow, 1),
+        arrow: g(_.arrow, 1),
+        magic: g(_.magic, 1),
+        tree: g(_.tree, 1),
+        coin: g(_.coin, 1),
+        apple: g(_.apple, 1),
+        lemon: g(_.lemon, 1),
+        rabbit: g(_.rabbit, 1),
+        wolf: g(_.wolf, 1),
+        castle: g(_.castle, 1),
+        cave: g(_.cave, 1),
+        player: g(_.player, 1),
+        playerb: g(_.playerb, 1),
+        players: g(_.players, 1),
+        playerh: g(_.playerh, 1),
+        wizzard: g(_.wizzard, 1),
+        bear: g(_.bear, 1),
+        deer: g(_.deer, 1),
+        house: g(_.house, 1),
+        shop: g(_.shop, 1),
+        npcman: g(_.npcman, 1),
+        npcgirl: g(_.npcgirl, 1),
+        direction: g(_.direction, 1),
+        map_spawn: g(_.map_spawn, 1),
+        map_castle: g(_.map_castle, 1),
+        map_forest_1: g(_.map_forest_1, 1),
+        map_forest_2: g(_.map_forest_2, 1),
+        map_forest_3: g(_.map_forest_3, 1),
+        map_forest_4: g(_.map_forest_4, 1)
+    }
+      , O = (g(_.castle, 2),
+    g(_.house, 2),
+    g(_.shop, 2),
+    g(_.cave, 2),
+    [{
         c: 0,
         n: "dirt",
         x: 0,
@@ -316,7 +399,6 @@
         h: 8
     }, {
         c: 1,
-        o: 1,
         n: "tree",
         x: 4,
         y: 1,
@@ -497,28 +579,71 @@
         y: 6,
         w: 16,
         h: 16
-    }];
-    class R {
-        constructor() {
-            this.spriteMap = this.getSpriteMap()
+    }]);
+    class N {
+        constructor(t) {
+            this.spriteMap = t || this.getSpriteMap()
+        }
+        static fromO(t) {
+            return new N(t.spriteMap)
+        }
+        initAllColorMatrix(t) {
+            this.dirt = this.initColorMatrix(0, 0, 1, 1),
+            this.grass = this.initColorMatrix(1, 0, 1, 1),
+            this.water = this.initColorMatrix(2, 0, 1, 1),
+            this.steel = this.initColorMatrix(3, 0, 1, 1),
+            this.brick = this.initColorMatrix(4, 0, 1, 1),
+            this.sword = this.initColorMatrix(0, 1, 1, 1),
+            this.bow = this.initColorMatrix(1, 1, 1, 1),
+            this.arrow = this.initColorMatrix(2, 1, 1, 1),
+            this.magic = this.initColorMatrix(3, 1, 1, 1),
+            this.tree = this.initColorMatrix(4, 1, 1, 1),
+            this.coin = this.initColorMatrix(0, 2, 1, 1),
+            this.apple = this.initColorMatrix(1, 2, 1, 1),
+            this.lemon = this.initColorMatrix(2, 2, 1, 1),
+            this.rabbit = this.initColorMatrix(0, 3, 1, 1),
+            this.wolf = this.initColorMatrix(1, 3, 2, 1),
+            this.castle = this.initColorMatrix(9, 0, 4, 4),
+            this.cave = this.initColorMatrix(3, 2, 2, 2),
+            this.player = this.initColorMatrix(0, 4, 2, 2),
+            this.playerb = this.initColorMatrix(2, 4, 2, 2),
+            this.players = this.initColorMatrix(4, 4, 1, 2),
+            this.playerh = this.initColorMatrix(5, 4, 1, 2),
+            this.wizzard = this.initColorMatrix(6, 4, 1, 2),
+            this.bear = this.initColorMatrix(7, 4, 2, 2),
+            this.deer = this.initColorMatrix(9, 4, 2, 2),
+            this.house = this.initColorMatrix(5, 0, 2, 2),
+            this.shop = this.initColorMatrix(5, 2, 2, 2),
+            this.npcman = this.initColorMatrix(7, 0, 2, 2),
+            this.npcgirl = this.initColorMatrix(7, 2, 2, 2),
+            this.direction = this.initColorMatrix(11, 4, 2, 2),
+            this.map_spawn = this.initColorMatrix(0, 6, 2, 2),
+            this.map_castle = this.initColorMatrix(2, 6, 2, 2),
+            this.map_forest_1 = this.initColorMatrix(4, 6, 2, 2),
+            this.map_forest_2 = this.initColorMatrix(6, 6, 2, 2),
+            this.map_forest_3 = this.initColorMatrix(8, 6, 2, 2),
+            this.map_forest_4 = this.initColorMatrix(10, 6, 2, 2)
+        }
+        static initColorMatrix(t, e, i, r) {
+            let a = s("#spriteSheetMain");
+            var h = d(a, 8 * t, 8 * e, 8 * i, 8 * r);
+            return p(h, (t=>"#ffffff" === t ? "" : t))
         }
         getSpriteMap() {
-            if (R.MAP)
-                return R.MAP;
-            var t = P;
+            if (N.MAP)
+                return N.MAP;
+            var t = O;
             for (let e = 0; e < t.length; e++)
-                t[e].s1 = this.get(t[e].n),
-                t[e].s2 = this.getMagnified(t[e].n, 2),
-                t[e].s3 = this.getMagnified(t[e].n, 3);
-            return R.MAP = t,
-            R.MAP
+                t[e].s1 = this.get(t[e].n);
+            return N.MAP = t,
+            N.MAP
         }
         async prepareSprites() {}
         getSpecialTile(t) {
             return null
         }
         getCfg(t) {
-            return (this.spriteMap ? this.spriteMap : P).find((e=>e.n.toLowerCase() == t.toLowerCase()))
+            return (this.spriteMap ? this.spriteMap : O).find((e=>e.n.toLowerCase() == t.toLowerCase()))
         }
         get(t) {
             var e = this.getCfg(t);
@@ -527,12 +652,12 @@
             if (e.s)
                 return e.s;
             let i = s("#spriteSheetMain");
-            var a = d(i, 8 * e.x, 8 * e.y, e.w, e.h);
+            var r = d(i, 8 * e.x, 8 * e.y, e.w, e.h);
             if (e.c) {
-                var r = p(a, (t=>"#ffffff" === t ? "" : t));
-                return g(r, 1, (t=>t))
+                var a = p(r, (t=>"#ffffff" === t ? "" : t));
+                return g(a, 1, (t=>t))
             }
-            return a
+            return r
         }
         getMagnified(t, e=1) {
             var i = this.getCfg(t);
@@ -541,15 +666,15 @@
             if (i && 3 == e && i.s3)
                 return i.s3;
             var s = this.get(t)
-              , a = p(s, (t=>"#ffffff" == t ? "" : t));
-            return g(a, e, (t=>t))
+              , r = p(s, (t=>"#ffffff" == t ? "" : t));
+            return g(r, e, (t=>t))
         }
-        static getColoredTile(t, e=1, i=1, s=1, a=1) {
-            var r = n(e * s, i * a)
-              , h = o(r);
+        static getColoredTile(t, e=1, i=1, s=1, r=1) {
+            var a = n(e * s, i * r)
+              , h = o(a);
             return h.fillStyle = t,
-            h.fillRect(0, 0, r.width, r.height),
-            r
+            h.fillRect(0, 0, a.width, a.height),
+            a
         }
         static getByNameMagnified(t, e=1) {
             var i = this.getByName(t)
@@ -557,90 +682,90 @@
             return g(s, e, (t=>t))
         }
         static getByName(t) {
-            var e = P.find((e=>e.n.toLowerCase() == t.toLowerCase()));
+            var e = O.find((e=>e.n.toLowerCase() == t.toLowerCase()));
             if (e.s)
                 return e.s;
             let i = s("#spriteSheetMain");
-            var a = d(i, 8 * e.x, 8 * e.y, e.w, e.h);
+            var r = d(i, 8 * e.x, 8 * e.y, e.w, e.h);
             if (e.c) {
-                var r = p(a, (t=>"#ffffff" === t ? "" : t));
-                return g(r, 1, (t=>t))
+                var a = p(r, (t=>"#ffffff" === t ? "" : t));
+                return g(a, 1, (t=>t))
             }
-            return a
+            return r
         }
         static getPattern(t, e) {}
     }
-    class O {
+    class B {
         constructor(t, e=2) {
             this.scene = t;
             var i = this.scene.main.spriteMap.getMagnified("castle", e)
               , s = ((t,e)=>{
                 var i = p(t);
                 const s = i.flat()
-                  , a = [...new Set(s)]
-                  , r = {};
-                for (const t of a) {
-                    r[t] = [];
+                  , r = [...new Set(s)]
+                  , a = {};
+                for (const t of r) {
+                    a[t] = [];
                     for (let e = 0; e < i.length; e++) {
-                        r[t].push([]);
+                        a[t].push([]);
                         for (let s = 0; s < i[e].length; s++)
-                            i[e][s] === t ? r[t][e][s] = "#000000" : r[t][e][s] = null
+                            i[e][s] === t ? a[t][e][s] = "#000000" : a[t][e][s] = null
                     }
                 }
-                return delete r.null,
-                r
+                return delete a.null,
+                a
             }
             )(i)
-              , a = g(s["#6a6a6a"])
-              , r = g(s["#c2c2c2"])
-              , h = u(a, k(this.scene.main.spriteMap.get("dirt"), .5))
-              , n = u(a, k(this.scene.main.spriteMap.get("grass"), .5))
-              , o = u(a, k(this.scene.main.spriteMap.get("water"), .5))
-              , c = u(a, k(this.scene.main.spriteMap.get("brick"), .5))
-              , l = u(a, k(this.scene.main.spriteMap.get("steel"), .5))
-              , d = u(a, k(this.scene.main.spriteMap.get("magic"), .5))
-              , m = u(r, k(this.scene.main.spriteMap.get("dirt"), .2))
-              , w = u(r, k(this.scene.main.spriteMap.get("grass"), .2))
-              , f = u(r, k(this.scene.main.spriteMap.get("water"), .2))
-              , y = u(r, k(this.scene.main.spriteMap.get("brick"), .2))
-              , v = u(r, k(this.scene.main.spriteMap.get("steel"), .2))
-              , x = u(r, k(this.scene.main.spriteMap.get("magic"), .2));
-            this.dirt = I([i, m, h]),
-            this.grass = I([i, w, n]),
-            this.water = I([i, f, o]),
-            this.brick = I([i, y, c]),
-            this.steel = I([i, v, l]),
-            this.magic = I([i, x, d])
+              , r = g(s["#6a6a6a"])
+              , a = g(s["#c2c2c2"])
+              , h = u(r, E(this.scene.main.spriteMap.get("dirt"), .5))
+              , n = u(r, E(this.scene.main.spriteMap.get("grass"), .5))
+              , o = u(r, E(this.scene.main.spriteMap.get("water"), .5))
+              , c = u(r, E(this.scene.main.spriteMap.get("brick"), .5))
+              , l = u(r, E(this.scene.main.spriteMap.get("steel"), .5))
+              , d = u(r, E(this.scene.main.spriteMap.get("magic"), .5))
+              , m = u(a, E(this.scene.main.spriteMap.get("dirt"), .2))
+              , w = u(a, E(this.scene.main.spriteMap.get("grass"), .2))
+              , f = u(a, E(this.scene.main.spriteMap.get("water"), .2))
+              , y = u(a, E(this.scene.main.spriteMap.get("brick"), .2))
+              , x = u(a, E(this.scene.main.spriteMap.get("steel"), .2))
+              , M = u(a, E(this.scene.main.spriteMap.get("magic"), .2));
+            this.dirt = C([i, m, h]),
+            this.grass = C([i, w, n]),
+            this.water = C([i, f, o]),
+            this.brick = C([i, y, c]),
+            this.steel = C([i, x, l]),
+            this.magic = C([i, M, d])
         }
         update(t) {
             this.time = t
         }
     }
-    class N extends e {
+    class z extends e {
         constructor(t) {
             super(t),
             this.buffer = n(this.main.config.width, this.main.config.height),
-            this.main.spriteMap = new R;
+            this.main.spriteMap = new N;
             var e = this.main.spriteMap.getMagnified("grass", 1)
               , i = this.main.spriteMap.getMagnified("dirt", 1)
               , s = this.main.spriteMap.getMagnified("steel", 1)
-              , a = A(i, e)
-              , r = A(s, i);
-            this.castleObj = new O(this),
+              , r = I(i, e)
+              , a = I(s, i);
+            this.castleObj = new B(this),
             this.castle = this.castleObj.brick,
             this.player = this.main.spriteMap.getMagnified("player", 2),
-            this.gmat = function(t, e, i, s, a=1) {
-                a > 1 && (t = E(t, a),
-                e = E(e, a));
-                let r = A(t, e);
-                var h = n(r.width * s, r.height * i)
+            this.gmat = function(t, e, i, s, r=1) {
+                r > 1 && (t = A(t, r),
+                e = A(e, r));
+                let a = I(t, e);
+                var h = n(a.width * s, a.height * i)
                   , c = o(h);
                 for (let t = 0; t < i; t++)
                     for (let e = 0; e < s; e++)
-                        c.drawImage(r, t * r.height, e * r.width);
+                        c.drawImage(a, t * a.height, e * a.width);
                 return h
-            }(a, r, this.main.canvas.width / 8, this.main.canvas.height / 8),
-            this.gmat = k(this.gmat, .2),
+            }(r, a, this.main.canvas.width / 8, this.main.canvas.height / 8),
+            this.gmat = E(this.gmat, .2),
             this.log = this.getLogo(),
             this.buffer = this.getBuffer(),
             this.loading = -20,
@@ -651,13 +776,13 @@
               , e = o(t)
               , i = this.main.spriteMap.getMagnified("grass", 1)
               , s = this.main.spriteMap.getMagnified("dirt", 1)
-              , a = this.main.spriteMap.getMagnified("water", 1)
-              , r = this.main.spriteMap.getMagnified("steel", 1)
-              , h = A(s, i)
-              , c = A(r, r)
-              , l = A(i, a)
-              , d = A(a, s);
-            return this.TextSprites = [L.get("13th CENTURY™", 20, "green", d, "Arial Black"), L.get("ROBIN➸HOOD ", 40, "green", h, "Arial Black"), L.get("THE➸OUTLAW ", 28, "green", c, "Arial Black"), L.get("★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★", 15, "green", l, "Arial Black")],
+              , r = this.main.spriteMap.getMagnified("water", 1)
+              , a = this.main.spriteMap.getMagnified("steel", 1)
+              , h = I(s, i)
+              , c = I(a, a)
+              , l = I(i, r)
+              , d = I(r, s);
+            return this.TextSprites = [P.get("13th CENTURY™", 20, "green", d, "Arial Black"), P.get("ROBIN➸HOOD ", 40, "green", h, "Arial Black"), P.get("THE➸OUTLAW ", 28, "green", c, "Arial Black"), P.get("★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★", 15, "green", l, "Arial Black")],
             e.drawImage(m(this.TextSprites[0], "white"), 0, 1),
             e.drawImage(this.TextSprites[0], 1, 1),
             e.drawImage(m(this.TextSprites[1], "red"), 1, 18),
@@ -728,11 +853,11 @@
             this.goToMainMenuScene()
         }
     }
-    class B {
-        constructor(t, e=300, i=!0, s=!0, a=3) {
+    class D {
+        constructor(t, e=300, i=!0, s=!0, r=3) {
             this.notes = t,
             this.tempo = e,
-            this.loop = a,
+            this.loop = r,
             this.pitch = s,
             this.playing = !1,
             this.audioContext = new AudioContext,
@@ -809,7 +934,7 @@
             ), 60 / this.tempo * 1e3)
         }
     }
-    class D extends e {
+    class H extends e {
         constructor(t) {
             super(t),
             this.main.spriteMap.getMagnified("grass", 1),
@@ -861,11 +986,11 @@
             t.fillStyle = "green",
             t.font = "16px Arial",
             t.drawImage(this.buffer, 0, 0),
-            t.drawImage(L.get("█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ", 24, "green", this.sprites.grass, "Verdana"), this.cursorLocations[0].x + 20, this.cursorLocations[0].y),
-            t.drawImage(L.get("█ SOUND : " + (this.sound && 1 == this.sound ? "on" : "off"), 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[1].x + 20, this.cursorLocations[1].y),
-            t.drawImage(L.get("█ Music : " + (this.musicPlayer && this.musicPlayer.playing ? "on" : "off"), 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[2].x + 20, this.cursorLocations[2].y),
-            t.drawImage(L.get(`█ NAME : ${this.playername}`, 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[3].x + 20, this.cursorLocations[3].y),
-            t.drawImage(L.get("█ STATS ㋡", 24, "green", this.sprites.dirt, "Roboto"), this.cursorLocations[4].x + 20, this.cursorLocations[4].y),
+            t.drawImage(P.get("█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ", 24, "green", this.sprites.grass, "Verdana"), this.cursorLocations[0].x + 20, this.cursorLocations[0].y),
+            t.drawImage(P.get("█ SOUND : " + (this.sound && 1 == this.sound ? "on" : "off"), 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[1].x + 20, this.cursorLocations[1].y),
+            t.drawImage(P.get("█ Music : " + (this.musicPlayer && this.musicPlayer.playing ? "on" : "off"), 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[2].x + 20, this.cursorLocations[2].y),
+            t.drawImage(P.get(`█ NAME : ${this.playername}`, 24, "green", this.sprites.water, "Verdana"), this.cursorLocations[3].x + 20, this.cursorLocations[3].y),
+            t.drawImage(P.get("█ STATS ㋡", 24, "green", this.sprites.dirt, "Roboto"), this.cursorLocations[4].x + 20, this.cursorLocations[4].y),
             t.drawImage(this.sprites.player, this.cursorLocations[this.currentcursorloc].x, this.cursorLocations[this.currentcursorloc].y + 4),
             t.fillText("Time " + this.time, 20, e),
             e += 20
@@ -873,16 +998,16 @@
         click(t) {}
         control(t) {
             if ("s" === t || "ArrowDown" === t)
-                this.currentcursorloc = a(this.currentcursorloc + 1) % this.cursorLocations.length;
+                this.currentcursorloc = r(this.currentcursorloc + 1) % this.cursorLocations.length;
             else if ("w" === t || "ArrowUp" === t)
-                this.currentcursorloc = a(this.currentcursorloc - 1) % this.cursorLocations.length;
+                this.currentcursorloc = r(this.currentcursorloc - 1) % this.cursorLocations.length;
             else if ("a" === t || "ArrowLeft" === t || "d" === t || "ArrowRight" === t || "space" === t || " " === t)
                 if (0 == this.currentcursorloc)
                     this.main.toGameScene();
                 else if (1 == this.currentcursorloc)
                     this.sound ? this.sound = !1 : this.sound = !0;
                 else if (2 == this.currentcursorloc)
-                    this.musicPlayer || (this.musicPlayer = new B("E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4",120,!1,!0,2e3)),
+                    this.musicPlayer || (this.musicPlayer = new D("E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4",120,!1,!0,2e3)),
                     this.musicPlayer.toggle();
                 else if (3 == this.currentcursorloc) {
                     var e = prompt("name", this.playername);
@@ -897,7 +1022,7 @@
         }
         loadingNewGameScene() {}
     }
-    class H {
+    class q {
         constructor(t, e) {
             this.x = t,
             this.y = e
@@ -906,8 +1031,8 @@
             let e = this.x
               , i = this.y
               , s = t.x
-              , a = t.y;
-            return e == s && i == a
+              , r = t.y;
+            return e == s && i == r
         }
         distanceTo(t) {
             if (!t)
@@ -915,17 +1040,17 @@
             let e = this.x
               , i = this.y
               , s = t.x
-              , a = t.y;
-            if (e == s && i == a)
+              , r = t.y;
+            if (e == s && i == r)
                 return 0;
             if (e == s)
-                return Math.abs(i - a);
-            if (i == a)
+                return Math.abs(i - r);
+            if (i == r)
                 return Math.abs(e - s);
             {
                 let t = 0;
                 return t += Math.pow(e - s, 2),
-                t += Math.pow(i - a, 2),
+                t += Math.pow(i - r, 2),
                 t = Math.sqrt(t),
                 t
             }
@@ -934,15 +1059,15 @@
             let e = this.x
               , i = this.y
               , s = t.x
-              , a = t.y;
-            return e == s && i == a ? 0 : e == s && i > a || i == a && e < s || e == s && i < a || i == a && e > s || e < s && i > a || e < s && i < a || e > s && i < a || e > s && i > a ? 0 * Math.PI / 4 : 0
+              , r = t.y;
+            return e == s && i == r ? 0 : e == s && i > r || i == r && e < s || e == s && i < r || i == r && e > s || e < s && i > r || e < s && i < r || e > s && i < r || e > s && i > r ? 0 * Math.PI / 4 : 0
         }
         getDirectionTo(t) {
             let e = this.x
               , i = this.y
               , s = t.x
-              , a = t.y;
-            return e == s && i == a ? x : e > s ? b : e < s ? y : i < a ? x : i > a ? w : x
+              , r = t.y;
+            return e == s && i == r ? M : e > s ? b : e < s ? y : i < r ? M : i > r ? w : M
         }
         moveClone(t, e) {
             let i = this.clone();
@@ -950,17 +1075,17 @@
             i
         }
         move(t, e) {
-            t == w ? this.y -= e : t == x ? this.y += e : t == b ? this.x -= e : t == y ? this.x += e : t == S ? (this.y -= e,
+            t == w ? this.y -= e : t == M ? this.y += e : t == b ? this.x -= e : t == y ? this.x += e : t == S ? (this.y -= e,
             this.x -= e) : t == f ? (this.y -= e,
-            this.x += e) : t == v ? (this.y += e,
-            this.x += e) : t == M && (this.y += e,
+            this.x += e) : t == x ? (this.y += e,
+            this.x += e) : t == v && (this.y += e,
             this.x -= e)
         }
         moveAngleClone(t, e) {
             t -= Math.PI / 2;
             const i = e * Math.cos(t)
               , s = e * Math.sin(t);
-            return new H(this.x + i,this.y + s)
+            return new q(this.x + i,this.y + s)
         }
         moveClone(t, e) {
             let i = this.clone();
@@ -970,18 +1095,18 @@
         movetoward(t, e) {
             let i = t.x - this.x
               , s = t.y - this.y
-              , a = Math.sqrt(i * i + s * s)
-              , r = i / a || 0
-              , h = s / a || 0;
-            a < e ? (this.x = t.x,
-            this.y = t.y) : (this.x += r * e,
+              , r = Math.sqrt(i * i + s * s)
+              , a = i / r || 0
+              , h = s / r || 0;
+            r < e ? (this.x = t.x,
+            this.y = t.y) : (this.x += a * e,
             this.y += h * e)
         }
         movetowardGrid(t, e) {
             t.x > this.x ? this.x += e : t.x < this.x ? this.x -= e : t.y < this.y ? this.y -= e : t.y > this.y && (this.y += e)
         }
         clone() {
-            return new H(this.x,this.y)
+            return new q(this.x,this.y)
         }
         draw(t, e="red") {
             t.fillStyle = e,
@@ -995,7 +1120,7 @@
             t.fill()
         }
     }
-    const q = [{
+    const V = [{
         mcd: 15,
         attack: 1,
         life: 1,
@@ -1026,36 +1151,36 @@
         life: 10,
         name: "npcgirl"
     }];
-    class _ {
+    class F {
         constructor(t, e=0, i=null) {
             this.type = e,
             this.scene = t,
             this.sprites = this.getSprites(),
             this.sprite = this.sprites[this.type],
             this.center = i || t.findAValidSpawnPoint(8, 25),
-            this.life = q[this.type].life,
-            this.maxLife = q[this.type].life,
-            this.moveCountDown = q[this.type].mcd
+            this.life = V[this.type].life,
+            this.maxLife = V[this.type].life,
+            this.moveCountDown = V[this.type].mcd
         }
         getPossibleNextMove() {
             let t = [];
             var e = this.scene.tileSize;
             let i = this.center.x / e
               , s = this.center.y / e;
-            if (this.scene.checkObstacle(i + 1, s) && t.push(new H),
-            this.scene.checkObstacle(i + 1, s) && t.push(new H(i * e + e,s * e)),
-            this.scene.checkObstacle(i - 1, s) && t.push(new H(i * e - e,s * e)),
-            this.scene.checkObstacle(i, s + 1) && t.push(new H(i * e,s * e + e)),
-            this.scene.checkObstacle(i, s - 1) && t.push(new H(i * e,s * e - e)),
+            if (this.scene.checkObstacle(i + 1, s) && t.push(new q),
+            this.scene.checkObstacle(i + 1, s) && t.push(new q(i * e + e,s * e)),
+            this.scene.checkObstacle(i - 1, s) && t.push(new q(i * e - e,s * e)),
+            this.scene.checkObstacle(i, s + 1) && t.push(new q(i * e,s * e + e)),
+            this.scene.checkObstacle(i, s - 1) && t.push(new q(i * e,s * e - e)),
             t.length > 0) {
-                var a = t[h(0, t.length)];
-                this.center = new H(a.x,a.y)
+                var r = t[h(0, t.length)];
+                this.center = new q(r.x,r.y)
             }
         }
         update(t) {
             this.time = t,
             this.moveCountDown--,
-            this.moveCountDown <= 0 && (this.moveCountDown = q[this.type].mcd,
+            this.moveCountDown <= 0 && (this.moveCountDown = V[this.type].mcd,
             this.getPossibleNextMove(),
             this.center.distanceTo(this.scene.player.center) < 2 * this.scene.tileSize && (this.scene.player.life -= this.type + 1,
             this.scene.player.showDamageEffect = 10,
@@ -1074,25 +1199,25 @@
             t.drawImage(this.getHealthBar(), this.center.x, this.center.y)
         }
         getSprites() {
-            if (_.SPRITES)
-                return _.SPRITES;
+            if (F.SPRITES)
+                return F.SPRITES;
             var t = this.scene.scalemultiplier
               , e = this.scene.tileSize
-              , i = C(R.getByNameMagnified("rabbit", t), e, e, !1)
-              , s = C(R.getByNameMagnified("wolf", t), e, e, !1)
-              , a = C(R.getByNameMagnified("deer", t), e, e, !1)
-              , r = R.getByNameMagnified("bear", t)
-              , h = R.getByNameMagnified("npcman", t)
-              , n = R.getByNameMagnified("npcgirl", t)
-              , o = R.getByNameMagnified("sword", this.scene.scalemultiplier);
+              , i = k(N.getByNameMagnified("rabbit", t), e, e, !1)
+              , s = k(N.getByNameMagnified("wolf", t), e, e, !1)
+              , r = k(N.getByNameMagnified("deer", t), e, e, !1)
+              , a = N.getByNameMagnified("bear", t)
+              , h = N.getByNameMagnified("npcman", t)
+              , n = N.getByNameMagnified("npcgirl", t)
+              , o = N.getByNameMagnified("sword", this.scene.scalemultiplier);
             this.w = e,
             this.h = e;
-            var c = [i, s, a, r, h, n, o];
-            return _.SPRITES = c,
-            _.SPRITES
+            var c = [i, s, r, a, h, n, o];
+            return F.SPRITES = c,
+            F.SPRITES
         }
     }
-    class z extends _ {
+    class G extends F {
         constructor(t, e=0, i=null) {
             super(t, e, i)
         }
@@ -1101,7 +1226,7 @@
             t.drawImage(this.sprites[6], this.center.x + .65 * this.sprite.width, this.center.y + .25 * this.sprite.height)
         }
     }
-    const V = [{
+    const j = [{
         n: "tree",
         o: 1,
         c: "#0d3702"
@@ -1146,22 +1271,25 @@
         o: 0,
         c: "#d1d1d1"
     }, {
-        n: "wolfpawnpoint",
+        n: "wolfspawnpoint",
         o: 0,
         c: "#898898"
     }];
-    class F {
+    class K {
         constructor(t, e=1) {
             this.gamescene = t,
-            this.sMap = new R,
+            this.sMap = N.fromO(this.gamescene.main.spriteMap),
             this.presetmobs = [],
             this.caves = [],
             this.deerspawnpoints = [],
             this.houseLocations = [],
             this.shopLocations = [],
+            console.log(_),
+            console.log(_.dirt),
+            console.log(_.steel),
+            console.log(R.dirt),
             this.getPredefinedMap1(e)
         }
-        getObstacleMatrix() {}
         getColorAt(t, e) {
             return t = Math.floor(t),
             e = Math.floor(e),
@@ -1184,76 +1312,74 @@
             return this.isObstacle(i)
         }
         isObstacle(t) {
-            var e = V.find((e=>e.c == t));
+            var e = j.find((e=>e.c == t));
             return null == e ? 1 : e.o
         }
         getPredefinedMap1(t=1) {
-            var e = this.sMap.get("map_spawn")
-              , i = this.sMap.get("map_castle")
-              , s = this.sMap.get("map_forest_1")
-              , a = this.sMap.get("map_forest_2")
-              , h = (this.sMap.get("map_forest_3"),
-            this.sMap.get("map_forest_4"),
-            e.width)
+            var e = R.map_spawn
+              , i = R.map_castle
+              , s = R.map_forest_1
+              , r = R.map_forest_2
+              , h = e.width
               , c = e.height
               , l = n(3 * h, 3 * c);
-            (w = o(l)).drawImage(a, 0, 0),
-            w.drawImage(i, h, 0),
-            w.drawImage(s, h + h, 0),
-            w.drawImage(s, 0, h),
-            w.drawImage(e, h, h),
-            w.drawImage(s, h + h, h),
-            w.drawImage(s, 0, h + h),
-            w.drawImage(s, h, h + h),
-            w.drawImage(s, h + h, h + h);
+            (f = o(l)).drawImage(r, 0, 0),
+            f.drawImage(i, h, 0),
+            f.drawImage(s, h + h, 0),
+            f.drawImage(s, 0, h),
+            f.drawImage(e, h, h),
+            f.drawImage(s, h + h, h),
+            f.drawImage(s, 0, h + h),
+            f.drawImage(s, h, h + h),
+            f.drawImage(s, h + h, h + h);
             var d = p(l);
             this.colorMatrix = d;
-            for (var g = {
+            for (var m = {
                 "#0d3702": this.sMap.getMagnified("tree", 2 * t),
-                "#d9a066": E(this.sMap.get("dirt"), 2 * t),
-                "#bf0a0a": E(this.sMap.get("brick"), 2 * t),
-                "#99e550": E(this.sMap.get("grass"), 2 * t),
-                "#8a99f6": E(this.sMap.get("water"), 2 * t),
-                "#6a6a6a": E(this.sMap.get("steel"), 2 * t),
-                "#a9a9a9": this.sMap.getMagnified("castle", 2 * t),
-                "#fbf236": this.sMap.getMagnified("house", 2 * t),
-                "#eca732": this.sMap.getMagnified("shop", 2 * t),
-                "#2e2b2b": this.sMap.getMagnified("cave", 2 * t)
-            }, m = 16 * t, u = n(d.length * m, d.length * m), w = o(u), f = 0; f < d.length; f++)
-                for (var y = 0; y < d[f].length; y++) {
-                    var v = d[y][f];
-                    w.drawImage(r() > .5 ? g["#d9a066"] : g["#99e550"], f * m, y * m),
-                    "#0d3702" == v ? w.drawImage(g["#0d3702"], f * m, y * m) : "#d9a066" == v ? w.drawImage(g["#d9a066"], f * m, y * m) : "#bf0a0a" == v ? w.drawImage(g["#bf0a0a"], f * m, y * m) : "#99e550" == v ? w.drawImage(g["#99e550"], f * m, y * m) : "#df7126" == v ? (w.drawImage(g["#99e550"], f * m, y * m),
-                    this.deerspawnpoints.push([f, y])) : "#8a99f6" == v ? w.drawImage(g["#8a99f6"], f * m, y * m) : "#6a6a6a" == v ? w.drawImage(g["#6a6a6a"], f * m, y * m) : "#a9a9a9" == v ? this.castlelocation = new H(f * m,y * m) : "#2e2b2b" == v ? this.caves.push(new H(f * m,y * m)) : "#fbf236" == v ? this.houseLocations.push(new H(f * m,y * m)) : "#eca732" == v ? this.shopLocations.push(new H(f * m,y * m)) : "#130c40" == v ? (this.PLAYERLOCATION = new H(f * m,y * m),
-                    d[f][y] = "#d9a066") : "#ff0000" == v ? this.presetmobs.push(new z(this.gamescene,4,new H(f * this.gamescene.tileSize,y * this.gamescene.tileSize))) : "#000000" == v || "#d1d1d1" == v || "#898898" == v || console.log(v, "unclassified")
+                "#d9a066": A(R.dirt, 2 * t),
+                "#bf0a0a": A(R.brick, 2 * t),
+                "#99e550": A(R.grass, 2 * t),
+                "#8a99f6": A(R.water, 2 * t),
+                "#6a6a6a": A(R.steel, 2 * t),
+                "#a9a9a9": g(_.castle, 2 * t),
+                "#fbf236": g(_.house, 2 * t),
+                "#eca732": g(_.shop, 2 * t),
+                "#2e2b2b": g(_.cave, 2 * t)
+            }, u = 16 * t, w = n(d.length * u, d.length * u), f = o(w), y = 0; y < d.length; y++)
+                for (var x = 0; x < d[y].length; x++) {
+                    var M = d[x][y];
+                    f.drawImage(a() > .5 ? m["#d9a066"] : m["#99e550"], y * u, x * u),
+                    "#0d3702" == M ? f.drawImage(m["#0d3702"], y * u, x * u) : "#d9a066" == M ? f.drawImage(m["#d9a066"], y * u, x * u) : "#bf0a0a" == M ? f.drawImage(m["#bf0a0a"], y * u, x * u) : "#99e550" == M ? f.drawImage(m["#99e550"], y * u, x * u) : "#df7126" == M ? (f.drawImage(m["#99e550"], y * u, x * u),
+                    this.deerspawnpoints.push([y, x])) : "#8a99f6" == M ? f.drawImage(m["#8a99f6"], y * u, x * u) : "#6a6a6a" == M ? f.drawImage(m["#6a6a6a"], y * u, x * u) : "#a9a9a9" == M ? this.castlelocation = new q(y * u,x * u) : "#2e2b2b" == M ? this.caves.push(new q(y * u,x * u)) : "#fbf236" == M ? this.houseLocations.push(new q(y * u,x * u)) : "#eca732" == M ? this.shopLocations.push(new q(y * u,x * u)) : "#130c40" == M ? (this.PLAYERLOCATION = new q(y * u,x * u),
+                    d[y][x] = "#d9a066") : "#ff0000" == M ? this.presetmobs.push(new G(this.gamescene,4,new q(y * this.gamescene.tileSize,x * this.gamescene.tileSize))) : "#000000" == M || "#d1d1d1" == M || "#898898" == M || console.log(M, "unclassified")
                 }
-            w.drawImage(g["#a9a9a9"], this.castlelocation.x, this.castlelocation.y),
+            f.drawImage(m["#a9a9a9"], this.castlelocation.x, this.castlelocation.y),
             this.houseLocations.forEach((t=>{
-                w.drawImage(g["#fbf236"], t.x, t.y)
+                f.drawImage(m["#fbf236"], t.x, t.y)
             }
             )),
             this.shopLocations.forEach((t=>{
-                w.drawImage(g["#eca732"], t.x, t.y)
+                f.drawImage(m["#eca732"], t.x, t.y)
             }
             )),
             this.caves.forEach((t=>{
-                w.drawImage(g["#2e2b2b"], t.x, t.y)
+                f.drawImage(m["#2e2b2b"], t.x, t.y)
             }
             )),
-            this.mapcanvas = u
+            this.mapcanvas = w
         }
     }
-    class G {
-        constructor(t, e, i, s, a) {
+    class U {
+        constructor(t, e, i, s, r) {
             this.game = t,
-            this.center = new H(0,0),
+            this.center = new q(0,0),
             this.h = i,
             this.w = e,
             this.ox = s,
-            this.oy = a
+            this.oy = r
         }
         fixToCords(t) {
-            this.center = new H(t.x,t.y)
+            this.center = new q(t.x,t.y)
         }
         mapToPoint(t) {
             this.center = t
@@ -1269,8 +1395,8 @@
             return d(t, e.x < 0 ? 0 : e.x, e.y < 0 ? 0 : e.y, this.w, this.h)
         }
         draw(t, e) {
-            let i, s, a, r, h, n, o, c, l = e;
-            i = s = a = r = h = n = o = c = 0;
+            let i, s, r, a, h, n, o, c, l = e;
+            i = s = r = a = h = n = o = c = 0;
             let d = {
                 x: this.center.x - this.w / 2,
                 y: this.center.y - this.h / 2
@@ -1287,19 +1413,19 @@
             this.center.y = s + this.h / 2),
             h = this.ox,
             n = this.oy,
-            a = o = this.w,
-            r = c = this.h,
-            t.drawImage(l, i, s, a, r, h, n, o, c)
+            r = o = this.w,
+            a = c = this.h,
+            t.drawImage(l, i, s, r, a, h, n, o, c)
         }
         getFxy(t, e) {
             let i = t + this.center.x - this.w / 2 - this.ox
               , s = e + this.center.y - this.h / 2 - this.oy;
             return i = 32 * Math.floor(i / 32) + 16,
             s = 32 * Math.floor(s / 32) + 16,
-            new H(i,s)
+            new q(i,s)
         }
     }
-    class j {
+    class Y {
         constructor(t) {
             this.ARCHERY = 8,
             this.HEALTH = 1,
@@ -1359,16 +1485,16 @@
             }
         }
     }
-    class K {
+    class $ {
         constructor(t) {
-            this.center = new H(t.x,t.y),
+            this.center = new q(t.x,t.y),
             this.life = 1
         }
         draw(t) {
             t.drawImage(this.sprite, this.center.x, this.center.y)
         }
     }
-    class U extends K {
+    class W extends $ {
         constructor(t) {
             super(t.center),
             this.e = t,
@@ -1389,23 +1515,23 @@
             this.e.applyArrowEffect(this)) : this.life = 0
         }
         getSprites() {
-            if (U.SPRITES)
-                return U.SPRITES;
+            if (W.SPRITES)
+                return W.SPRITES;
             var t = this.e.scene.scalemultiplier
               , e = 16 * t
-              , i = C(R.getByNameMagnified("arrow", t), e, e)
+              , i = k(N.getByNameMagnified("arrow", t), e, e)
               , s = l(i, 0)
-              , a = l(i, 2)
-              , r = l(i, 4)
+              , r = l(i, 2)
+              , a = l(i, 4)
               , h = l(i, 6);
             this.w = s.width,
             this.h = s.height;
-            var n = [h, h, s, s, a, a, r, h];
-            return U.SPRITES = n,
-            U.SPRITES
+            var n = [h, h, s, s, r, r, a, h];
+            return W.SPRITES = n,
+            W.SPRITES
         }
     }
-    class Y extends K {
+    class Q extends $ {
         constructor(t, e, i=0) {
             super(e),
             this.scene = t,
@@ -1415,40 +1541,40 @@
         }
         obtain(t) {}
         getSprites() {
-            if (Y.SPRITES)
-                return Y.SPRITES;
+            if (Q.SPRITES)
+                return Q.SPRITES;
             var t = this.scene.scalemultiplier
               , e = this.scene.tileSize
-              , i = C(R.getByNameMagnified("coin", t), e, e, !1);
+              , i = k(N.getByNameMagnified("coin", t), e, e, !1);
             document.body.append(i),
             this.w = e,
             this.h = e;
             var s = [i];
-            return Y.SPRITES = s,
-            Y.SPRITES
+            return Q.SPRITES = s,
+            Q.SPRITES
         }
     }
-    class $ {
+    class J {
         constructor(t) {
             this.scene = t,
             this.life = this.maxLife = 100,
             this.score = 0,
-            this.attributes = new j(1),
-            this.center = new H(0,0),
-            this.destination = new H(0,0),
+            this.attributes = new Y(1),
+            this.center = new q(0,0),
+            this.destination = new q(0,0),
             this.isMoving = !1,
             this.time = 0,
-            this.direction = x,
+            this.direction = M,
             this.sprites = this.getSprites(),
-            this.sprite = this.sprites[x],
+            this.sprite = this.sprites[M],
             this.shots = [],
             this.firecooldown = 0,
             this.hunts = [],
             this.ArrowsCount = 1e4
         }
         setPosition(t) {
-            this.center = new H(t.x,t.y),
-            this.destination = new H(t.x,t.y)
+            this.center = new q(t.x,t.y),
+            this.destination = new q(t.x,t.y)
         }
         update(t) {
             this.firecooldown = Math.max(this.firecooldown - 1, 0),
@@ -1465,7 +1591,7 @@
         fire() {
             this.firecooldown > 0 || (this.firecooldown = 20 - 2 * this.attributes.ARCHERY,
             this.ArrowsCount--,
-            this.shots.push(new U(this)),
+            this.shots.push(new W(this)),
             this.playSwooshSound())
         }
         damageEffect() {
@@ -1483,7 +1609,7 @@
                 var s = this.scene.mobs[e];
                 s.center.distanceTo(t.center) < this.scene.tileSize && (s.life -= t.life,
                 s.life <= 0 && (console.log("add drop"),
-                this.scene.mobs.push(new Y(this.scene,s.center)),
+                this.scene.mobs.push(new Q(this.scene,s.center)),
                 4 == s.type || 5 == s.type ? this.score -= s.type + 1 : this.score += s.type + 1),
                 this.playArrowHitSound(),
                 t.life = 0)
@@ -1501,7 +1627,7 @@
         }
         draw(t) {
             t.drawImage(this.sprite, this.center.x, this.center.y),
-            this.direction == x && t.drawImage(this.bow, this.center.x + this.sprite.width - this.bow.width, this.center.y + this.sprite.height - 1.5 * this.bow.height),
+            this.direction == M && t.drawImage(this.bow, this.center.x + this.sprite.width - this.bow.width, this.center.y + this.sprite.height - 1.5 * this.bow.height),
             this.direction == b && t.drawImage(T(this.bow), this.center.x + this.sprite.width - 1.6 * this.bow.width, this.center.y + this.sprite.height - 1.3 * this.bow.height),
             this.direction == y && t.drawImage(this.bow, this.center.x + this.sprite.width - 1.2 * this.bow.width, this.center.y + this.sprite.height - 1.3 * this.bow.height),
             [...this.shots].forEach((e=>{
@@ -1514,14 +1640,14 @@
             this.showDamageEffect--)
         }
         rotateToward(t, e) {
-            var i = this.center.getDirectionTo(new H(t,e));
+            var i = this.center.getDirectionTo(new q(t,e));
             this.direction = i,
             this.sprite = this.sprites[i]
         }
         moveTo(t, e) {
-            var i = this.center.getDirectionTo(new H(t,e));
+            var i = this.center.getDirectionTo(new q(t,e));
             this.direction = i,
-            0 != this.center.distanceTo(new H(t,e)) && (this.sprite = this.sprites[i],
+            0 != this.center.distanceTo(new q(t,e)) && (this.sprite = this.sprites[i],
             this.move(i))
         }
         move(t) {
@@ -1529,13 +1655,13 @@
             this.destination.move(t, this.width)) : this.direction = t
         }
         getSprites() {
-            this.bow = R.getByNameMagnified("bow", this.scene.scalemultiplier);
-            var t = R.getByNameMagnified("player", this.scene.scalemultiplier)
-              , e = R.getByNameMagnified("playerb", this.scene.scalemultiplier)
-              , i = R.getByNameMagnified("players", this.scene.scalemultiplier);
+            this.bow = N.getByNameMagnified("bow", this.scene.scalemultiplier);
+            var t = N.getByNameMagnified("player", this.scene.scalemultiplier)
+              , e = N.getByNameMagnified("playerb", this.scene.scalemultiplier)
+              , i = N.getByNameMagnified("players", this.scene.scalemultiplier);
             return this.width = t.width,
             this.height = t.height,
-            [e, e, i = C(i, this.width, this.height), t, t, t, T(i, !0), e]
+            [e, e, i = k(i, this.width, this.height), t, t, t, T(i, !0), e]
         }
         getSprite() {
             return this.sprite
@@ -1575,7 +1701,7 @@
             e.stop(t.currentTime + 1)
         }
     }
-    class W extends e {
+    class X extends e {
         constructor(t) {
             super(t),
             this.init()
@@ -1585,10 +1711,10 @@
             this.scalemultiplier = 2,
             this.tileSize = 16 * this.scalemultiplier,
             this.keyboard = {},
-            this.gamemap = new F(this,this.scalemultiplier),
-            this.player = new $(this),
-            this.player.setPosition(this.gamemap.PLAYERLOCATION ? this.gamemap.PLAYERLOCATION : new H(224,224)),
-            this.camera = new G(this,this.main.config.width,this.main.config.height,0,0),
+            this.gamemap = new K(this,this.scalemultiplier),
+            this.player = new J(this),
+            this.player.setPosition(this.gamemap.PLAYERLOCATION ? this.gamemap.PLAYERLOCATION : new q(224,224)),
+            this.camera = new U(this,this.main.config.width,this.main.config.height,0,0),
             this.camera.mapToPoint(this.player.center),
             this.playername = "robin hood",
             this.mobs = [...this.gamemap.presetmobs],
@@ -1597,7 +1723,7 @@
             this.spawnPointsTest = this.findAllValidSpawnPoint()
         }
         haveEntityAt(t, e) {
-            var i = new H(t,e);
+            var i = new q(t,e);
             for (let t = 0; t < this.mobs.length; t++) {
                 var s = this.mobs[t];
                 if (s.center.distanceTo(i) < this.tileSize)
@@ -1629,8 +1755,8 @@
             }
             )),
             this.player.draw(s);
-            var a = this.camera.getCanvas(i);
-            return e.drawImage(a, 0, 0),
+            var r = this.camera.getCanvas(i);
+            return e.drawImage(r, 0, 0),
             t
         }
         update(t) {
@@ -1651,34 +1777,34 @@
         _spawnMob() {
             if (this.mobs.length > 35)
                 return;
-            let t = new _(this,h(0, 3));
+            let t = new F(this,h(0, 3));
             this.mobs.push(t)
         }
         findValidSpawnPointInMap() {
             var t = [];
             for (let i = 0; i < this.gamemap.colorMatrix.length; i++)
                 for (let s = 0; s < this.gamemap.colorMatrix.length; s++) {
-                    var e = new H(i * this.tileSize,s * this.tileSize);
+                    var e = new q(i * this.tileSize,s * this.tileSize);
                     this.gamemap.isObstacleAt(i, s) || t.push(e)
                 }
             return t
         }
         findAValidSpawnPoint(t=8, e=13) {
             var i = this.findAllValidSpawnPoint(t, e);
-            return i.length > 0 ? i[h(0, i.length)] : new H(this.tileSize,this.tileSize)
+            return i.length > 0 ? i[h(0, i.length)] : new q(this.tileSize,this.tileSize)
         }
         findAllValidSpawnPoint(t=8, e=13) {
             var i = this.validSpawnPointsForMobs;
             i = (i = i.filter((e=>e.distanceTo(this.player.center) > this.tileSize * t))).filter((t=>t.distanceTo(this.player.center) < this.tileSize * e));
             var s = [];
             for (let t in i) {
-                var a = !0;
+                var r = !0;
                 for (let e = 0; e < this.mobs.length; e++)
-                    if (this.mobs[e].center.distanceTo(new H(i[t].x,i[t].y)) < this.tileSize) {
-                        a = !1;
+                    if (this.mobs[e].center.distanceTo(new q(i[t].x,i[t].y)) < this.tileSize) {
+                        r = !1;
                         break
                     }
-                a && s.push(i[t])
+                r && s.push(i[t])
             }
             return i
         }
@@ -1693,7 +1819,7 @@
             else if (!this.player.isMoving) {
                 var e = this.player.center.clone()
                   , i = !1;
-                "s" === t || "ArrowDown" === t ? (e.move(x, this.player.height),
+                "s" === t || "ArrowDown" === t ? (e.move(M, this.player.height),
                 i = !0) : "w" === t || "ArrowUp" === t ? (e.move(w, this.player.height),
                 i = !0) : "d" === t || "ArrowRight" === t ? (e.move(y, this.player.height),
                 i = !0) : "a" !== t && "ArrowLeft" !== t || (e.move(b, this.player.height),
@@ -1727,7 +1853,7 @@
             this.keyboard[t.key] = !1
         }
     }
-    class Q {
+    class Z {
         constructor(t) {
             return this.target = t,
             this.subscribers = [],
@@ -1755,10 +1881,10 @@
                 e[i].notify && e[i].notify(t)
         }
     }
-    class J {
+    class tt {
         constructor(e) {
             this.config = e,
-            this.spriteMap = new R,
+            this.spriteMap = new N,
             this.container = document.querySelector(e.container),
             this.canvas = Object.assign(document.createElement("canvas"), {
                 width: e.width,
@@ -1766,7 +1892,7 @@
                 className: "gamecanvas"
             }),
             this.container.appendChild(this.canvas),
-            this.eventManager = new Q(document),
+            this.eventManager = new Z(document),
             this.toLoadingScene(),
             this.Timer = new t(e.framerate,this,!0),
             this.enablePhoneControls()
@@ -1794,7 +1920,7 @@
             `${i < 10 ? "0" : ""}${i}:${e < 10 ? "0" : ""}${e}:${(t = Math.floor(t % 60)) < 10 ? "0" : ""}${t}`
         }
         toLoadingScene() {
-            this.scene = new N(this),
+            this.scene = new z(this),
             this.eventManager.clear(),
             this.eventManager.sub(this.scene)
         }
@@ -1804,13 +1930,13 @@
             this.eventManager.sub(this.scene)
         }
         toMainMenuScene() {
-            this.mainmenuscene || (this.mainmenuscene = new D(this)),
+            this.mainmenuscene || (this.mainmenuscene = new H(this)),
             this.scene = this.mainmenuscene,
             this.eventManager.clear(),
             this.eventManager.sub(this.scene)
         }
         toGameScene() {
-            this.gamescene || (this.gamescene = new W(this)),
+            this.gamescene || (this.gamescene = new X(this)),
             this.scene = this.gamescene,
             this.eventManager.clear(),
             this.eventManager.sub(this.scene)
@@ -1854,7 +1980,7 @@
             }
         }
     }
-    const X = {
+    const et = {
         container: ".canvas_container",
         tile: 32,
         aspect: 1,
@@ -1864,13 +1990,13 @@
         assets: "Assets",
         spritesheet: s("#spriteSheetMain")
     };
-    class Z extends J {
+    class it extends tt {
         constructor(t) {
             super(t)
         }
     }
     document.addEventListener("DOMContentLoaded", (function() {
-        window.game || (window.game = new Z(X))
+        window.game || (window.game = new it(et))
     }
     ), !1)
 }

@@ -374,7 +374,17 @@ function getNumAsText(n){
     if(n > 1000) return parseInt(n/1000) + 'K';
     return n;
 }
+function initColorMatrix(x,y,w,h){
+    let spritesheet = querySelector('#spriteSheetMain');
+    var sprite = crop(spritesheet,x * 8, y * 8,w *8 ,h *8);
+    var colorMatrix = getColorMatrix(sprite,(e)=>{
+        if(e === "#ffffff") return '';
+        return e;
+    });
+    return colorMatrix;
+}
 export {
+    initColorMatrix,
     fuseColor,
     concatCanvas,
     getNumAsText,
