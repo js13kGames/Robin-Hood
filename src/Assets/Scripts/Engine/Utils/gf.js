@@ -383,7 +383,15 @@ function initColorMatrix(x,y,w,h){
     });
     return colorMatrix;
 }
+function getColoredTile(color,w=1,h=1,r=1,c=1){
+    var canvas = makeCanvas(w * r,h * c);
+    var ctx = getCtx(canvas);
+    ctx.fillStyle = color;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    return canvas;
+}
 export {
+    getColoredTile,
     initColorMatrix,
     fuseColor,
     concatCanvas,

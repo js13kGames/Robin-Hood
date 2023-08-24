@@ -8,11 +8,31 @@
 // import MapGenerator from './Engine/Game/MapGenerator.js';
 // import Font from './Engine/Sprites/Font.js';
 // import SpriteMap from './Engine/Sprites/SpriteMap.js';
-import Maze from "./Engine/Model/Maze.js";
+import {SPRITECOLORMATRIX,SPRITES_1} from "./Engine/Sprites/SpriteMap.js";
+import * as gf from './Engine/Utils/gf.js';
+import MazeGenerator from "./Engine/Model/MazeGenerator.js";
 
-var maze = new Maze(10,10);
-console.log(maze);
-console.log(maze.toString()); // Print the maze
+var scale = 4;
+var maze = new MazeGenerator(64,64);
+var canvas = gf.makeCanvas(maze.rows*8*scale,maze.cols*8*scale);
+var ctx = gf.getCtx(canvas);
+
+var b = gf.repeatCanvas(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.tree,scale/2),scale/2);
+var p = gf.repeatCanvas(SPRITES_1.grass,scale);
+var dirt = gf.repeatCanvas(SPRITES_1.dirt,scale);
+
+for(let i = 0 ; i < maze.rows;i++){
+    for(let j = 0 ; j < maze.cols;j++){
+        ctx.drawImage(p,i*8*scale,j*8*scale);
+        if(maze.grid[i][j]){
+            ctx.drawImage(b,i*8*scale,j*8*scale);
+        }
+        else{
+            ctx.drawImage(dirt,i*8*scale,j*8*scale);
+        }
+    }
+}
+document.body.append(canvas);
 
 /*
 var sMap = new SpriteMap();

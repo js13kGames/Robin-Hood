@@ -81,45 +81,6 @@ const SPRITES_2 = {
     shop : colorsMatrixToSprite(SPRITECOLORMATRIX.shop,2),
     cave : colorsMatrixToSprite(SPRITECOLORMATRIX.cave,2),
 }
-
-/*const spriteMapDefinitons = [
-    {c:0, n:'dirt',    x:0,y:0,w:8,h:8},
-    {c:0, n:'grass',   x:1,y:0,w:8,h:8},
-    {c:0, n:'water',   x:2,y:0,w:8,h:8},
-    {c:0, n:'steel',   x:3,y:0,w:8,h:8},
-    {c:0, n:'brick',   x:4,y:0,w:8,h:8},
-    {c:1, n:'sword',   x:0,y:1,w:8,h:8},
-    {c:1, n:'bow',     x:1,y:1,w:8,h:8},
-    {c:1, n:'arrow',   x:2,y:1,w:8,h:8},
-    {c:1, n:'magic',   x:3,y:1,w:8,h:8},
-    {c:1, n:'tree',    x:4,y:1,w:8,h:8},
-    {c:1, n:'coin',    x:0,y:2,w:8,h:8},
-    {c:1, n:'apple',   x:1,y:2,w:8,h:8},
-    {c:1, n:'lemon',   x:2,y:2,w:8,h:8},
-    {c:1, n:'rabbit',   x:0,y:3,w:8,h:8},
-    {c:1, n:'wolf',     x:1,y:3,w:16,h:8},
-    {c:1, n:'castle',  x:9,y:0,w:32,h:32},
-    {c:1, n:'cave',    x:3,y:2,w:16,h:16},
-    {c:1, n:'player',      x:0,y:4,w:16,h:16},
-    {c:1, n:'playerb',     x:2,y:4,w:16,h:16},
-    {c:1, n:'players',     x:4,y:4,w:8,h:16},
-    {c:1, n:'playerh',     x:5,y:4,w:8,h:16},
-    {c:1, n:'wizzard',     x:6,y:4,w:8,h:16},
-    {c:1, n:'bear',        x:7,y:4,w:16,h:16},
-    {c:1, n:'deer',        x:9,y:4,w:16,h:16},
-    {c:1, n:'house',       x:5,y:0,w:16,h:16},
-    {c:1, n:'shop',        x:5,y:2,w:16,h:16},
-    {c:1, n:'npcman',      x:7,y:0,w:16,h:16},
-    {c:1, n:'npcgirl',     x:7,y:2,w:16,h:16},
-    {c:1, n:'direction',   x:11,y:4,w:16,h:16},
-    {c:0, n:'map_spawn',       x:0,y:6,w:16,h:16},
-    {c:0, n:'map_castle',      x:2,y:6,w:16,h:16},
-    {c:0, n:'map_forest_1',    x:4,y:6,w:16,h:16},
-    {c:0, n:'map_forest_2',    x:6,y:6,w:16,h:16},
-    {c:0, n:'map_forest_3',    x:8,y:6,w:16,h:16},
-    {c:0, n:'map_forest_4',    x:10,y:6,w:16,h:16},
-
-];*/
 export {SPRITECOLORMATRIX,SPRITES_1,SPRITES_2};
 export default class SpriteMap{}
 /*
