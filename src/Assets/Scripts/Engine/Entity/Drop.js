@@ -1,29 +1,29 @@
 import * as gf from '../Utils/gf.js';
-import SpriteMap from "../Sprites/SpriteMap.js";
+import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
 import EObject from './EObject.js';
 export default class Drop extends EObject{
-    constructor(gamescene,center,type=0){
+    constructor(gamescene,center,value = 1,type=0){
         super(center);
         this.scene = gamescene;
-        this.sprites = this.getSprites();
-        this.sprite = this.sprites[type];
-        document.body.append(this.sprite);
+        this.value = value;
+        this.sprite = this.getCoinSprite();
     }
-    obtain(player){
-        
+    update(time){
+        this.time = time;
+        if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*1.5){
+            this.scene.player.cash += this.value;
+            this.life = 0;
+        }
     }
-    getSprites(){
-        if(Drop.SPRITES) return Drop.SPRITES;
+    draw(ctx){
+        super.draw(ctx);
+    }
+    getCoinSprite(){
+        if(Drop.CoinSprite) return Drop.CoinSprite;
         var multiplier = this.scene.scalemultiplier;
         var size = this.scene.tileSize; // 16 * multiplier;
-        var coin = gf.centerCanvasOn(SpriteMap.getByNameMagnified('coin',multiplier), size,size,false);
-        document.body.append(coin);
-        this.w = size;
-        this.h = size;
-        var sprites = [
-            coin,
-        ];
-        Drop.SPRITES = sprites;
-        return Drop.SPRITES;
+        var coin = gf.centerCanvasOn(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.coin,multiplier), size,size,false);
+        Drop.CoinSprite = coin;
+        return coin;
     }
 }

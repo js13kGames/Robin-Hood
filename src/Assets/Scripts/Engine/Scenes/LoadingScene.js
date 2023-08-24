@@ -1,24 +1,25 @@
 import Scene from "./Scene.js";
 import * as gf from '../Utils/gf.js';
+import {colorsMatrixToSprite} from '../Utils/gf.js';
 import Font from "../Sprites/Font.js";
-import SpriteMap from "../Sprites/SpriteMap.js";
 import Castle from "../Entity/Castle.js";
+import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 export default class LoadingScene extends Scene{
     constructor(main){
         super(main);
-        this.buffer = gf.makeCanvas(this.main.config.width,this.main.config.height);
-        this.main.spriteMap = new SpriteMap();
-        var grass = this.main.spriteMap.getMagnified('grass',1);
-        var dirt =  this.main.spriteMap.getMagnified('dirt',1);
-        var steel = this.main.spriteMap.getMagnified('steel',1);
+
+        var grass = SPRITES_1.grass;
+        var dirt =  SPRITES_1.dirt;
+        var steel = SPRITES_1.steel;
+
         var g1 = gf.getGrid(dirt,grass);
         var g2 = gf.getGrid(steel,dirt);
 
         this.castleObj = new Castle(this);
-        this.castle = this.castleObj.brick;
 
+        this.player = colorsMatrixToSprite(SPRITECOLORMATRIX.player,2); 
+        
 
-        this.player = this.main.spriteMap.getMagnified('player',2);
         this.gmat = gf.getGridMatt(g1,g2,this.main.canvas.width/8,this.main.canvas.height/8);
         this.gmat = gf.Lightify(this.gmat,.2);
         this.log = this.getLogo();
@@ -30,11 +31,10 @@ export default class LoadingScene extends Scene{
     getLogo(){
         var canvas = gf.makeCanvas(400,200);
         var ctx = gf.getCtx(canvas);
-        
-        var grass = this.main.spriteMap.getMagnified('grass',1);
-        var dirt =  this.main.spriteMap.getMagnified('dirt',1);
-        var water = this.main.spriteMap.getMagnified('water',1);
-        var steel = this.main.spriteMap.getMagnified('steel',1);
+        var grass = SPRITES_1.grass;
+        var dirt =  SPRITES_1.dirt;
+        var water = SPRITES_1.water;
+        var steel = SPRITES_1.steel;
         var g1 = gf.getGrid(dirt,grass);
         var g2 = gf.getGrid(steel,steel);
         var g3 = gf.getGrid(grass,water);

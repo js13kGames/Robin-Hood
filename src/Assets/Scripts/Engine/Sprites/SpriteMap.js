@@ -81,7 +81,8 @@ const SPRITES_2 = {
     shop : colorsMatrixToSprite(SPRITECOLORMATRIX.shop,2),
     cave : colorsMatrixToSprite(SPRITECOLORMATRIX.cave,2),
 }
-const spriteMapDefinitons = [
+
+/*const spriteMapDefinitons = [
     {c:0, n:'dirt',    x:0,y:0,w:8,h:8},
     {c:0, n:'grass',   x:1,y:0,w:8,h:8},
     {c:0, n:'water',   x:2,y:0,w:8,h:8},
@@ -118,7 +119,11 @@ const spriteMapDefinitons = [
     {c:0, n:'map_forest_3',    x:8,y:6,w:16,h:16},
     {c:0, n:'map_forest_4',    x:10,y:6,w:16,h:16},
 
-];
+];*/
+export {SPRITECOLORMATRIX,SPRITES_1,SPRITES_2};
+export default class SpriteMap{}
+/*
+
 export default class SpriteMap{
     constructor(spriteMap){
         this.spriteMap = spriteMap || this.getSpriteMap();
@@ -273,3 +278,4 @@ export default class SpriteMap{
     }
 }
 export {spriteMapDefinitons,SPRITECOLORMATRIX,SPRITES_1,SPRITES_2};
+*/

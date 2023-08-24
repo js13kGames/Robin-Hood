@@ -4,11 +4,9 @@ import MainMenuScene from "../Scenes/MainMenuScene.js";
 import SceneGame from "../Scenes/SceneGame.js";
 import EventManager from '../Event/EventManager.js';
 import * as gf from '../Utils/gf.js';
-import SpriteMap from "../Sprites/SpriteMap.js";
 export default class Game{
     constructor(config){
         this.config = config;
-        this.spriteMap = new SpriteMap();
         this.container = document.querySelector(config.container);
         this.canvas = Object.assign(document.createElement('canvas'), {
             width:config.width,

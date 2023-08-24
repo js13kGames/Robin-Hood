@@ -6,6 +6,6 @@ module.exports = {
     ],
     output: {
         path: path.resolve(__dirname, './'),
-        filename: 'bundle.js',
+        filename: 'distprep/bundle.js',
     },
 };

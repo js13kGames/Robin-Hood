@@ -66,7 +66,8 @@ export default class SceneGame extends Scene{
         
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
         [...this.mobs].forEach(obj=>{
-            if(obj.update) obj.draw(ctxmap);
+            // debugger;
+            if(obj.draw) obj.draw(ctxmap);
         });
         this.player.draw(ctxmap);
         var camerascene = this.camera.getCanvas(updatedCanvas);
@@ -199,10 +200,11 @@ export default class SceneGame extends Scene{
         ctx.fillStyle = '#004b52d6';
         ctx.fillRect(0,0,ctx.canvas.width,32);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText("LIFE " + this.player.life, 15,15);
+        ctx.fillText("LIFE♥ " + this.player.life, 15,15);
         ctx.fillText("SCORE " + this.player.score, 15,30);
         
-        ctx.fillText("Arrows " + gf.getNumAsText(this.player.ArrowsCount), 64*3,15);
+        ctx.fillText("Arrows    ➹ " + gf.getNumAsText(this.player.ArrowsCount), 64*3,15);
+        ctx.fillText("Cash      Ֆ " + gf.getNumAsText(this.player.cash), 64*3,30);
 
         // ctx.fillText("Time " + this.time, 20 , y); y+= h;
     }

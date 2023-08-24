@@ -1,15 +1,17 @@
 import PlayerAttribute from '../Model/PlayerAttribute.js';
-import SpriteMap from '../Sprites/SpriteMap.js';
 import Point from '../Utils/Point.js';
 import {DIRECTION} from '../Utils/gf.js';
 import * as gf from '../Utils/gf.js';
 import Arrow from './Arrow.js';
 import Drop from './Drop.js';
+import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
+
 export default class Player{
     constructor(gamescene){
         this.scene = gamescene;
         this.life = this.maxLife = 100;
         this.score = 0;
+        this.cash = 0;
         this.attributes = new PlayerAttribute(1);
         this.center = new Point(0,0);
         this.destination = new Point(0,0);
@@ -71,10 +73,12 @@ export default class Player{
             var x = this.scene.mobs[i];
             var d = x.center.distanceTo(arrow.center);
             if(d < this.scene.tileSize){
+                if(x.type == undefined){
+                 continue;       
+                }
                 x.life -= arrow.life;
                 if(x.life <= 0){
-                    console.log('add drop');
-                    this.scene.mobs.push(new Drop(this.scene,x.center));
+                    this.scene.mobs.push(new Drop(this.scene,x.center,this.type+1));
                     if(x.type == 4 || x.type == 5){
                         this.score -= x.type+1;
                     }
@@ -159,10 +163,10 @@ export default class Player{
         }
     }
     getSprites(){
-        this.bow = SpriteMap.getByNameMagnified('bow',this.scene.scalemultiplier);
-        var p = SpriteMap.getByNameMagnified('player',this.scene.scalemultiplier);
-        var playerb = SpriteMap.getByNameMagnified('playerb',this.scene.scalemultiplier);
-        var playersRight = SpriteMap.getByNameMagnified('players',this.scene.scalemultiplier);
+        this.bow = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.bow,this.scene.scalemultiplier);
+        var p = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.player,this.scene.scalemultiplier);
+        var playerb = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.playerb,this.scene.scalemultiplier);
+        var playersRight = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.players,this.scene.scalemultiplier);
         this.width = p.width;
         this.height = p.height;
         var playersRight = gf.centerCanvasOn(playersRight,this.width,this.height);

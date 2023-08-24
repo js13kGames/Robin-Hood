@@ -1,5 +1,5 @@
 import * as gf from '../Utils/gf.js';
-import SpriteMap from "../Sprites/SpriteMap.js";
+import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
 import Point from '../Utils/Point.js';
 const MOBSPECS = [
     {mcd : 15,attack : 1, life:1,name:'rabbit'},
@@ -49,14 +49,12 @@ export default class Mob{
     update(time){
         this.time = time;
         this.moveCountDown--;
-        // console.log('mob update',this.moveCountDown);
         if(this.moveCountDown<=0){
             this.moveCountDown = MOBSPECS[this.type].mcd;
             this.getPossibleNextMove();
             if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*2){
                 this.scene.player.life -= this.type+1;
                 this.scene.player.showDamageEffect = 10;
-                console.log('attack player');
             }
         }
     }
@@ -85,13 +83,13 @@ export default class Mob{
         if(Mob.SPRITES) return Mob.SPRITES;
         var multiplier = this.scene.scalemultiplier;
         var size = this.scene.tileSize; // 16 * multiplier;
-        var rabbit = gf.centerCanvasOn(SpriteMap.getByNameMagnified('rabbit',multiplier), size,size,false);
-        var wolf = gf.centerCanvasOn(SpriteMap.getByNameMagnified('wolf',multiplier), size,size,false);
-        var deer = gf.centerCanvasOn(SpriteMap.getByNameMagnified('deer',multiplier), size,size,false);
-        var bear = SpriteMap.getByNameMagnified('bear',multiplier);
-        var npcman = SpriteMap.getByNameMagnified('npcman',multiplier);
-        var npcgirl = SpriteMap.getByNameMagnified('npcgirl',multiplier);
-        var sword = SpriteMap.getByNameMagnified('sword',this.scene.scalemultiplier);
+        var rabbit = gf.centerCanvasOn(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.rabbit,multiplier), size,size,false);
+        var wolf = gf.centerCanvasOn(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.wolf,multiplier), size,size,false);
+        var deer = gf.centerCanvasOn(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.deer,multiplier), size,size,false);
+        var bear = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.bear,multiplier);
+        var npcman = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.npcman,multiplier);
+        var npcgirl = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.npcgirl,multiplier);
+        var sword = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.sword,multiplier);
         this.w = size;
         this.h = size;
         var sprites = [

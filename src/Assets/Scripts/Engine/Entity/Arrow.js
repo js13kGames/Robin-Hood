@@ -1,6 +1,7 @@
 import SpriteMap from "../Sprites/SpriteMap.js";
 import * as gf from '../Utils/gf.js';
 import Point from '../Utils/Point.js';
+import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
 import EObject from './EObject.js';
 export default class Arrow extends EObject{
     constructor(e){
@@ -31,7 +32,7 @@ export default class Arrow extends EObject{
         if(Arrow.SPRITES) return Arrow.SPRITES;
         var multiplier = this.e.scene.scalemultiplier;
         var size = 16 * multiplier;
-        var arrow = SpriteMap.getByNameMagnified('arrow',multiplier);
+        var arrow = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.arrow,multiplier);
         var canvas = gf.centerCanvasOn(arrow,size,size);
         
         var r = gf.rotateCanvasCw(canvas,0);

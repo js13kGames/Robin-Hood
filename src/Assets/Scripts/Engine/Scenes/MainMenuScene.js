@@ -4,21 +4,23 @@ import MusicPlayer from '../Utils/MusicPlayer.js';
 import Font from "../Sprites/Font.js";
 // const bgm = 'E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3D3E3E3E3D3E3D3D3';
 const bgm = 'E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4';
+import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 
 export default class MainMenuScene extends Scene{
     constructor(main){
         super(main);
-        var grass = this.main.spriteMap.getMagnified('grass',1);
-        var dirt =  this.main.spriteMap.getMagnified('dirt',1);
-        var steel = this.main.spriteMap.getMagnified('steel',1);
+        
+        var grass = SPRITES_1.grass;
+        var dirt  = SPRITES_1.dirt;
+        var steel = SPRITES_1.steel;
 
         this.sprites = {
-            'steel' :   this.main.spriteMap.getMagnified('steel',1),
-            'water' :   this.main.spriteMap.getMagnified('water',1),
-            'grass' :   this.main.spriteMap.getMagnified('grass',1),
-            'dirt' :    this.main.spriteMap.getMagnified('dirt',1),
-            'magic' :   this.main.spriteMap.getMagnified('magic',1),
-            'player' :  this.main.spriteMap.getMagnified('player',1)
+            'steel' :   SPRITES_1.steel,
+            'water' :   SPRITES_1.water,
+            'grass' :   SPRITES_1.grass,
+            'dirt' :    SPRITES_1.dirt,
+            'magic' :   SPRITES_1.magic,
+            'player' :  SPRITES_1.player,
         }
         var textx = this.main.config.width < 400 ? 32 : 100;
 

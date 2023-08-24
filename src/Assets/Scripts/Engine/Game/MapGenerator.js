@@ -33,7 +33,6 @@ const colorSpriteMap = {
 export default class MapGenerator {
     constructor(gamescene, s = 1) {
         this.gamescene = gamescene;
-        this.sMap = SpriteMap.fromO(this.gamescene.main.spriteMap);
         this.presetmobs = [];
         this.caves = [];
         this.deerspawnpoints = [];
@@ -107,12 +106,12 @@ export default class MapGenerator {
         this.colorMatrix = mapColorMatrix;
 
         var sprites = {
-            '#0d3702' : this.sMap.getMagnified('tree',2*s),
             '#d9a066' : gf.repeatCanvas(SPRITES_1.dirt,2*s),
             '#bf0a0a' : gf.repeatCanvas(SPRITES_1.brick,2*s),
             '#99e550' : gf.repeatCanvas(SPRITES_1.grass,2*s),
             '#8a99f6' : gf.repeatCanvas(SPRITES_1.water,2*s),
             '#6a6a6a' : gf.repeatCanvas(SPRITES_1.steel,2*s),
+            '#0d3702' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.tree,2*s),
             '#a9a9a9' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,2*s),
             '#fbf236' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.house,2*s),
             '#eca732' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,2*s),

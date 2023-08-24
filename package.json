@@ -3,6 +3,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "css-minify": "^2.0.0"
+    "css-minify": "^2.0.0",
+    "roadroller": "^2.1.0"
   }
 }
