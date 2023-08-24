@@ -4,6 +4,7 @@ import Point from '../Utils/Point.js';
 import {DIRECTION} from '../Utils/gf.js';
 import * as gf from '../Utils/gf.js';
 import Arrow from './Arrow.js';
+import Drop from './Drop.js';
 export default class Player{
     constructor(gamescene){
         this.scene = gamescene;
@@ -72,6 +73,8 @@ export default class Player{
             if(d < this.scene.tileSize){
                 x.life -= arrow.life;
                 if(x.life <= 0){
+                    console.log('add drop');
+                    this.scene.mobs.push(new Drop(this.scene,x.center));
                     if(x.type == 4 || x.type == 5){
                         this.score -= x.type+1;
                     }

@@ -1,5 +1,4 @@
 import Scene from "./Scene.js";
-import PixelFont from '../Sprites/PixelFont.js';
 import * as gf from '../Utils/gf.js';
 import MapGenerator from "../Game/MapGenerator.js";
 import Camera from "../Utils/Camera.js";
@@ -19,7 +18,6 @@ export default class SceneGame extends Scene{
         this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
         this.gamemap = new MapGenerator(this,this.scalemultiplier);
-        this.pixelFont1 = new PixelFont({color:'white',size : 1});
         this.player = new Player(this);
         this.player.setPosition(this.gamemap.PLAYERLOCATION ? 
             this.gamemap.PLAYERLOCATION : 

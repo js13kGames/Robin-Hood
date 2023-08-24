@@ -1,6 +1,4 @@
 import Scene from "./Scene.js";
-import TileSprite from "../Sprites/TileSprite.js";
-import Tree from "../Sprites/Tree.js";
 import * as gf from '../Utils/gf.js';
 import Font from "../Sprites/Font.js";
 import SpriteMap from "../Sprites/SpriteMap.js";
@@ -42,10 +40,10 @@ export default class LoadingScene extends Scene{
         var g3 = gf.getGrid(grass,water);
         var g4 = gf.getGrid(water,dirt);
         this.TextSprites = [
-            Font.getSpriteForText('13th CENTURY™',20,'green',g4,'Arial Black'),
-            Font.getSpriteForText('ROBIN➸HOOD ',40,'green',g1,'Arial Black'),
-            Font.getSpriteForText('THE➸OUTLAW ',28,'green',g2,'Arial Black'),
-            Font.getSpriteForText('★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★',15,'green',g3,'Arial Black'),
+            Font.get('13th CENTURY™',20,'green',g4,'Arial Black'),
+            Font.get('ROBIN➸HOOD ',40,'green',g1,'Arial Black'),
+            Font.get('THE➸OUTLAW ',28,'green',g2,'Arial Black'),
+            Font.get('★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★',15,'green',g3,'Arial Black'),
         ];
         ctx.drawImage(gf.fuseColor(this.TextSprites[0],'white') ,0,1);
         ctx.drawImage(this.TextSprites[0],1,1);
@@ -64,24 +62,13 @@ export default class LoadingScene extends Scene{
             `- do quests and trade with merchants`,
             `- spread the wealth to the poor`,
             `- improve your stats and defend the village`,
-            `controls`,
-            `a/left : move left`,
-            `d/right : move right`,
-            `w/up : move up`,
-            `s/down : move down`,
-            `space : shoot arrow`,
-            `e : interact with`,
-            `q : open menu`,
-            `game play`,
-            `hunt animals in forest, rabbit, wolf, deer,and bear`,
-            `harvest trees to get apples and lemons`,
-            `things to do in town`,
-            `- trade hunts with merchants`,
+            `a w s d / arrows for movement`,
+            `e interact, q menue, space fire`,
+            `explore forest hunt animal`,
+            `trade with merchants`,
             `- give goodies to villagers for free (gain morale)`,
             `- take quests from villagers for extra love`,
-            `extra things to do`,
-            `deep into the jungle lies the old wizzard`,
-            `find him and buy the magic bow`,
+            `find old wizzard for a magic bow`,
             `more instructions can be learned in game`,
         ];
         var canvas = gf.makeCanvas(360,500);
@@ -119,8 +106,6 @@ export default class LoadingScene extends Scene{
         ctx.font = "16px Arial";
         ctx.fillText("Time " + this.time, 20 , y); y+= h;
         ctx.fillText("use any key to load menu ", 20 , y); y+= h;
-        // ctx.fillText("last edit : 2023-08-23 2:00 AM ", 20 , y); y+= h;
-        // ctx.drawImage(this.castle,32*1  ,32*8);
         
         ctx.drawImage(this.castleObj.dirt,  16 + 36 * 0  ,32*6);
         ctx.drawImage(this.castleObj.grass, 16 + 36 * 2  ,32*6);

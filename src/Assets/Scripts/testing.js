@@ -49,9 +49,9 @@ document.body.append(brick);
 
 for(let i = 11 ; i < 12;i++){
     for(var j in lines){
-        document.body.append(Font.getSpriteForText(lines[j],8*i,'green',brick));
-        // document.body.append(Font.getSpriteForText(lines[j],8*i,'green',grass));
-        // document.body.append(Font.getSpriteForText(lines[j],8*i,'green',water));
+        document.body.append(Font.get(lines[j],8*i,'green',brick));
+        // document.body.append(Font.get(lines[j],8*i,'green',grass));
+        // document.body.append(Font.get(lines[j],8*i,'green',water));
     }
 }
 console.log(sMap);

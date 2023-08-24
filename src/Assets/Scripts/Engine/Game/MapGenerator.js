@@ -1,4 +1,3 @@
-import Mob from "../Entity/Mob.js";
 import NPC from "../Entity/NPC.js";
 import SpriteMap from "../Sprites/SpriteMap.js";
 import Point from "../Utils/Point.js";

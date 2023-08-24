@@ -62,7 +62,6 @@ export default class Game{
     }
     toMainMenuScene(){
         if(this.mainmenuscene){
-            console.log('using mainmenuscene already created');
             this.scene = this.mainmenuscene;
         }
         else{
@@ -74,7 +73,6 @@ export default class Game{
     }
     toGameScene(){
         if(this.gamescene){
-            console.log('using game already created');
             this.scene = this.gamescene;
         }
         else{
@@ -96,19 +94,19 @@ export default class Game{
             controltds[i].addEventListener('click',event => {
                 this.eventManager.fireEvent({ 
                     name    : 'control',
-                    event   : {key:controltds[i].innerText}
+                    event   : {key:controltds[i].id}
                 });
             });
             controltds[i].addEventListener('touchstart',event => {
                 this.eventManager.fireEvent({ 
                     name    : 'controlts',
-                    event   : {key:controltds[i].innerText}
+                    event   : {key:controltds[i].id}
                 });
             });
             controltds[i].addEventListener('touchend',event => {
                 this.eventManager.fireEvent({ 
                     name    : 'controlte',
-                    event   : {key:controltds[i].innerText}
+                    event   : {key:controltds[i].id}
                 });
             });
         }

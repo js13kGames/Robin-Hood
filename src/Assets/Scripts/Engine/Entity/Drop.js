@@ -1,6 +1,5 @@
 import * as gf from '../Utils/gf.js';
 import SpriteMap from "../Sprites/SpriteMap.js";
-import Point from '../Utils/Point.js';
 import EObject from './EObject.js';
 export default class Drop extends EObject{
     constructor(gamescene,center,type=0){
@@ -8,6 +7,7 @@ export default class Drop extends EObject{
         this.scene = gamescene;
         this.sprites = this.getSprites();
         this.sprite = this.sprites[type];
+        document.body.append(this.sprite);
     }
     obtain(player){
         
@@ -17,6 +17,7 @@ export default class Drop extends EObject{
         var multiplier = this.scene.scalemultiplier;
         var size = this.scene.tileSize; // 16 * multiplier;
         var coin = gf.centerCanvasOn(SpriteMap.getByNameMagnified('coin',multiplier), size,size,false);
+        document.body.append(coin);
         this.w = size;
         this.h = size;
         var sprites = [

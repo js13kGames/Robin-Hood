@@ -1,10 +1,6 @@
 import Scene from "./Scene.js";
-import TileSprite from "../Sprites/TileSprite.js";
-import Tree from "../Sprites/Tree.js";
 import * as gf from '../Utils/gf.js';
 import MusicPlayer from '../Utils/MusicPlayer.js';
-import KeyboardAndMouse from '../Utils/KeyboardAndMouse.js';
-import SceneGame from "./SceneGame.js";
 import Font from "../Sprites/Font.js";
 // const bgm = 'E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3D3E3E3E3D3E3D3D3';
 const bgm = 'E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4';
@@ -57,27 +53,27 @@ export default class MainMenuScene extends Scene{
         ctx.drawImage(this.buffer,0,0);
 
         ctx.drawImage(
-            Font.getSpriteForText('█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ',24,'green',this.sprites.grass,'Verdana'),
+            Font.get('█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ',24,'green',this.sprites.grass,'Verdana'),
             this.cursorLocations[0].x + 20,
             this.cursorLocations[0].y,
         );
         ctx.drawImage(
-            Font.getSpriteForText(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[1].x + 20,
             this.cursorLocations[1].y
         );
         ctx.drawImage(
-            Font.getSpriteForText(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[2].x + 20,
             this.cursorLocations[2].y
         );
         ctx.drawImage(
-            Font.getSpriteForText(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[3].x + 20,
             this.cursorLocations[3].y
         );
         ctx.drawImage(
-            Font.getSpriteForText('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
+            Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
             this.cursorLocations[4].x + 20,
             this.cursorLocations[4].y,
         );
