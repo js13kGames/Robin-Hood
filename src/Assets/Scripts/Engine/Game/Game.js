@@ -14,7 +14,23 @@ export default class Game{
             className: 'gamecanvas'});
         this.container.appendChild(this.canvas);
         this.eventManager = new EventManager(document);
+
+        ['keydown','keyup'].forEach(eventName => {
+            document.addEventListener(eventName,event => {
+                this.eventManager.fireEvent({ name: eventName,event: event});
+            });
+        });
+        this.canvas.addEventListener('click',event => {
+            this.eventManager.fireEvent({ 
+                name    : 'click',
+                event   : event
+            });
+        });
+
         this.toLoadingScene();
+        if(this.config.width < 400) {
+            config.framerate = config.framerate/2;
+        }
         this.Timer = new Timer(config.framerate, this, true);
         this.enablePhoneControls();
     }

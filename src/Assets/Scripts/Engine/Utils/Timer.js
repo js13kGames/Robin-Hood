@@ -1,5 +1,5 @@
 export default class Timer {
-    constructor(deltatime = 1/60, t, autostart=false) {
+    constructor(deltatime = 1/30, t, autostart=false) {
         this.at = 0;
         this.lt = null;
         this.dt = deltatime;
@@ -9,6 +9,11 @@ export default class Timer {
     }
     fireOnce(){this.queue();this.s = true;}
     up(t){
+        this.t.update(Math.floor(t/1000));
+        this.lt = t;
+        if(!this.s){this.queue();}
+    }
+    up2(t){
         if (this.lt) {this.at += (t - this.lt) / 1000 ;
             if (this.at > 1) {this.at = 1;}
             while (this.at > this.dt) {this.t.update(Math.floor(t/1000));this.at -= this.dt;break;}
@@ -17,7 +22,7 @@ export default class Timer {
         if(!this.s){this.queue();}
     }
     togglePause(){this.p = !this.p;}
-    queue() {requestAnimationFrame((t) => {this.up(t);})}
+    queue() {requestAnimationFrame((t) => {this.up2(t);})}
     start() {this.s = false;this.queue();}
     stop(){this.s = true;}
 }

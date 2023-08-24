@@ -10,7 +10,12 @@ export default class Maze {
 
     generateMaze(row, col) {
         this.visited[row][col] = true;
-        const directions = [{ row: -1, col: 0 }, { row: 0, col: 1 }, { row: 1, col: 0 }, { row: 0, col: -1 }];
+        const directions = [
+            { row: -1, col: 0 }, 
+            { row: 0, col: 1 }, 
+            { row: 1, col: 0 }, 
+            { row: 0, col: -1 }
+        ];
         directions.sort(() => Math.random() - 0.5); // Randomize the order of directions
 
         for (const direction of directions) {

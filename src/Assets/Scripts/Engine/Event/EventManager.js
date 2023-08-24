@@ -51,15 +51,15 @@ export default class EventManager{
 		this.target = target;
         this.subscribers = [];
         if(!target.addEventListener) return false;
-        ['click','keydown','keyup','mousemove'].forEach(eventName => {
-            // console.log('event listner for ' + eventName);
-            target.addEventListener(eventName,event => {
-                this.fireEvent({ 
-                    name    : eventName,
-                    event   : event
-                });
-            });
-        });
+        // ['click','keydown','keyup','mousemove'].forEach(eventName => {
+        //     // console.log('event listner for ' + eventName);
+        //     target.addEventListener(eventName,event => {
+        //         this.fireEvent({ 
+        //             name    : eventName,
+        //             event   : event
+        //         });
+        //     });
+        // });
         return true;
     }
     sub(e){
