@@ -59,24 +59,43 @@ export default class MusicPlayer {
 
         const oscillator = this.audioContext.createOscillator();
         const gainNode = this.audioContext.createGain();
-        
         oscillator.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
+
+        const initialGain = 0.05; // Adjust this value to control the initial volume
 
         oscillator.frequency.setValueAtTime(this.getFrequency(note), this.audioContext.currentTime);
         oscillator.start();
 
-        // Use exponential ramp for smoother transitions
+        // Use exponential ramp for smoother volume fade-in
         gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(1, this.audioContext.currentTime + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(initialGain, this.audioContext.currentTime + 0.02);
         
         setTimeout(() => {
-            // Use exponential ramp for smoother transitions when stopping
-            gainNode.gain.setValueAtTime(1, this.audioContext.currentTime);
+            // Use exponential ramp for smoother volume fade-out when stopping
+            gainNode.gain.setValueAtTime(initialGain, this.audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.02);
 
             oscillator.stop(this.audioContext.currentTime + 0.02);
             this.playNextNote();
         }, 60 / this.tempo * 1000);
+        // oscillator.connect(gainNode);
+        // gainNode.connect(this.audioContext.destination);
+
+        // oscillator.frequency.setValueAtTime(this.getFrequency(note), this.audioContext.currentTime);
+        // oscillator.start();
+
+        // // Use exponential ramp for smoother transitions
+        // gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+        // gainNode.gain.exponentialRampToValueAtTime(1, this.audioContext.currentTime + 0.02);
+        
+        // setTimeout(() => {
+        //     // Use exponential ramp for smoother transitions when stopping
+        //     gainNode.gain.setValueAtTime(1, this.audioContext.currentTime);
+        //     gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.02);
+
+        //     oscillator.stop(this.audioContext.currentTime + 0.02);
+        //     this.playNextNote();
+        // }, 60 / this.tempo * 1000);
     }
 }

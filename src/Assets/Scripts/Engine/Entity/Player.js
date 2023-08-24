@@ -41,11 +41,12 @@ export default class Player{
         if(this.center.distanceTo(this.destination) != 0){
             this.isMoving = true;
             this.center.movetoward(this.destination,this.attributes.SPEED);
+            this.scene.camera.fixToCords(this.center);
         }
         else{
             this.isMoving = false;
             // this.sprite = this.sprites[gf.DIRECTION.DOWN];
-            this.scene.camera.fixToCords(this.center);
+            // this.scene.camera.fixToCords(this.center);
         }
     }
     fire(){
@@ -78,7 +79,7 @@ export default class Player{
                 }
                 x.life -= arrow.life;
                 if(x.life <= 0){
-                    this.scene.mobs.push(new Drop(this.scene,x.center,this.type+1));
+                    this.scene.mobs.push(new Drop(this.scene,x.center,x.type+1));
                     if(x.type == 4 || x.type == 5){
                         this.score -= x.type+1;
                     }
@@ -143,6 +144,7 @@ export default class Player{
         this.sprite = this.sprites[dir];
     }
     moveTo(x,y){
+        if(this.scene.checkObstacle(x,y)) return;
         var dir = this.center.getDirectionTo(new Point(x,y));
         this.direction = dir;
         var distance = this.center.distanceTo(new Point(x,y));
@@ -154,7 +156,6 @@ export default class Player{
     move(dir){
         if(dir === this.direction){
             if(!this.isMoving){
-                console.log('moving player');
                 this.destination.move(dir,this.width);
             }
         }

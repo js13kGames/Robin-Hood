@@ -79,11 +79,19 @@ export default class Camera{
             dHeight);
             
     }
-    getFxy(x,y){
-        let fx = x + this.center.x - this.w / 2 - this.ox ;
-        let fy = y + this.center.y - this.h / 2 - this.oy ;
-        fx = Math.floor(fx/32) * 32 + 16;
-        fy = Math.floor(fy/32) * 32 + 16;
+    getFxy(x,y,ts=32){
+        var cxy = {
+            x:this.center.x-this.w/2,
+            y:this.center.y-this.h/2
+        }
+        var sx = cxy.x < 0 ? 0 : cxy.x;
+        var sy = cxy.y < 0 ? 0 : cxy.y;
+
+        let fx = x + sx - this.ox ;
+        let fy = y + sy - this.oy ;
+
+        fx = Math.floor(fx/ts) * ts ;//+ 16;
+        fy = Math.floor(fy/ts) * ts ;//+ 16;
         return new Point(fx,fy);
     }
 }

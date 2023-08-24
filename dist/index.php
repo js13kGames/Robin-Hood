@@ -1,8 +1,8 @@
 <?php
-header('Content-Type: text/plain');
+// header('Content-Type: text/plain');
 $css = file_get_contents(getcwd().'/main.min.css');
-// $js = file_get_contents('./main.js');
-$js = file_get_contents('./release.js');
+$js = file_get_contents('./main.js');
+// $js = file_get_contents('./release.js');
 $imageData = file_get_contents("./gif.gif");
 $base64Data = base64_encode($imageData);
 $dataUri = 'data:image/gif;base64,' . $base64Data;
@@ -19,6 +19,6 @@ $html .= '<div class="canvas_container"></div>
 </div>';
 $html .= '<script>'.$js.'</script>';
 $html .= '</body>';
-// file_put_contents('dist.html',$html);
+file_put_contents('index.html',$html);
 echo $html;
 ?>

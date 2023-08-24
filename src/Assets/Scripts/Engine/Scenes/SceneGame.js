@@ -6,7 +6,7 @@ import Point from "../Utils/Point.js";
 import Player from "../Entity/Player.js";
 import Mob from "../Entity/Mob.js";
 
-const MOBCOUNT = 35;
+const MOBCOUNT = 25;
 export default class SceneGame extends Scene{
     constructor(main){
         super(main);
@@ -18,20 +18,21 @@ export default class SceneGame extends Scene{
         this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
         this.gamemap = new MapGenerator(this,this.scalemultiplier);
+        this.miniMap = gf.Lightify(this.gamemap.map,0.7);
+
+
         this.player = new Player(this);
-        this.player.setPosition(this.gamemap.PLAYERLOCATION ? 
-            this.gamemap.PLAYERLOCATION : 
-            new Point(32*7,32*7));
-        this.camera = new Camera(this,
-            this.main.config.width,
-            this.main.config.height,
-            0,0);
+        this.player.setPosition(this.gamemap.PLAYERLOCATION ? this.gamemap.PLAYERLOCATION : new Point(32*7,32*7));
+        this.camera = new Camera(this, this.main.config.width, this.main.config.height,0,0);
         this.camera.mapToPoint(this.player.center);
         this.playername = 'robin hood';
         this.mobs = [...this.gamemap.presetmobs];
         this.drops = [];
         this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
         this.spawnPointsTest = this.findAllValidSpawnPoint();
+        for(let i = 0; i < MOBCOUNT;i++){
+            this._spawnMob();
+        }
     }
     haveEntityAt(x,y){
         var pt = new Point(x,y);
@@ -76,9 +77,6 @@ export default class SceneGame extends Scene{
     }
     update(time){
         this.time = time;
-        if(this.mobs.length < MOBCOUNT){
-            this._spawnMob();
-        }
         [...this.mobs].forEach(obj=>{
             if(obj.update) obj.update(time);
         });
@@ -92,6 +90,7 @@ export default class SceneGame extends Scene{
         if(this.player.life <= 0){
             alert('game over');
             this.main.gamescene = null;
+            this.player.life = 100;
             this.main.toMainMenuScene();
         }
     }
@@ -108,7 +107,6 @@ export default class SceneGame extends Scene{
                 var obstacle = this.gamemap.isObstacleAt(i,j);
                 if(!obstacle){
                     pointsList.push(pt);
-                    // this.spawnPointsTest.push(pt);
                 }
             }
         }
@@ -174,14 +172,22 @@ export default class SceneGame extends Scene{
                 next_playerxy.move(gf.DIRECTION.LEFT,this.player.height);move=true;
             }
             if(move){
-                if(!this.checkObstacle(next_playerxy.x,next_playerxy.y)){
-                    // console.log('move player');
-                    this.player.moveTo(next_playerxy.x,next_playerxy.y);
+                var dir = this.player.center.getDirectionTo(next_playerxy);
+                if(dir != this.player.direction){
+                    this.player.rotateToward(next_playerxy.x,next_playerxy.y);
+                    this.keyboard={};
                 }
                 else{
-                    this.player.rotateToward(next_playerxy.x,next_playerxy.y);
-                    // console.log('obstacle at',next_playerxy);
+                    if(!this.checkObstacle(next_playerxy.x,next_playerxy.y)){
+                        // console.log('move player');
+                        this.player.moveTo(next_playerxy.x,next_playerxy.y);
+                    }
+                    else{
+                        this.player.rotateToward(next_playerxy.x,next_playerxy.y);
+                        // console.log('obstacle at',next_playerxy);
+                    }
                 }
+                
             }
             
         }
@@ -196,19 +202,35 @@ export default class SceneGame extends Scene{
         ctx.fillStyle = "green";
         ctx.font = "16px Arial";
         ctx.drawImage(this.getBuffer(),0,0);
-
         ctx.fillStyle = '#004b52d6';
         ctx.fillRect(0,0,ctx.canvas.width,32);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText("LIFE♥ " + this.player.life, 15,15);
-        ctx.fillText("SCORE " + this.player.score, 15,30);
+        ctx.fillText("♥ " + gf.getNumAsText(this.player.life), 15,15);
+        ctx.fillText("⊕ " + gf.getNumAsText(this.player.score), 15,30);
         
-        ctx.fillText("Arrows    ➹ " + gf.getNumAsText(this.player.ArrowsCount), 64*3,15);
-        ctx.fillText("Cash      Ֆ " + gf.getNumAsText(this.player.cash), 64*3,30);
+        ctx.fillText("➹\t" + gf.getNumAsText(this.player.ArrowsCount), 64*1.5,15);
+        ctx.fillText("Ֆ\t" + gf.getNumAsText(this.player.cash), 64*1.5,30);
+        
+        ctx.fillText("Mobs " + gf.getNumAsText(this.mobs.length), 64*5,15);
 
+        ctx.drawImage(this.miniMap,0,ctx.canvas.height-this.miniMap.height);
+        Point.drawCircle(ctx,
+            this.player.center.x/this.tileSize,
+            ctx.canvas.height-this.miniMap.height + this.player.center.y/this.tileSize,
+            3,'green');
         // ctx.fillText("Time " + this.time, 20 , y); y+= h;
     }
-    click(e){}
+    click(e){
+        var ts = this.tileSize;
+        var x = e.offsetX;//parseInt(e.offsetX/ts) * ts;
+        var y = e.offsetY;//parseInt(e.offsetY/ts) * ts;
+        var camxy = this.camera.getFxy(x,y,ts);
+        var dest = new Point(camxy.x,camxy.y);
+        this.player.direction = this.player.center.getDirectionTo(dest);
+        var destnext = this.player.center.moveClone(this.player.direction,this.player.height);
+        this.player.moveTo(destnext.x,destnext.y);
+        // this.player.destination = dest;
+    }
     control(e){
         this.applyKeyboardKey(e);
     }

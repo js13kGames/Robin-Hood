@@ -1,15 +1,20 @@
 
-import MusicPlayer from './Engine/Utils/MusicPlayer.js';
-import SpriteEngine from './Engine/Sprites/SpriteEngine.js';
-import SpriteMaker from './Engine/Sprites/SpriteMaker.js';
-import * as gf from './Engine/Utils/gf.js';
-import PixelFont from './Engine/Sprites/PixelFont.js';
-import TileSprite from './Engine/Sprites/TileSprite.js';
-import MapGenerator from './Engine/Game/MapGenerator.js';
-import Font from './Engine/Sprites/Font.js';
-import SpriteMap from './Engine/Sprites/SpriteMap.js';
+// import MusicPlayer from './Engine/Utils/MusicPlayer.js';
+// import SpriteEngine from './Engine/Sprites/SpriteEngine.js';
+// import SpriteMaker from './Engine/Sprites/SpriteMaker.js';
+// import * as gf from './Engine/Utils/gf.js';
+// import PixelFont from './Engine/Sprites/PixelFont.js';
+// import TileSprite from './Engine/Sprites/TileSprite.js';
+// import MapGenerator from './Engine/Game/MapGenerator.js';
+// import Font from './Engine/Sprites/Font.js';
+// import SpriteMap from './Engine/Sprites/SpriteMap.js';
+import Maze from "./Engine/Model/Maze.js";
 
+var maze = new Maze(10,10);
+console.log(maze);
+console.log(maze.toString()); // Print the maze
 
+/*
 var sMap = new SpriteMap();
 var brick = sMap.get('brick');
 var steel = sMap.get('steel');

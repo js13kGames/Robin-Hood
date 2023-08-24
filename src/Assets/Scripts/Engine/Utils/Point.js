@@ -151,4 +151,16 @@ export default class Point{
         ctx.fill();
 			//ctx.stroke();
     }
+    static drawCircle(ctx,x,y,radius=1,color='green'){
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.arc(
+            x, 		//center x
+            y, 		//center y
+            radius,							//radius
+            0,							//begin angle
+            Math.PI * 2);				//end angle
+        ctx.fill();
+    }
 }

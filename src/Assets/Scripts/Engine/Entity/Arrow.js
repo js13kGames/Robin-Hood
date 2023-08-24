@@ -1,6 +1,4 @@
-import SpriteMap from "../Sprites/SpriteMap.js";
 import * as gf from '../Utils/gf.js';
-import Point from '../Utils/Point.js';
 import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
 import EObject from './EObject.js';
 export default class Arrow extends EObject{
@@ -12,8 +10,8 @@ export default class Arrow extends EObject{
         this.sprite = this.sprites[this.direction];
         this.width = this.sprite.width;
         this.height = this.sprite.height;
-        this.speed = this.width/4;
-        this.distanceToTravel = this.e.attributes.ARCHERY * this.speed/2;
+        this.speed = this.width/2;
+        this.distanceToTravel = this.e.attributes.ARCHERY * this.speed/10;
         this.movement = 0;
         this.life = 1;
     }
