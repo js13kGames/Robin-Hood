@@ -11,12 +11,14 @@
 import {SPRITECOLORMATRIX,SPRITES_1} from "./Engine/Sprites/SpriteMap.js";
 import * as gf from './Engine/Utils/gf.js';
 import MazeGenerator from "./Engine/Model/MazeGenerator.js";
+import Pathfinder from "./Engine/Model/Pathfinder.js";
 
-var scale = 4;
-var maze = new MazeGenerator(64,64);
+var scale = 1;
+var maze = new MazeGenerator(40,40);
 var canvas = gf.makeCanvas(maze.rows*8*scale,maze.cols*8*scale);
 var ctx = gf.getCtx(canvas);
 
+var brick = gf.repeatCanvas(SPRITES_1.brick,scale);
 var b = gf.repeatCanvas(gf.colorsMatrixToSprite(SPRITECOLORMATRIX.tree,scale/2),scale/2);
 var p = gf.repeatCanvas(SPRITES_1.grass,scale);
 var dirt = gf.repeatCanvas(SPRITES_1.dirt,scale);
@@ -32,7 +34,30 @@ for(let i = 0 ; i < maze.rows;i++){
         }
     }
 }
+
 document.body.append(canvas);
+
+canvas.addEventListener('click',e=>{
+    console.log(e);
+    var ss = scale*8;
+    var x = Math.floor(e.offsetX/ss);
+    var y = Math.floor(e.offsetY/ss);
+
+    const pathfinder = new Pathfinder(maze.grid);
+    const path = pathfinder.findPath(0, 0, x, y);
+    for(let i = 0 ; i < path.length;i++){
+        var pt = path[i];
+        canvas.getContext('2d').drawImage(brick,pt[0]*ss,[pt[1]]*ss);
+    }
+    console.log(path);
+})
+console.log(maze.grid);
+/*
+
+
+const path = pathfinder.findPath(0, 0, 59, 1);
+console.log(path);
+
 
 /*
 var sMap = new SpriteMap();
