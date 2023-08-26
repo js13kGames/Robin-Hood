@@ -7,6 +7,15 @@ export default class PlayerAttribute{
         this.STELTH = 1;
         this.LUCK = 1;
     }
+    static clone(obj){
+        var newAttr = new PlayerAttribute();
+        newAttr.ARCHERY = obj.ARCHERY;
+        newAttr.HEALTH = obj.HEALTH;
+        newAttr.POWER = obj.POWER;
+        newAttr.SPEED = obj.SPEED;
+        newAttr.STELTH = obj.STELTH;
+        newAttr.LUCK = obj.LUCK;
+    }
     getAttributeClasses(){
         return [
             {n:'ARCHERY', s: this.ARCHERY ,c : this.getAttributeClass(this.ARCHERY) },
@@ -16,6 +25,27 @@ export default class PlayerAttribute{
             {n:'STELTH', s: this.STELTH ,c : this.getAttributeClass(this.STELTH) },
             {n:'LUCK', s: this.LUCK ,c : this.getAttributeClass(this.LUCK) },
         ];
+    }
+    getAttrByName(n){
+        switch(n){
+            case 'ARCHERY':return this.ARCHERY;
+            case 'HEALTH':return this.HEALTH;
+            case 'POWER':return this.POWER;
+            case 'SPEED':return this.SPEED;
+            case 'STELTH':return this.STELTH;
+            case 'LUCK':return this.LUCK;
+            default : return 0;
+        }
+    }
+    getStatMenu(){
+        return [
+            {n:'HEALTH', v : this.HEALTH },
+            {n:'POWER', v : this.POWER },
+            {n:'ARCHERY', v : this.ARCHERY },
+            {n:'SPEED', v : this.SPEED },
+            {n:'STELTH', v : this.STELTH },
+            {n:'LUCK', v : this.LUCK },
+        ]
     }
     static getAttributeClass(score){
         if(score < 10) return 'G';

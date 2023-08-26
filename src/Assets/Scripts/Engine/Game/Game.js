@@ -4,6 +4,7 @@ import MainMenuScene from "../Scenes/MainMenuScene.js";
 import SceneGame from "../Scenes/SceneGame.js";
 import EventManager from '../Event/EventManager.js';
 import * as gf from '../Utils/gf.js';
+import SceneStats from "../Scenes/SceneStats.js";
 export default class Game{
     constructor(config){
         this.config = config;
@@ -92,6 +93,17 @@ export default class Game{
         else{
             this.gamescene = new SceneGame(this);
             this.scene = this.gamescene;
+        }
+        this.eventManager.clear();
+        this.eventManager.sub(this.scene);
+    }
+    toSceneStats(){
+        if(this.statScene){
+            this.scene = this.statScene;
+        }
+        else{
+            this.statScene = new SceneStats(this);
+            this.scene = this.statScene;
         }
         this.eventManager.clear();
         this.eventManager.sub(this.scene);

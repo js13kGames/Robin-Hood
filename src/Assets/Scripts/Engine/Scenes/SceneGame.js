@@ -203,6 +203,7 @@ export default class SceneGame extends Scene{
             }
             if(move){
                 var dir = this.player.center.getDirectionTo(next_playerxy);
+                this.player.rotateToward(next_playerxy.x,next_playerxy.y);
                 if(dir != this.player.direction){
                     this.player.rotateToward(next_playerxy.x,next_playerxy.y);
                     this.keyboard={};
@@ -265,7 +266,7 @@ export default class SceneGame extends Scene{
             dest.x/ts,
             dest.y/ts,
         );
-        this.pathToGo = path;
+        // this.pathToGo = path;
         console.log(path);
         // var destnext = this.player.center.moveClone(this.player.direction,this.player.height);
         // this.player.moveTo(destnext.x,destnext.y);

@@ -9,11 +9,6 @@ import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 export default class MainMenuScene extends Scene{
     constructor(main){
         super(main);
-        
-        var grass = SPRITES_1.grass;
-        var dirt  = SPRITES_1.dirt;
-        var steel = SPRITES_1.steel;
-
         this.sprites = {
             'steel' :   SPRITES_1.steel,
             'water' :   SPRITES_1.water,
@@ -22,14 +17,12 @@ export default class MainMenuScene extends Scene{
             'magic' :   SPRITES_1.magic,
             'player' :  SPRITES_1.player,
         }
-        var textx = this.main.config.width < 400 ? 32 : 100;
-
+        this.textx = this.main.config.width < 400 ? 32 : 100;
         this.cursorLocations = [
-            {x:textx,y:32*4},// 0 new game
-            {x:textx,y:32*5},// 1 sound
-            {x:textx,y:32*6},// 2 Music
-            {x:textx,y:32*7},// 3 name
-            {x:textx,y:32*8},// 4 instructions
+            {x:this.textx,y:32*4},// 0 new game
+            {x:this.textx,y:32*5},// 1 sound
+            {x:this.textx,y:32*6},// 2 Music
+            {x:this.textx,y:32*7},// 3 name
         ];
         this.playername = 'robin hood';
         this.currentcursorloc = 0;
@@ -43,6 +36,9 @@ export default class MainMenuScene extends Scene{
     }
     update(time){
         this.time = time;
+        if(this.main.gamescene && this.cursorLocations.length == 4){
+            this.cursorLocations.push({x:this.textx,y:32*8});// 4 stats
+        }
     }
     draw(ctx){
         let h = 20;
@@ -74,11 +70,13 @@ export default class MainMenuScene extends Scene{
             this.cursorLocations[3].x + 20,
             this.cursorLocations[3].y
         );
-        ctx.drawImage(
-            Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
-            this.cursorLocations[4].x + 20,
-            this.cursorLocations[4].y,
-        );
+        if(this.main.gamescene && this.cursorLocations[4]){
+            ctx.drawImage(
+                Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
+                this.cursorLocations[4].x + 20,
+                this.cursorLocations[4].y,
+                );
+        }
         ctx.drawImage(this.sprites.player,
             this.cursorLocations[this.currentcursorloc].x,
             this.cursorLocations[this.currentcursorloc].y+4);
@@ -90,7 +88,8 @@ export default class MainMenuScene extends Scene{
             this.currentcursorloc = gf.abs(this.currentcursorloc + 1) % (this.cursorLocations.length);
         }
         else if(e === 'w' || e === 'ArrowUp'){
-            this.currentcursorloc = gf.abs(this.currentcursorloc - 1) % (this.cursorLocations.length);
+            if(this.currentcursorloc == 0) this.currentcursorloc = this.cursorLocations.length-1;
+            else this.currentcursorloc = gf.abs(this.currentcursorloc - 1) % (this.cursorLocations.length);
         }
         else if(e === 'a' || e === 'ArrowLeft' || e === 'd' || e === 'ArrowRight' || e === 'space' || e === ' '){
             if(this.currentcursorloc == 0){ //new game
@@ -110,7 +109,8 @@ export default class MainMenuScene extends Scene{
             }
             else if(this.currentcursorloc == 4){ //stats page
                 if(this.musicPlayer) this.musicPlayer.stop();
-                alert('under construction');
+                this.main.toSceneStats();
+                // alert('under construction');
             }
         }
     }
