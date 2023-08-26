@@ -16,3 +16,7 @@ Game Scenes
     end level scene
 
 
+make the plan
+execute the plan
+plan go sideways
+throw away the plan

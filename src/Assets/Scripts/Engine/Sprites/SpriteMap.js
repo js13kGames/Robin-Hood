@@ -30,7 +30,7 @@ const SPRITECOLORMATRIX = {
     shop : initColorMatrix(5,2,2,2),
     npcman : initColorMatrix(7,0,2,2),
     npcgirl : initColorMatrix(7,2,2,2),
-    direction : initColorMatrix(11,4,2,2),
+    snow : initColorMatrix(11,4,1,1),
     map_spawn : initColorMatrix(0,6,2,2),
     map_castle : initColorMatrix(2,6,2,2),
     map_forest_1 : initColorMatrix(4,6,2,2),
@@ -67,7 +67,7 @@ const SPRITES_1 = {
     shop : colorsMatrixToSprite(SPRITECOLORMATRIX.shop,1),
     npcman : colorsMatrixToSprite(SPRITECOLORMATRIX.npcman,1),
     npcgirl : colorsMatrixToSprite(SPRITECOLORMATRIX.npcgirl,1),
-    direction : colorsMatrixToSprite(SPRITECOLORMATRIX.direction,1),
+    snow : colorsMatrixToSprite(SPRITECOLORMATRIX.snow,1),
     map_spawn : colorsMatrixToSprite(SPRITECOLORMATRIX.map_spawn,1),
     map_castle : colorsMatrixToSprite(SPRITECOLORMATRIX.map_castle,1),
     map_forest_1 : colorsMatrixToSprite(SPRITECOLORMATRIX.map_forest_1,1),
@@ -91,43 +91,6 @@ export default class SpriteMap{
     }
     static fromO(that){
         return new SpriteMap(that.spriteMap);
-    }
-    initAllColorMatrix(obj){
-        this.dirt = this.initColorMatrix(0,0,1,1);
-        this.grass = this.initColorMatrix(1,0,1,1);
-        this.water = this.initColorMatrix(2,0,1,1);
-        this.steel = this.initColorMatrix(3,0,1,1);
-        this.brick = this.initColorMatrix(4,0,1,1);
-        this.sword = this.initColorMatrix(0,1,1,1);
-        this.bow = this.initColorMatrix(1,1,1,1);
-        this.arrow = this.initColorMatrix(2,1,1,1);
-        this.magic = this.initColorMatrix(3,1,1,1);
-        this.tree = this.initColorMatrix(4,1,1,1);
-        this.coin = this.initColorMatrix(0,2,1,1);
-        this.apple = this.initColorMatrix(1,2,1,1);
-        this.lemon = this.initColorMatrix(2,2,1,1);
-        this.rabbit = this.initColorMatrix(0,3,1,1);
-        this.wolf = this.initColorMatrix(1,3,2,1);
-        this.castle = this.initColorMatrix(9,0,4,4);
-        this.cave = this.initColorMatrix(3,2,2,2);
-        this.player = this.initColorMatrix(0,4,2,2);
-        this.playerb = this.initColorMatrix(2,4,2,2);
-        this.players = this.initColorMatrix(4,4,1,2);
-        this.playerh = this.initColorMatrix(5,4,1,2);
-        this.wizzard = this.initColorMatrix(6,4,1,2);
-        this.bear = this.initColorMatrix(7,4,2,2);
-        this.deer = this.initColorMatrix(9,4,2,2);
-        this.house = this.initColorMatrix(5,0,2,2);
-        this.shop = this.initColorMatrix(5,2,2,2);
-        this.npcman = this.initColorMatrix(7,0,2,2);
-        this.npcgirl = this.initColorMatrix(7,2,2,2);
-        this.direction = this.initColorMatrix(11,4,2,2);
-        this.map_spawn = this.initColorMatrix(0,6,2,2);
-        this.map_castle = this.initColorMatrix(2,6,2,2);
-        this.map_forest_1 = this.initColorMatrix(4,6,2,2);
-        this.map_forest_2 = this.initColorMatrix(6,6,2,2);
-        this.map_forest_3 = this.initColorMatrix(8,6,2,2);
-        this.map_forest_4 = this.initColorMatrix(10,6,2,2);
     }
     static initColorMatrix(x,y,w,h){
         let spritesheet = gf.querySelector('#spriteSheetMain');

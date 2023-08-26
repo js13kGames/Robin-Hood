@@ -1,5 +1,4 @@
 import NPC from "../Entity/NPC.js";
-import SpriteMap from "../Sprites/SpriteMap.js";
 import Point from "../Utils/Point.js";
 import * as gf from '../Utils/gf.js';
 import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
@@ -10,6 +9,7 @@ const MAPTILES = [
     {'n':'grass',o:0,'c':'#99e550'},
     {'n':'water',o:2,'c':'#8a99f6'},
     {'n':'steel',o:1,'c':'#6a6a6a'},
+    {'n':'snow',o:0,'c':'#dcdcdc'},
     {'n':'player',o:0,'c':'#130c40'},
     {'n':'army',o:0,'c':'#ff0000'},
     {'n':'cave',o:1,'c':'#2e2b2b'},
@@ -17,43 +17,78 @@ const MAPTILES = [
     {'n':'rabbitspawnpoint',o:0,'c':'#d1d1d1'},
     {'n':'wolfspawnpoint',o:0,'c':'#898898'},
 ];
-const colorSpriteMap = {
-    '#0d3702': 'tree',
-    '#d9a066': 'dirt',
-    '#bf0a0a': 'brick',
-    '#99e550': 'grass',
-    '#8a99f6': 'water',
-    '#6a6a6a': 'steel',
-    '#a9a9a9': 'castle',
-    '#fbf236': 'house',
-    '#eca732': 'shop',
-    '#2e2b2b': 'cave',
-};
- 
+const colorToTileMap = (k)=>{
+    switch(k){
+        case '#99e550': return 'grass';
+        case '#d9a066': return 'dirt';
+        case '#dcdcdc': return 'snow';
+        case '#8a99f6': return 'water';
+        default:return null;
+    }
+}
+const colorToObjectMap = (k)=>{
+    switch(k){
+        case '#0d3702': return 'tree';
+        case '#bf0a0a': return 'brick';
+        case '#6a6a6a': return 'steel';
+        case '#a9a9a9': return 'castle';
+        case '#fbf236': return 'house';
+        case '#eca732': return 'shop';
+        case '#2e2b2b': return 'cave';
+        default:return null;
+    }
+}
+const colorToEntityMap= (k)=>{
+    switch(k){
+        case '#130c40': return 'player';
+        case '#df7126': return 'spawner_deer';
+        case '#d1d1d1': return 'spawner_rabbit';
+        case '#898898': return 'spawner_wolf';
+        default:return null;
+    }
+}
 export default class MapGenerator {
     constructor(gamescene, s = 1) {
+        this.sprites_dirt = gf.repeatCanvas(SPRITES_1.dirt,4);
+        this.sprites_grass = gf.repeatCanvas(SPRITES_1.grass,4);
+        this.sprites_water = gf.repeatCanvas(SPRITES_1.water,4);
+        this.sprites_snow = gf.repeatCanvas(SPRITES_1.snow,4);
+        this.sprites_brick = gf.repeatCanvas(SPRITES_1.brick,4);
+        this.sprites_steel = gf.repeatCanvas(SPRITES_1.steel,4);
+        this.sprites_tree = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.tree,4);
+        this.sprites_castle = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,4);
+        this.sprites_house = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.house,4);
+        this.sprites_shop = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,4);
+        this.sprites_cave = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,4);
         this.gamescene = gamescene;
-
-        
+        this.PLAYERLOCATION = [0,0];
         this.colorMatrix = [];
-
         this.tileMatrix = [];
-
-
         this.presetmobs = [];
         this.caves = [];
         this.deerspawnpoints = [];
         this.houseLocations = [];
         this.shopLocations = [];
-        
-        console.log(SPRITECOLORMATRIX);
-        console.log(SPRITECOLORMATRIX.dirt);
-        console.log(SPRITECOLORMATRIX.steel);
-        console.log(SPRITES_1.dirt);
-
         this.getPredefinedMap1(s);
+        this.pathMatrix = this.getPathfindMatrix();
     }
-
+    getPathfindMatrix(){
+        var obstacle = {};
+        for(let i in MAPTILES){
+            obstacle[MAPTILES[i].c] = MAPTILES[i].o;
+        }
+        var obstacleMatrix = [];
+        for(var i = 0 ; i < this.colorMatrix.length;i++){
+            obstacleMatrix[i] = [];
+            for(var j = 0 ; j < this.colorMatrix[i].length;j++){
+                var c = this.colorMatrix[j][i];
+                var obs = obstacle[c];
+                var ispassable = obs != undefined && obs == 0;
+                obstacleMatrix[i][j] = ispassable ? 0 : 1;
+            }
+        }
+        return obstacleMatrix;
+    }
     getColorAt(x, y) {
         x = Math.floor(x);
         y = Math.floor(y);
@@ -64,7 +99,6 @@ export default class MapGenerator {
         // return this.colorMatrix[x][y];
         return this.colorMatrix[y][x];
     }
-
     isObstacleAt(x,y){
         x = Math.floor(x);
         y = Math.floor(y);
@@ -82,7 +116,6 @@ export default class MapGenerator {
         // console.log(cfg,color);
         return cfg == undefined ? 1 : cfg.o;
     }
-
     getMapPixels(){
         var map_spawn = SPRITES_1.map_spawn;
         var map_castle =    SPRITES_1.map_castle;
@@ -92,120 +125,94 @@ export default class MapGenerator {
         var map_forest_4 =  SPRITES_1.map_forest_4;
         var w = map_spawn.width;
         var h = map_spawn.height;
-        var map = gf.makeCanvas(w*4,h*4);
+        var map = gf.makeCanvas(w*3,h*3);
         var ctx = gf.getCtx(map);
-        
-        for(let i = 0 ; i < 4;i++){
-            for(let j = 0 ; j < 4;j++){
+        for(let i = 0 ; i < 3;i++){
+            for(let j = 0 ; j < 3;j++){
                 ctx.drawImage(map_forest_1, i*w ,j*w);
             }
         }
         ctx.drawImage(map_forest_2, w ,0);
-        ctx.drawImage(map_forest_2, w*3 ,w*3);
-        ctx.drawImage(map_forest_3, w*2 ,w*3);
+        ctx.drawImage(map_forest_3, w*2 ,w*2);
         ctx.drawImage(map_forest_4, w*2 ,w);
         ctx.drawImage(map_castle,0,0);
         ctx.drawImage(map_spawn,w,w);
         return map;
     }
+    getMapItems(colorMatrix,s = 32){
+        var tilemap = [];
+        var objectsmap = [];
+        var entitymap = {};
+        var rows = colorMatrix.length;
+        var cols = colorMatrix[0].length;
+        tilemap = new Array(rows).fill(null).map(()=>new Array(cols).fill(null));
+        objectsmap = new Array(rows).fill(null).map(()=>new Array(cols).fill(null));
+        var playerLocation= new Point(32,32);
+        gf.forIJMatrix(colorMatrix,(e,i,j)=>{
+            tilemap[i][j] = colorToTileMap(e) || 'grass';
+            objectsmap[i][j] = colorToObjectMap(e) || null;
+
+            if(!entitymap[colorToEntityMap(e)]){
+                entitymap[colorToEntityMap(e)] = [];
+            }
+            if(colorToEntityMap(e)){
+                entitymap[colorToEntityMap(e)].push([i,j]);
+                if(colorToEntityMap(e) == 'player'){
+                    playerLocation = new Point(i*s,j*s);
+                }
+            }
+        });
+        var tilemapcanvas = this.buildCanvasForMap(tilemap,s);
+        var objectsmapcanvas = this.buildCanvasForMap(objectsmap,s);
+        return {
+            tilemap : tilemap,
+            objectsmap : objectsmap,
+            tilemapcanvas : tilemapcanvas,
+            objectsmapcanvas : objectsmapcanvas,
+            entitymap : entitymap,
+            playerLocation : playerLocation
+        }
+
+    }
+    buildCanvasForMap(map,s=32){
+        var canvas = gf.makeCanvas(map.length*s,map.length*s);
+        var ctx = gf.getCtx(canvas);
+        gf.forIJMatrix(map,(e,i,j)=>{
+            var sprite = e ? this.getImageSprite(e) : null;
+            // console.log(e,sprite);
+            if(e && sprite) ctx.drawImage(sprite,j*s,i*s);
+        });
+        return canvas;
+    }
+    getImageSprite(name){
+        switch(name){
+            case 'dirt' : return this.sprites_dirt;
+            case 'grass' : return this.sprites_grass;
+            case 'water' : return this.sprites_water;
+            case 'snow' : return this.sprites_snow;
+            case 'brick' : return this.sprites_brick;
+            case 'steel' : return this.sprites_steel;
+            case 'tree' : return this.sprites_tree;
+            case 'castle' : return this.sprites_castle;
+            case 'house' : return this.sprites_house;
+            case 'shop' : return this.sprites_shop;
+            case 'cave' : return this.sprites_cave;
+            default :return null;
+        }
+    }
     getPredefinedMap1(s = 1) {
         var map = this.getMapPixels();
         this.map = map;
-        // document.body.append(map);
+        var multiplier = 8*2*s;
         var mapColorMatrix = gf.getColorMatrix(map);
         this.colorMatrix = mapColorMatrix;
-
-        var sprites = {
-            '#d9a066' : gf.repeatCanvas(SPRITES_1.dirt,2*s),
-            '#bf0a0a' : gf.repeatCanvas(SPRITES_1.brick,2*s),
-            '#99e550' : gf.repeatCanvas(SPRITES_1.grass,2*s),
-            '#8a99f6' : gf.repeatCanvas(SPRITES_1.water,2*s),
-            '#6a6a6a' : gf.repeatCanvas(SPRITES_1.steel,2*s),
-            '#0d3702' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.tree,2*s),
-            '#a9a9a9' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,2*s),
-            '#fbf236' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.house,2*s),
-            '#eca732' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,2*s),
-            '#2e2b2b' : gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,2*s),
-        };
-
-        var multiplier = 8*2*s;
-        var mapcanvas = gf.makeCanvas(mapColorMatrix.length * multiplier, mapColorMatrix.length * multiplier);
-        var ctx = gf.getCtx(mapcanvas);
-        
-        for(var i = 0 ; i < mapColorMatrix.length;i++){
-            for(var j = 0 ; j < mapColorMatrix[i].length;j++){
-                var color = mapColorMatrix[j][i];
-                //random ground grass or dirt by default
-                // ctx.drawImage(gf.rand()>0.5? sprites['#d9a066'] : sprites['#99e550'],i*multiplier,j*multiplier);//dirt or grass before tree
-                //default tile grass
-                ctx.drawImage(sprites['#99e550'],i*multiplier,j*multiplier);
-                if(color == '#0d3702'){ //tree
-                    ctx.drawImage(sprites['#0d3702'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#d9a066'){ //dirt
-                    ctx.drawImage(sprites['#d9a066'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#bf0a0a'){//brick
-                    ctx.drawImage(sprites['#bf0a0a'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#99e550'){//grass
-                    ctx.drawImage(sprites['#99e550'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#df7126'){//deer spawn point
-                    ctx.drawImage(sprites['#99e550'],i*multiplier,j*multiplier);
-                    this.deerspawnpoints.push([i,j]);
-                }
-                else if(color == '#8a99f6'){//water
-                    ctx.drawImage(sprites['#8a99f6'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#6a6a6a'){//steel
-                    ctx.drawImage(sprites['#6a6a6a'],i*multiplier,j*multiplier);
-                }
-                else if(color == '#a9a9a9'){//castle
-                    this.castlelocation = new Point(i*multiplier,j*multiplier);
-                }
-                else if(color == '#2e2b2b'){//cave
-                    this.caves.push(new Point(i*multiplier,j*multiplier));
-                }
-                else if(color == '#fbf236'){//house
-                    this.houseLocations.push(new Point(i*multiplier,j*multiplier));
-                }
-                else if(color == '#eca732'){//shop
-                    this.shopLocations.push(new Point(i*multiplier,j*multiplier));
-                }
-                else if(color == '#130c40'){//player location
-                    this.PLAYERLOCATION = new Point(i*multiplier,j*multiplier);
-                    mapColorMatrix[i][j] = '#d9a066';
-                }
-                else if(color == '#ff0000'){//npc location
-                    this.presetmobs.push(new NPC(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
-                }
-                else if(color == '#000000'){//
-                    //this.presetmobs.push(new NPC(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
-                }
-                else if(color == '#d1d1d1'){//
-                    //this.presetmobs.push(new NPC(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
-                }
-                else if(color == '#898898'){//
-                    //this.presetmobs.push(new NPC(this.gamescene,4,new Point(i*this.gamescene.tileSize,j*this.gamescene.tileSize)));
-                }
-                else{
-                    console.log(color,'unclassified');
-                }
-            }
-        }
-        ctx.drawImage(sprites['#a9a9a9'],this.castlelocation.x,this.castlelocation.y);
-        
-        this.houseLocations.forEach(p=>{
-            ctx.drawImage(sprites['#fbf236'],p.x,p.y);
-        });
-        this.shopLocations.forEach(p=>{
-            ctx.drawImage(sprites['#eca732'],p.x,p.y);
-        });
-        this.caves.forEach(p=>{
-            ctx.drawImage(sprites['#2e2b2b'],p.x,p.y);
-        });
-
+        // console.log(JSON.stringify(this.colorMatrix));
+        var mapItems = this.getMapItems(mapColorMatrix,multiplier);
+        this.mapItems = mapItems;
+        // console.log(mapItems);
+        // console.log(this.mapItems.entitymap['player']);
+        this.PLAYERLOCATION = this.mapItems.playerLocation;
+        var mapcanvas = gf.combineSprites([mapItems.tilemapcanvas,mapItems.objectsmapcanvas]);
         this.mapcanvas = mapcanvas;
         // document.body.append(mapcanvas);
 

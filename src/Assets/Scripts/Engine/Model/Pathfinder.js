@@ -6,6 +6,11 @@ export default class Pathfinder {
   }
 
   findPath(startRow, startCol, endRow, endCol) {
+    startRow = Math.floor(startRow); 
+    startCol = Math.floor(startCol); 
+    endRow = Math.floor(endRow); 
+    endCol = Math.floor(endCol);
+
     const openSet = [];
     const closedSet = new Set();
     const cameFrom = {};

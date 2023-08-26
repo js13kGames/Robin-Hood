@@ -5,8 +5,8 @@ import Camera from "../Utils/Camera.js";
 import Point from "../Utils/Point.js";
 import Player from "../Entity/Player.js";
 import Mob from "../Entity/Mob.js";
+import Pathfinder from "../Model/Pathfinder.js";
 
-const MOBCOUNT = 25;
 export default class SceneGame extends Scene{
     constructor(main){
         super(main);
@@ -14,6 +14,7 @@ export default class SceneGame extends Scene{
     }
     init(){
         this.difficulity = 1;
+        this.MOBCOUNT = 5;
         this.scalemultiplier = 2;
         this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
@@ -28,13 +29,18 @@ export default class SceneGame extends Scene{
         this.playername = 'robin hood';
         this.mobs = [...this.gamemap.presetmobs];
         this.drops = [];
+
+        this.pathMatrix = this.gamemap.pathMatrix;
+        this.pathFinder = new Pathfinder(this.pathMatrix);
+
         this.validSpawnPointsForMobs = this.findValidSpawnPointInMap();
         this.spawnPointsTest = this.findAllValidSpawnPoint();
-        for(let i = 0; i < MOBCOUNT;i++){
-            this._spawnMob();
-        }
+        this._spawnMobs();
+        
     }
     haveEntityAt(x,y){
+        x = Math.floor(x);
+        y = Math.floor(y);
         var pt = new Point(x,y);
         for(let i = 0 ; i < this.mobs.length;i++){
             var mob = this.mobs[i];
@@ -71,15 +77,21 @@ export default class SceneGame extends Scene{
             if(obj.draw) obj.draw(ctxmap);
         });
         this.player.draw(ctxmap);
+        if(this.pathToGo){
+            for(let i in this.pathToGo){
+                ctx.drawImage(gf.Lightify(this.player.sprite,.8),
+                    this.pathToGo[i][0] * this.tileSize,
+                    this.pathToGo[i][1] * this.tileSize,
+                );
+            }
+        }
         var camerascene = this.camera.getCanvas(updatedCanvas);
         ctx.drawImage(camerascene,0,0);
         return canvas;
     }
     update(time){
         this.time = time;
-        [...this.mobs].forEach(obj=>{
-            if(obj.update) obj.update(time);
-        });
+        
         this.mobs = this.mobs.filter(s => s.life > 0);
         this.player.update(time);
         for(let i in this.keyboard){
@@ -93,11 +105,22 @@ export default class SceneGame extends Scene{
             this.player.life = 100;
             this.main.toMainMenuScene();
         }
+        if(this.pathToGo && this.pathToGo.length > 0){
+            var pt = this.pathToGo.shift();
+            this.player.center = new Point(pt[0] * this.tileSize,pt[1] * this.tileSize);
+        }
+        if(this.mobs.length <=0){
+            this.MOBCOUNT += 5;
+            this.difficulity++;
+            this._spawnMobs();
+        }
     }
-    _spawnMob(){
-        if(this.mobs.length > MOBCOUNT) return;
-        let mob = new Mob(this,gf.randInt(0,3));
-        this.mobs.push(mob);
+    _spawnMobs(){
+        for(let i = 0; i < this.MOBCOUNT;i++){
+            if(this.mobs.length > this.MOBCOUNT) return;
+            let mob = new Mob(this,gf.randInt(0,3));
+            this.mobs.push(mob);
+        }
     }
     findValidSpawnPointInMap(){
         var pointsList = [];
@@ -141,15 +164,22 @@ export default class SceneGame extends Scene{
         
         return validpoints;
     }
+    interactWithFacingEntity(){
+        var pt = this.player.center.moveClone(this.player.direction,this.tileSize);
+        var e = this.haveEntityAt(pt.x,pt.y);
+        console.log(e);
+    }
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
             this.player.fire();
         }
-        if(e === ' ' || e === 'f'){
+        if(e === 'f'){
             this.player.useSword();
         }
-        if(e === ' ' || e === 'e'){
+        if(e === 'e'){
             // this.player.fire();
+            this.interactWithFacingEntity();
+            this.keyboard={};
         }
         else if(e === 'q'){
             this.keyboard['q'] = false; 
@@ -192,6 +222,7 @@ export default class SceneGame extends Scene{
             
         }
         
+        
     }
     draw(ctx){
         let h = 20;
@@ -211,7 +242,8 @@ export default class SceneGame extends Scene{
         ctx.fillText("➹\t" + gf.getNumAsText(this.player.ArrowsCount), 64*1.5,15);
         ctx.fillText("Ֆ\t" + gf.getNumAsText(this.player.cash), 64*1.5,30);
         
-        ctx.fillText("Mobs " + gf.getNumAsText(this.mobs.length), 64*5,15);
+        ctx.fillText("Mobs " + gf.getNumAsText(this.mobs.length), 64*3,15);
+        ctx.fillText("LVL " + gf.getNumAsText(this.difficulity), 64*3,30);
 
         ctx.drawImage(this.miniMap,0,ctx.canvas.height-this.miniMap.height);
         Point.drawCircle(ctx,
@@ -226,9 +258,17 @@ export default class SceneGame extends Scene{
         var y = e.offsetY;//parseInt(e.offsetY/ts) * ts;
         var camxy = this.camera.getFxy(x,y,ts);
         var dest = new Point(camxy.x,camxy.y);
-        this.player.direction = this.player.center.getDirectionTo(dest);
-        var destnext = this.player.center.moveClone(this.player.direction,this.player.height);
-        this.player.moveTo(destnext.x,destnext.y);
+        //this.player.direction = this.player.center.getDirectionTo(dest);
+        const path = this.pathFinder.findPath(
+            this.player.center.x/ts,
+            this.player.center.y/ts,
+            dest.x/ts,
+            dest.y/ts,
+        );
+        this.pathToGo = path;
+        console.log(path);
+        // var destnext = this.player.center.moveClone(this.player.direction,this.player.height);
+        // this.player.moveTo(destnext.x,destnext.y);
         // this.player.destination = dest;
     }
     control(e){

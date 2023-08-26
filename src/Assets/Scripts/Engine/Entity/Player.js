@@ -20,10 +20,11 @@ export default class Player{
         this.direction = gf.DIRECTION.DOWN;
         this.sprites = this.getSprites();
         this.sprite = this.sprites[gf.DIRECTION.DOWN];
-        this.shots = [];
         this.firecooldown = 0;
+        this.shots = [];
         this.hunts = [];
-        this.ArrowsCount = 10000;
+        this.ArrowsCount = 1000;
+        this.radius = 32*8;
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);
@@ -40,7 +41,8 @@ export default class Player{
         // this.Arrow.update(time);
         if(this.center.distanceTo(this.destination) != 0){
             this.isMoving = true;
-            this.center.movetoward(this.destination,this.attributes.SPEED);
+            // this.center = this.destination.clone();
+            this.center.movetoward(this.destination,this.sprite.width/2);
             this.scene.camera.fixToCords(this.center);
         }
         else{
@@ -48,6 +50,14 @@ export default class Player{
             // this.sprite = this.sprites[gf.DIRECTION.DOWN];
             // this.scene.camera.fixToCords(this.center);
         }
+        this.mobs = this.scene.mobs.filter(x=>x.center.distanceTo(this.center) < this.radius);
+        if(this.mobs.length > 0){
+            // console.log(this.mobs);
+            [...this.mobs].forEach(obj=>{
+                if(obj.update) obj.update(this.time);
+            });
+        }
+        
     }
     fire(){
         if(this.firecooldown > 0) return;
@@ -75,7 +85,7 @@ export default class Player{
             var d = x.center.distanceTo(arrow.center);
             if(d < this.scene.tileSize){
                 if(x.type == undefined){
-                 continue;       
+                 continue;
                 }
                 x.life -= arrow.life;
                 if(x.life <= 0){
@@ -95,8 +105,6 @@ export default class Player{
     getHealthBar(){
         var canvas = gf.makeCanvas(this.sprite.width,3);
         var ctx = gf.getCtx(canvas);
-        // ctx.fillStyle = 'white';
-        // ctx.fillRect(0,0,this.sprite.width,3);
         ctx.fillStyle = 'green';
         if(this.life < this.maxLife/2){
             ctx.fillStyle = 'orange';
@@ -105,7 +113,6 @@ export default class Player{
             ctx.fillStyle = 'red';
         }
         var barw = this.sprite.width * (this.life / this.maxLife);
-        // console.log(barw);
         ctx.fillRect(0,0,barw,3);
         return canvas;
     }
@@ -114,10 +121,10 @@ export default class Player{
         if(this.direction == DIRECTION.DOWN){
             ctx.drawImage(this.bow,this.center.x + this.sprite.width - this.bow.width,this.center.y + this.sprite.height - this.bow.height * 1.5);
         }
-        if(this.direction == DIRECTION.LEFT){
+        else if(this.direction == DIRECTION.LEFT){
             ctx.drawImage(gf.mirror(this.bow),this.center.x + this.sprite.width - this.bow.width * 1.6,this.center.y + this.sprite.height - this.bow.height * 1.3);
         }
-        if(this.direction == DIRECTION.RIGHT){
+        else if(this.direction == DIRECTION.RIGHT){
             ctx.drawImage(this.bow,this.center.x + this.sprite.width - this.bow.width * 1.2,this.center.y + this.sprite.height - this.bow.height * 1.3);
         }
         [...this.shots].forEach(obj=>{
@@ -130,13 +137,14 @@ export default class Player{
         if(this.showDamageEffect > 0){
             ctx.fillStyle = '#ff0000aa';
             ctx.fillRect(
-            (this.center).x,// - (this.width)/2,
-            (this.center).y,// -(this.height)/2
-            this.sprite.width,
-            this.sprite.height,
-        );
+                (this.center).x,// - (this.width)/2,
+                (this.center).y,// -(this.height)/2
+                this.sprite.width,
+                this.sprite.height,
+            );
             this.showDamageEffect--;
         }
+        this.drawRadius(ctx);
     }
     rotateToward(x,y){
         var dir = this.center.getDirectionTo(new Point(x,y));
@@ -221,5 +229,18 @@ export default class Player{
         // Adjust the fade-out time and duration for arrow hit effect
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
         mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
-      }
+    }
+    drawRadius(ctx){
+        ctx.beginPath();
+        ctx.arc(
+            this.center.x + this.sprite.width/2,
+            this.center.y + this.sprite.width/2,
+            this.radius,
+            0,
+            Math.PI * 2,
+            false
+        );
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+    }
 }

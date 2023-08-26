@@ -8,3 +8,4 @@ cp distprep/main.js dist/main.js
 # rm bundle.js
 cp -r src/Assets/Images/gif2.gif dist/gif.gif
 css-minify -f src/Assets/Style/main.css -o dist
+#npx js13k-packer dist/index.html dist/publish --minify "{\"collapseBooleanAttributes\":true}"

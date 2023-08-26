@@ -390,7 +390,23 @@ function getColoredTile(color,w=1,h=1,r=1,c=1){
     ctx.fillRect(0,0,canvas.width,canvas.height);
     return canvas;
 }
+function forIJMatrix(matrix,cb){
+    for(var i = 0 ; i < matrix.length;i++){
+        for(var j = 0 ; j < matrix[i].length;j++){
+            cb(matrix[j][i],i,j);
+        }
+    }
+}
+function forJIMatrix(matrix,cb){
+    for(var i = 0 ; i < matrix.length;i++){
+        for(var j = 0 ; j < matrix[i].length;j++){
+            cb(matrix[i][j],i,j);
+        }
+    }
+}
 export {
+    forJIMatrix,
+    forIJMatrix,
     getColoredTile,
     initColorMatrix,
     fuseColor,

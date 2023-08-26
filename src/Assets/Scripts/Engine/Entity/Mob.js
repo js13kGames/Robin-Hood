@@ -2,12 +2,12 @@ import * as gf from '../Utils/gf.js';
 import {SPRITECOLORMATRIX} from "../Sprites/SpriteMap.js";
 import Point from '../Utils/Point.js';
 const MOBSPECS = [
-    {mcd : 15,attack : 1, life:1,name:'rabbit'},
-    {mcd : 50,attack : 4, life:5,name:'wolf'},
-    {mcd : 50,attack : 10, life:8,name:'deer'},
-    {mcd : 50,attack : 20, life:10,name:'bear'},
-    {mcd : 10,attack : 15, life:10,name:'npcman'},
-    {mcd : 10,attack : 10, life:10,name:'npcgirl'},
+    {mcd : 25,attack : 1, life:1,name:'rabbit'},
+    {mcd : 25,attack : 4, life:5,name:'wolf'},
+    {mcd : 25,attack : 10, life:8,name:'deer'},
+    {mcd : 25,attack : 20, life:10,name:'bear'},
+    {mcd : 25,attack : 15, life:10,name:'npcman'},
+    {mcd : 25,attack : 10, life:10,name:'npcgirl'},
 ];
 export default class Mob{
     constructor(gamescene,type = 0,center = null){
@@ -19,39 +19,49 @@ export default class Mob{
         this.life = MOBSPECS[this.type].life;
         this.maxLife = MOBSPECS[this.type].life;
         this.moveCountDown = MOBSPECS[this.type].mcd;
+        this.pathToGo=[];
+    }
+    moveTowardPlayer(){
+        var tt = this.scene.tileSize;
+        const path = this.scene.pathFinder.findPath(
+            this.center.x/tt,
+            this.center.y/tt,
+            this.scene.player.center.x/tt,
+            this.scene.player.center.y/tt,
+        );
+        if(path && path.length >= 2){
+            this.center = new Point(path[1][0] * tt,path[1][1] * tt);
+        }
+        else{
+            console.log('no visible path to player');
+        }
     }
     getPossibleNextMove(){
-        let possibleMoves = [];
-        var step = this.scene.tileSize;
-        let x = this.center.x / step;
-        let y = this.center.y / step;
-        if(this.scene.checkObstacle(x+1,y)){
-            possibleMoves.push(new Point())
+        var tt = this.scene.tileSize;
+        if(this.pathToGo.length > 0){
+            var pt = this.pathToGo.shift();
+            this.center = new Point(pt[0] * tt,pt[1] * tt);
+            return;
         }
-        if(this.scene.checkObstacle(x+1,y)){
-            possibleMoves.push(new Point(x*step+step,y*step))
-        }
-        if(this.scene.checkObstacle(x-1,y)){
-            possibleMoves.push(new Point(x*step-step,y*step))
-        }
-        if(this.scene.checkObstacle(x,y+1)){
-            possibleMoves.push(new Point(x*step,y*step+step))
-        }
-        if(this.scene.checkObstacle(x,y-1)){
-            possibleMoves.push(new Point(x*step,y*step-step))
-        }
-        // console.log(possibleMoves);
-        if(possibleMoves.length > 0){
-            var move = possibleMoves[gf.randInt(0,possibleMoves.length)];
-            this.center = new Point(move.x,move.y);
+        else{
+            const path = this.scene.pathFinder.findPath(
+                this.center.x/tt,
+                this.center.y/tt,
+                this.scene.player.center.x/tt,
+                this.scene.player.center.y/tt,
+            );
+            if(path && path.length >= 0){
+                // console.log('calculate new path',this);
+                this.pathToGo = path;
+            }
         }
     }
     update(time){
         this.time = time;
         this.moveCountDown--;
         if(this.moveCountDown<=0){
-            this.moveCountDown = MOBSPECS[this.type].mcd;
-            this.getPossibleNextMove();
+            this.moveCountDown = MOBSPECS[this.type].mcd - this.scene.difficulity;
+            this.moveTowardPlayer();
             if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*2){
                 this.scene.player.life -= this.type+1;
                 this.scene.player.showDamageEffect = 10;
@@ -71,13 +81,15 @@ export default class Mob{
     }
     draw(ctx){
         ctx.drawImage(this.sprite,
-            (this.center).x,// - (this.width)/2,
-            (this.center).y,// -(this.height)/2
+            (this.center).x,
+            (this.center).y,
         );
-        ctx.drawImage(this.getHealthBar(),
-            (this.center).x,// - (this.width)/2,
-            (this.center).y,// -(this.height)/2
-        );
+        if(this.life < this.maxLife){
+            ctx.drawImage(this.getHealthBar(),
+                (this.center).x,
+                (this.center).y,
+            );
+        }
     }
     getSprites(){
         if(Mob.SPRITES) return Mob.SPRITES;
