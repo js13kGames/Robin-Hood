@@ -11,7 +11,7 @@ export default class Arrow extends EObject{
         this.width = this.sprite.width;
         this.height = this.sprite.height;
         this.speed = this.width;
-        this.distanceToTravel = this.e.attributes.ARCHERY * this.speed/20;
+        this.distanceToTravel = this.e.attributes.ARCHERY;
         this.movement = 0;
         this.life = 1;
     }

@@ -12,6 +12,9 @@ export default class Player{
         this.life = this.maxLife = 100;
         this.score = 0;
         this.cash = 0;
+        this.points = 0;
+        this.apples = 0;
+        this.oranges = 0;
         this.attributes = new PlayerAttribute(1);
         this.center = new Point(0,0);
         this.destination = new Point(0,0);
@@ -24,7 +27,9 @@ export default class Player{
         this.shots = [];
         this.hunts = [];
         this.ArrowsCount = 1000;
-        this.radius = 32*8;
+    }
+    getRadius(){
+        return this.scene.tileSize * (2 + 10-this.attributes.STELTH);
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);
@@ -50,7 +55,7 @@ export default class Player{
             // this.sprite = this.sprites[gf.DIRECTION.DOWN];
             // this.scene.camera.fixToCords(this.center);
         }
-        this.mobs = this.scene.mobs.filter(x=>x.center.distanceTo(this.center) < this.radius);
+        this.mobs = this.scene.mobs.filter(x=>x.center.distanceTo(this.center) < this.getRadius());
         if(this.mobs.length > 0){
             // console.log(this.mobs);
             [...this.mobs].forEach(obj=>{
@@ -60,6 +65,14 @@ export default class Player{
         
     }
     fire(){
+        if(this.firecooldown > 0) return;
+        this.firecooldown = 20 - this.attributes.ARCHERY*2;
+        // console.log(this.firecooldown);
+        this.ArrowsCount--;
+        this.shots.push(new Arrow(this));
+        this.playSwooshSound();
+    }
+    fireMagicArrow(){
         if(this.firecooldown > 0) return;
         this.firecooldown = 20 - this.attributes.ARCHERY*2;
         // console.log(this.firecooldown);
@@ -196,6 +209,7 @@ export default class Player{
         return this.sprite;
     }
     playSwooshSound() {
+        // if(!this.gamescene.main.mainmenuscene.sound) return;
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const mainOscillator = audioContext.createOscillator();
         mainOscillator.type = "sawtooth"; // Experiment with different oscillator types
@@ -235,7 +249,7 @@ export default class Player{
         ctx.arc(
             this.center.x + this.sprite.width/2,
             this.center.y + this.sprite.width/2,
-            this.radius,
+            this.getRadius(),
             0,
             Math.PI * 2,
             false

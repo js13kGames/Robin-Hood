@@ -6,6 +6,7 @@ import Point from "../Utils/Point.js";
 import Player from "../Entity/Player.js";
 import Mob from "../Entity/Mob.js";
 import Pathfinder from "../Model/Pathfinder.js";
+import { SPRITES_1 } from "../Sprites/SpriteMap.js";
 
 export default class SceneGame extends Scene{
     constructor(main){
@@ -27,7 +28,9 @@ export default class SceneGame extends Scene{
         this.camera = new Camera(this, this.main.config.width, this.main.config.height,0,0);
         this.camera.mapToPoint(this.player.center);
         this.playername = 'robin hood';
-        this.mobs = [...this.gamemap.presetmobs];
+
+        this.VILLAGERS = [...this.gamemap.VILLAGERS];
+        this.mobs = [];
         this.drops = [];
 
         this.pathMatrix = this.gamemap.pathMatrix;
@@ -42,6 +45,13 @@ export default class SceneGame extends Scene{
         x = Math.floor(x);
         y = Math.floor(y);
         var pt = new Point(x,y);
+        for(let i = 0 ; i < this.VILLAGERS.length;i++){
+            var mob = this.VILLAGERS[i];
+            var d = mob.center.distanceTo(pt);
+            if(d < this.tileSize){
+                return mob;
+            }
+        }
         for(let i = 0 ; i < this.mobs.length;i++){
             var mob = this.mobs[i];
             var d = mob.center.distanceTo(pt);
@@ -70,12 +80,9 @@ export default class SceneGame extends Scene{
         var updatedCanvas = gf.cloneCanvas(this.gamemap.mapcanvas);
         // var updatedCanvas = gf.Lightify(updatedCanvas,0.8);
         var ctxmap = gf.getCtx(updatedCanvas);
-        
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
-        [...this.mobs].forEach(obj=>{
-            // debugger;
-            if(obj.draw) obj.draw(ctxmap);
-        });
+        [...this.mobs].forEach(obj=>{if(obj.draw) obj.draw(ctxmap);});
+        [...this.VILLAGERS].forEach(obj=>{if(obj.draw) obj.draw(ctxmap);});
         this.player.draw(ctxmap);
         if(this.pathToGo){
             for(let i in this.pathToGo){
@@ -167,7 +174,12 @@ export default class SceneGame extends Scene{
     interactWithFacingEntity(){
         var pt = this.player.center.moveClone(this.player.direction,this.tileSize);
         var e = this.haveEntityAt(pt.x,pt.y);
-        console.log(e);
+        if(e && e.interact){
+            e.interact();
+        }
+        else{
+            console.log(e);
+        }
     }
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
@@ -235,16 +247,23 @@ export default class SceneGame extends Scene{
         ctx.font = "16px Arial";
         ctx.drawImage(this.getBuffer(),0,0);
         ctx.fillStyle = '#004b52d6';
-        ctx.fillRect(0,0,ctx.canvas.width,32);
+        ctx.fillRect(0,0,ctx.canvas.width,48);
         ctx.fillStyle = '#ffffff';
         ctx.fillText("♥ " + gf.getNumAsText(this.player.life), 15,15);
         ctx.fillText("⊕ " + gf.getNumAsText(this.player.score), 15,30);
+        ctx.fillText("☺" + gf.getNumAsText(this.player.points), 15,45);
         
         ctx.fillText("➹\t" + gf.getNumAsText(this.player.ArrowsCount), 64*1.5,15);
         ctx.fillText("Ֆ\t" + gf.getNumAsText(this.player.cash), 64*1.5,30);
         
         ctx.fillText("Mobs " + gf.getNumAsText(this.mobs.length), 64*3,15);
         ctx.fillText("LVL " + gf.getNumAsText(this.difficulity), 64*3,30);
+
+        ctx.drawImage(SPRITES_1.apple,64*5 - 4,4);
+        ctx.drawImage(SPRITES_1.lemon,64*5 - 4,20);
+        ctx.fillText("   " + gf.getNumAsText(this.player.apples), 64*5,15);
+        ctx.fillText("   " + gf.getNumAsText(this.player.oranges), 64*5,30);
+
 
         ctx.drawImage(this.miniMap,0,ctx.canvas.height-this.miniMap.height);
         Point.drawCircle(ctx,

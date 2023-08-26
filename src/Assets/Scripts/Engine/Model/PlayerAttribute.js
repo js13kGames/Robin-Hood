@@ -1,9 +1,9 @@
 export default class PlayerAttribute{
     constructor(level){
-        this.ARCHERY = 8;
+        this.ARCHERY = 6;
         this.HEALTH = 1;
         this.POWER = 1;
-        this.SPEED = 8;
+        this.SPEED = 10;
         this.STELTH = 1;
         this.LUCK = 1;
     }

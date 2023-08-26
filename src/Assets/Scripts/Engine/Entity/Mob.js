@@ -21,6 +21,9 @@ export default class Mob{
         this.moveCountDown = MOBSPECS[this.type].mcd;
         this.pathToGo=[];
     }
+    activate(){
+        this.active = true;
+    }
     moveTowardPlayer(){
         var tt = this.scene.tileSize;
         const path = this.scene.pathFinder.findPath(
@@ -105,13 +108,13 @@ export default class Mob{
         this.w = size;
         this.h = size;
         var sprites = [
-            rabbit,
-            wolf,
-            deer,
-            bear,
-            npcman,
-            npcgirl,
-            sword
+            rabbit,//0
+            wolf,//1
+            deer,//2
+            bear,//3
+            npcman,//4
+            npcgirl,//5
+            sword//6
         ];
         Mob.SPRITES = sprites;
         return Mob.SPRITES;

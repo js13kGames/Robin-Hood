@@ -2,6 +2,9 @@ import NPC from "../Entity/NPC.js";
 import Point from "../Utils/Point.js";
 import * as gf from '../Utils/gf.js';
 import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
+import Villager from "../Entity/Villager.js";
+import Merchant from "../Entity/Merchant.js";
+import Wizzard from "../Entity/Wizzard.js";
 const MAPTILES = [
     {'n':'tree' ,o:1,'c':'#0d3702'},
     {'n':'brick' ,o:1,'c':'#bf0a0a'},
@@ -11,6 +14,9 @@ const MAPTILES = [
     {'n':'steel',o:1,'c':'#6a6a6a'},
     {'n':'snow',o:0,'c':'#dcdcdc'},
     {'n':'player',o:0,'c':'#130c40'},
+    {'n':'villager',o:1,'c':'#fff300'},
+    {'n':'merchant',o:1,'c':'#76428a'},
+    {'n':'wizzard',o:1,'c':'#191919'},
     {'n':'army',o:0,'c':'#ff0000'},
     {'n':'cave',o:1,'c':'#2e2b2b'},
     {'n':'deerspawnpoint',o:0,'c':'#df7126'},
@@ -41,6 +47,9 @@ const colorToObjectMap = (k)=>{
 const colorToEntityMap= (k)=>{
     switch(k){
         case '#130c40': return 'player';
+        case '#fff300': return 'villager';
+        case '#76428a': return 'merchant';
+        case '#191919': return 'wizzard';
         case '#df7126': return 'spawner_deer';
         case '#d1d1d1': return 'spawner_rabbit';
         case '#898898': return 'spawner_wolf';
@@ -49,6 +58,7 @@ const colorToEntityMap= (k)=>{
 }
 export default class MapGenerator {
     constructor(gamescene, s = 1) {
+        this.gamescene = gamescene;
         this.sprites_dirt = gf.repeatCanvas(SPRITES_1.dirt,4);
         this.sprites_grass = gf.repeatCanvas(SPRITES_1.grass,4);
         this.sprites_water = gf.repeatCanvas(SPRITES_1.water,4);
@@ -60,8 +70,8 @@ export default class MapGenerator {
         this.sprites_house = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.house,4);
         this.sprites_shop = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,4);
         this.sprites_cave = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,4);
-        this.gamescene = gamescene;
         this.PLAYERLOCATION = [0,0];
+        this.villagers = [];
         this.colorMatrix = [];
         this.tileMatrix = [];
         this.presetmobs = [];
@@ -137,6 +147,7 @@ export default class MapGenerator {
         ctx.drawImage(map_forest_4, w*2 ,w);
         ctx.drawImage(map_castle,0,0);
         ctx.drawImage(map_spawn,w,w);
+        // document.body.append(map);
         return map;
     }
     getMapItems(colorMatrix,s = 32){
@@ -148,6 +159,7 @@ export default class MapGenerator {
         tilemap = new Array(rows).fill(null).map(()=>new Array(cols).fill(null));
         objectsmap = new Array(rows).fill(null).map(()=>new Array(cols).fill(null));
         var playerLocation= new Point(32,32);
+        var villagers = [];
         gf.forIJMatrix(colorMatrix,(e,i,j)=>{
             tilemap[i][j] = colorToTileMap(e) || 'grass';
             objectsmap[i][j] = colorToObjectMap(e) || null;
@@ -160,6 +172,18 @@ export default class MapGenerator {
                 if(colorToEntityMap(e) == 'player'){
                     playerLocation = new Point(i*s,j*s);
                 }
+                else if(colorToEntityMap(e) == 'villager'){
+                    villagers.push(new Villager(this.gamescene,new Point(i*s,j*s)));
+                    console.log('villager added');
+                }
+                else if(colorToEntityMap(e) == 'merchant'){
+                    villagers.push(new Merchant(this.gamescene,new Point(i*s,j*s)));
+                    console.log('merchant added');
+                }
+                else if(colorToEntityMap(e) == 'wizzard'){
+                    villagers.push(new Wizzard(this.gamescene,new Point(i*s,j*s)));
+                    console.log('wizzard added');
+                }
             }
         });
         var tilemapcanvas = this.buildCanvasForMap(tilemap,s);
@@ -170,7 +194,8 @@ export default class MapGenerator {
             tilemapcanvas : tilemapcanvas,
             objectsmapcanvas : objectsmapcanvas,
             entitymap : entitymap,
-            playerLocation : playerLocation
+            playerLocation : playerLocation,
+            villagers : villagers
         }
 
     }
@@ -212,9 +237,9 @@ export default class MapGenerator {
         // console.log(mapItems);
         // console.log(this.mapItems.entitymap['player']);
         this.PLAYERLOCATION = this.mapItems.playerLocation;
+        this.VILLAGERS = this.mapItems.villagers;
         var mapcanvas = gf.combineSprites([mapItems.tilemapcanvas,mapItems.objectsmapcanvas]);
         this.mapcanvas = mapcanvas;
         // document.body.append(mapcanvas);
-
     }
 }

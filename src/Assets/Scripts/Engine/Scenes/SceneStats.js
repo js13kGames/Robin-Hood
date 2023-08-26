@@ -32,18 +32,24 @@ export default class SceneStats extends Scene{
         }
         console.log(this.attrStatMenu);
         console.log(this.cursorLocations);
-        // this.cursorLocations = [
-        //     {x:this.textx,y:32*4},// 0 new game
-        //     {x:this.textx,y:32*5},// 1 sound
-        //     {x:this.textx,y:32*6},// 2 Music
-        //     {x:this.textx,y:32*7},// 3 name
-        //     {x:this.textx,y:32*8},// 4 instructions
-        // ];
 
         this.currentcursorloc = 0;
-
+        this.buffer = this.getBuffer();
     }
+    getBuffer(){
+        var canvas = gf.makeCanvas(this.main.config.width,this.main.config.height);
+        var ctx = gf.getCtx(canvas);
+        var x1 = this.cursorLocations[0];
+        var xs = x1.x+20;
 
+        ctx.drawImage( this.getText(`████ STATISTICS ████`),xs, x1.y-64);
+        ctx.drawImage( this.getText(`POINTS`),xs, x1.y-32);
+        for(let i in this.cursorLocations){
+            var cl = this.cursorLocations[i];
+            ctx.drawImage( this.getText(`${cl.k} `),xs, cl.y);
+        }
+        return canvas;
+    }
     update(time){
         this.time = time;
     }
@@ -60,38 +66,16 @@ export default class SceneStats extends Scene{
         ctx.font = "16px Arial";
         var x1 = this.cursorLocations[0];
         var xs = x1.x+20;
-        ctx.drawImage( this.getText(`████ STATISTICS ████`),xs, x1.y-64);
-        ctx.drawImage( this.getText(`POINTS ${this.gamescene.player.score}`),xs, x1.y-32);
-
+        ctx.drawImage( this.buffer,0,0);
+        
+        // ctx.drawImage( this.getText(`████ STATISTICS ████`),xs, x1.y-64);
+        // ctx.drawImage( this.getText(`POINTS ${this.gamescene.player.score}`),xs, x1.y-32);
+        ctx.drawImage( this.getText(`${this.gamescene.player.points}`),xs + 150, x1.y-32);
 
         for(let i in this.cursorLocations){
             var cl = this.cursorLocations[i];
-            ctx.drawImage( this.getText(`${cl.k} ${this.attributes.getAttrByName(cl.k)}`),xs, cl.y);
+            ctx.drawImage( this.getText(`${this.attributes.getAttrByName(cl.k)}`),xs + 150, cl.y);
         }
-        
-
-        // ctx.drawImage(
-        //     Font.get(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water),
-        //     this.cursorLocations[1].x + 20,
-        //     this.cursorLocations[1].y
-        // );
-        // ctx.drawImage(
-        //     Font.get(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,'green',this.sprites.water),
-        //     this.cursorLocations[2].x + 20,
-        //     this.cursorLocations[2].y
-        // );
-        // ctx.drawImage(
-        //     Font.get(`█ NAME : ${this.playername}`,24,'green',this.sprites.water),
-        //     this.cursorLocations[3].x + 20,
-        //     this.cursorLocations[3].y
-        // );
-        // ctx.drawImage(
-        //     Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
-        //     this.cursorLocations[4].x + 20,
-        //     this.cursorLocations[4].y,
-        // );
-
-
         ctx.drawImage(this.sprites.player,
             this.cursorLocations[this.currentcursorloc].x,
             this.cursorLocations[this.currentcursorloc].y+4);
@@ -102,15 +86,31 @@ export default class SceneStats extends Scene{
         if(e === 'q'){
             this.main.toMainMenuScene();
         }
-        else if(e === 's' || e ==='ArrowDown'){
+        else if(e === 'w' || e ==='ArrowUp'){
             if(this.currentcursorloc == 0) this.currentcursorloc = this.cursorLocations.length-1;
             else this.currentcursorloc = gf.abs(this.currentcursorloc - 1) % (this.cursorLocations.length);
         }
-        else if(e === 'w' || e === 'ArrowUp'){
-            this.currentcursorloc = gf.abs(this.currentcursorloc - 1) % (this.cursorLocations.length);
+        else if(e === 's' || e === 'ArrowDown'){
+            this.currentcursorloc = gf.abs(this.currentcursorloc + 1) % (this.cursorLocations.length);
         }
         else if(e == 'd' || e == 'ArrowRight'){
-
+            if(this.gamescene.player.points <= 0){
+                alert('no points to use');
+                return;
+            }
+            var i = this.currentcursorloc;
+            var at = this.cursorLocations[this.currentcursorloc].k;
+            var val = this.gamescene.player.attributes.getAttrByName(at);
+            if(val >= 10){
+                alert('level 10 reached');
+            }
+            else{
+                var cnf = confirm('spend points on upgrading skill ' + at);
+                if(cnf){
+                    this.gamescene.player.attributes[at] += 1;
+                    this.gamescene.player.points -= 1;
+                }
+            }
         }
         else if(e === 'a' || e === 'ArrowLeft' || e === 'd' || e === 'ArrowRight' || e === 'space' || e === ' '){
             
