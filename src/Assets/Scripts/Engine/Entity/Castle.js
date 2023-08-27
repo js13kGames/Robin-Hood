@@ -3,6 +3,15 @@ import * as gf from '../Utils/gf.js';
 export default class Castle{
     constructor(scene,mult= 2){
         this.scene = scene;
+        this.getSprites(mult);
+
+    }
+
+    update(time){
+        this.time = time;
+
+    }
+    getSprites(mult = 2){
         var canvasOriginal = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,mult);
         // var canvasOriginal = SPRITES_1.gnifiedcastle',mult);
         var skele = gf.getCanvasSkeleton(canvasOriginal);
@@ -30,12 +39,5 @@ export default class Castle{
         this.brick =    gf.combineSprites([canvasOriginal,body_brick,outer_brick]);
         this.steel =    gf.combineSprites([canvasOriginal,body_steel,outer_steel]);
         this.magic =    gf.combineSprites([canvasOriginal,body_magic,outer_magic]);
-
     }
-
-    update(time){
-        this.time = time;
-
-    }
-
 }

@@ -7,6 +7,14 @@ export default class PlayerAttribute{
         this.STELTH = 1;
         this.LUCK = 1;
     }
+    enableGodMode(){
+        this.ARCHERY = 15;
+        this.HEALTH = 15;
+        this.POWER = 15;
+        this.SPEED = 15;
+        this.STELTH = 15;
+        this.LUCK = 15;
+    }
     static clone(obj){
         var newAttr = new PlayerAttribute();
         newAttr.ARCHERY = obj.ARCHERY;

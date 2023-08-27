@@ -72,13 +72,11 @@ export default class MapGenerator {
         this.sprites_cave = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,4);
         this.PLAYERLOCATION = [0,0];
         this.villagers = [];
+        this.buildings = [];
         this.colorMatrix = [];
         this.tileMatrix = [];
-        this.presetmobs = [];
         this.caves = [];
         this.deerspawnpoints = [];
-        this.houseLocations = [];
-        this.shopLocations = [];
         this.getPredefinedMap1(s);
         this.pathMatrix = this.getPathfindMatrix();
     }

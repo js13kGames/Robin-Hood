@@ -22,8 +22,13 @@ export default class SceneGame extends Scene{
         this.gamemap = new MapGenerator(this,this.scalemultiplier);
         this.miniMap = gf.Lightify(this.gamemap.map,0.7);
 
-
         this.player = new Player(this);
+        if(this.main.mainmenuscene.cheatmode){
+            this.player.cash = 10_000_000;
+        }
+        if(this.main.mainmenuscene.godmode){
+            this.player.enableGodMode();
+        }
         this.player.setPosition(this.gamemap.PLAYERLOCATION ? this.gamemap.PLAYERLOCATION : new Point(32*7,32*7));
         this.camera = new Camera(this, this.main.config.width, this.main.config.height,0,0);
         this.camera.mapToPoint(this.player.center);

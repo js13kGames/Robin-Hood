@@ -102,7 +102,7 @@ export default class SceneStats extends Scene{
             var at = this.cursorLocations[this.currentcursorloc].k;
             var val = this.gamescene.player.attributes.getAttrByName(at);
             if(val >= 10){
-                alert('level 10 reached');
+                alert('level max reached');
             }
             else{
                 var cnf = confirm('spend points on upgrading skill ' + at);

@@ -12,6 +12,7 @@ export default class MainMenuScene extends Scene{
         this.sprites = {
             'steel' :   SPRITES_1.steel,
             'water' :   SPRITES_1.water,
+            'snow' :   SPRITES_1.snow,
             'grass' :   SPRITES_1.grass,
             'dirt' :    SPRITES_1.dirt,
             'magic' :   SPRITES_1.magic,
@@ -23,10 +24,14 @@ export default class MainMenuScene extends Scene{
             {x:this.textx,y:32*5},// 1 sound
             {x:this.textx,y:32*6},// 2 Music
             {x:this.textx,y:32*7},// 3 name
+            {x:this.textx,y:32*8},// cheat mode
+            {x:this.textx,y:32*9},
+            {x:this.textx,y:32*10},//god mode
         ];
         this.playername = 'robin hood';
         this.currentcursorloc = 0;
         this.sound = false;
+        this.cheatmode = false;
         this.buffer = this.staticBuffer();
     }
     staticBuffer(){
@@ -36,9 +41,6 @@ export default class MainMenuScene extends Scene{
     }
     update(time){
         this.time = time;
-        if(this.main.gamescene && this.cursorLocations.length == 4){
-            this.cursorLocations.push({x:this.textx,y:32*8});// 4 stats
-        }
     }
     draw(ctx){
         let h = 20;
@@ -65,18 +67,27 @@ export default class MainMenuScene extends Scene{
             this.cursorLocations[2].x + 20,
             this.cursorLocations[2].y
         );
+        
         ctx.drawImage(
             Font.get(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
             this.cursorLocations[3].x + 20,
             this.cursorLocations[3].y
         );
-        if(this.main.gamescene && this.cursorLocations[4]){
-            ctx.drawImage(
-                Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
-                this.cursorLocations[4].x + 20,
-                this.cursorLocations[4].y,
-                );
-        }
+        ctx.drawImage(
+            Font.get(`█ Cheatmode : ${(this.cheatmode ? 'on':'off')}`,24,'green',this.sprites.snow,'Verdana'),
+            this.cursorLocations[4].x + 20,
+            this.cursorLocations[4].y
+        );
+        ctx.drawImage(
+            Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
+            this.cursorLocations[5].x + 20,
+            this.cursorLocations[5].y,
+            );
+        ctx.drawImage(
+            Font.get(`█ GOD MODE : ${(this.godmode ? 'on':'off')}`,24,'green',this.sprites.snow,'Verdana'),
+            this.cursorLocations[6].x + 20,
+            this.cursorLocations[6].y
+        );
         ctx.drawImage(this.sprites.player,
             this.cursorLocations[this.currentcursorloc].x,
             this.cursorLocations[this.currentcursorloc].y+4);
@@ -93,7 +104,13 @@ export default class MainMenuScene extends Scene{
         }
         else if(e === 'a' || e === 'ArrowLeft' || e === 'd' || e === 'ArrowRight' || e === 'space' || e === ' '){
             if(this.currentcursorloc == 0){ //new game
-                this.main.toGameScene();
+                if(!this.main.gamescene){
+                    var c = confirm('start new game?');
+                    if(c) this.main.toGameScene();
+                }
+                else{
+                    this.main.toGameScene();
+                }
             }
             else if(this.currentcursorloc == 1){ //toggle music
                 if(this.sound) this.sound = false;
@@ -107,10 +124,26 @@ export default class MainMenuScene extends Scene{
                 var name = prompt('name',this.playername);
                 this.playername = name && name.length > 0 ? name.substring(0,10) : this.playername;
             }
-            else if(this.currentcursorloc == 4){ //stats page
+            else if(this.currentcursorloc == 4){ //use cheat
+                this.cheatmode = true;
+                if(this.main.gamescene){
+                    this.main.gamescene.player.cash = 10_000_000;
+                }
+            }
+            else if(this.currentcursorloc == 5){ //stats page
                 if(this.musicPlayer) this.musicPlayer.stop();
-                this.main.toSceneStats();
-                // alert('under construction');
+                if(this.main.gamescene){
+                    this.main.toSceneStats();
+                }
+                else{
+                    alert('start game before using this page');
+                }
+            }
+            else if(this.currentcursorloc == 6){ //use cheat
+                this.godmode = true;
+                if(this.main.gamescene){
+                    this.main.gamescene.player.enableGodMode();
+                }
             }
         }
     }

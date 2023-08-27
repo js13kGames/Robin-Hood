@@ -28,8 +28,21 @@ export default class Player{
         this.hunts = [];
         this.ArrowsCount = 1000;
     }
+    enableGodMode(){
+        this.cash = 10_000_000;
+        this.points = 10_000_000;
+        this.apples = 10_000_000;
+        this.oranges = 10_000_000;
+        this.ArrowsCount = 10_000_000;
+        this.life = 10_000_000;
+        this.attributes.enableGodMode();
+    }
     getRadius(){
-        return this.scene.tileSize * (2 + 10-this.attributes.STELTH);
+        var r =  this.scene.tileSize * (2 + 10-this.attributes.STELTH);
+        if(r <= this.scene.tileSize *1.5){
+            r = this.scene.tileSize*1.5;
+        }
+        return r;
     }
     setPosition (point){
         this.center = new Point(point.x,point.y);
@@ -209,7 +222,7 @@ export default class Player{
         return this.sprite;
     }
     playSwooshSound() {
-        // if(!this.gamescene.main.mainmenuscene.sound) return;
+        if(!this.scene.main.mainmenuscene.sound) return;
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const mainOscillator = audioContext.createOscillator();
         mainOscillator.type = "sawtooth"; // Experiment with different oscillator types
@@ -227,6 +240,7 @@ export default class Player{
         mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
     }
     playArrowHitSound() {
+        if(!this.scene.main.mainmenuscene.sound) return;
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const mainOscillator = audioContext.createOscillator();
         mainOscillator.type = "square"; // Adjust oscillator type
@@ -245,16 +259,20 @@ export default class Player{
         mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
     }
     drawRadius(ctx){
+        var r = this.getRadius();
+        if(r<=0)return;
         ctx.beginPath();
         ctx.arc(
             this.center.x + this.sprite.width/2,
             this.center.y + this.sprite.width/2,
-            this.getRadius(),
+            r,
             0,
             Math.PI * 2,
             false
         );
+        ctx.setLineDash([5, 25]); // Set the line dash pattern: 5px dash, 5px gap
         ctx.strokeStyle = 'red';
         ctx.stroke();
+        ctx.setLineDash([]); // Reset the line dash pattern to solid line
     }
 }
