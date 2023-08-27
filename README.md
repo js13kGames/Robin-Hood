@@ -43,7 +43,10 @@ In **Robin Hood's Quest**, you'll:
 - Discover hidden locations and uncover the secrets of the world.
 
 ## Screenshots
-TODO
-<!-- ![Screenshot 1](./images/screenshot1.png) -->
-<!-- ![Screenshot 2](./images/screenshot2.png) -->
-<!-- ![Screenshot 3](./images/screenshot3.png) -->
+![Screenshot 1](./Screenshots/sc_1.png)
+![Screenshot 2](./Screenshots/sc_2.png)
+![Screenshot 3](./Screenshots/sc_3.png)
+![Screenshot 4](./Screenshots/sc_4.png)
+![Screenshot 5](./Screenshots/sc_5.png)
+![Screenshot 6](./Screenshots/sc_6.png)
+![Screenshot 7](./Screenshots/sc_7.png)
