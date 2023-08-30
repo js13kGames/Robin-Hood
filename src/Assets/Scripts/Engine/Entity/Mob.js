@@ -75,7 +75,7 @@ export default class Mob{
         ctx.fillStyle = 'green';
         var barw = this.sprite.width * (this.life / this.maxLife);
         ctx.fillRect(0,0,barw,3);
-        ctx2.drawImage(this.getHealthBar(),this.center.x,this.center.y,);
+        ctx2.drawImage(canvas,this.center.x,this.center.y,);
     }
     draw(ctx){
         ctx.drawImage(this.sprite,
