@@ -116,7 +116,7 @@ export default class Player{
                 x.life -= arrow.life;
                 if(x.life <= 0){
                     this.scene.mobs.push(new Drop(this.scene,x.center,x.type+1));
-                    if(x.type == 4 || x.type == 5){
+                    if(x.type == 5){
                         this.score -= x.type+1;
                     }
                     else{

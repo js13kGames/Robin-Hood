@@ -1,9 +1,7 @@
 import Scene from "./Scene.js";
 import * as gf from '../Utils/gf.js';
-import MusicPlayer from '../Utils/MusicPlayer.js';
 import Font from "../Sprites/Font.js";
-import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
-import PlayerAttribute from "../Model/PlayerAttribute.js";
+import {SPRITES_1} from '../Sprites/SpriteMap.js';
 export default class SceneStats extends Scene{
     constructor(main){
         super(main);
@@ -16,11 +14,8 @@ export default class SceneStats extends Scene{
             'player' :  SPRITES_1.player,
         }
         this.textx = this.main.config.width < 400 ? 32 : 100;
-        
         this.gamescene = this.main.gamescene;
-        // this.attributes = new PlayerAttribute();
         this.attributes = this.gamescene.player.attributes;
-        console.log(this.gamescene);
         this.cursorLocations = [];
         this.attrStatMenu = this.attributes.getStatMenu();
         for(let i in this.attrStatMenu){
@@ -30,9 +25,6 @@ export default class SceneStats extends Scene{
                 k:this.attrStatMenu[i].n,
             });
         }
-        console.log(this.attrStatMenu);
-        console.log(this.cursorLocations);
-
         this.currentcursorloc = 0;
         this.buffer = this.getBuffer();
     }
@@ -67,14 +59,10 @@ export default class SceneStats extends Scene{
         var x1 = this.cursorLocations[0];
         var xs = x1.x+20;
         ctx.drawImage( this.buffer,0,0);
-        
-        // ctx.drawImage( this.getText(`████ STATISTICS ████`),xs, x1.y-64);
-        // ctx.drawImage( this.getText(`POINTS ${this.gamescene.player.score}`),xs, x1.y-32);
         ctx.drawImage( this.getText(`${this.gamescene.player.points}`),xs + 150, x1.y-32);
-
         for(let i in this.cursorLocations){
             var cl = this.cursorLocations[i];
-            ctx.drawImage( this.getText(`${this.attributes.getAttrByName(cl.k)}`),xs + 150, cl.y);
+            ctx.drawImage( this.getText(`${this.gamescene.player.attributes.getAttrByName(cl.k)}`),xs + 150, cl.y);
         }
         ctx.drawImage(this.sprites.player,
             this.cursorLocations[this.currentcursorloc].x,
@@ -107,34 +95,19 @@ export default class SceneStats extends Scene{
             else{
                 var cnf = confirm('spend points on upgrading skill ' + at);
                 if(cnf){
-                    this.gamescene.player.attributes[at] += 1;
+                    this.gamescene.player.attributes.editAttrByName(at, this.gamescene.player.attributes.getAttrByName(at) + 1);
                     this.gamescene.player.points -= 1;
                 }
             }
         }
-        else if(e === 'a' || e === 'ArrowLeft' || e === 'd' || e === 'ArrowRight' || e === 'space' || e === ' '){
+        else if(
+            e == 'd' 
+            || e === 'a' 
+            || e === 'ArrowLeft' 
+            || e === 'ArrowRight' 
+            || e === 'space' 
+            || e === ' '){
             
-
-            /*if(this.currentcursorloc == 0){ //new game
-                this.main.toGameScene();
-            }
-            else if(this.currentcursorloc == 1){ //toggle music
-                if(this.sound) this.sound = false;
-                else this.sound = true;
-            }
-            else if(this.currentcursorloc == 2){ //toggle sound
-                if(!this.musicPlayer) this.musicPlayer = new MusicPlayer(bgm, 120, false, true, 2000);
-                this.musicPlayer.toggle();
-            }
-            else if(this.currentcursorloc == 3){ //change name
-                var name = prompt('name',this.playername);
-                this.playername = name && name.length > 0 ? name.substring(0,10) : this.playername;
-            }
-            else if(this.currentcursorloc == 4){ //stats page
-                if(this.musicPlayer) this.musicPlayer.stop();
-                alert('under construction');
-            }
-            */
         }
     }
     keydown(e){}

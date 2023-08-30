@@ -1,10 +1,11 @@
-import NPC from "../Entity/NPC.js";
 import Point from "../Utils/Point.js";
 import * as gf from '../Utils/gf.js';
 import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 import Villager from "../Entity/Villager.js";
 import Merchant from "../Entity/Merchant.js";
 import Wizzard from "../Entity/Wizzard.js";
+import Castle from "../Entity/Castle.js";
+import Cave from "../Entity/Cave.js";
 const MAPTILES = [
     {'n':'tree' ,o:1,'c':'#0d3702'},
     {'n':'brick' ,o:1,'c':'#bf0a0a'},
@@ -37,10 +38,10 @@ const colorToObjectMap = (k)=>{
         case '#0d3702': return 'tree';
         case '#bf0a0a': return 'brick';
         case '#6a6a6a': return 'steel';
-        case '#a9a9a9': return 'castle';
+        // case '#a9a9a9': return 'castle';
         case '#fbf236': return 'house';
         case '#eca732': return 'shop';
-        case '#2e2b2b': return 'cave';
+        // case '#2e2b2b': return 'cave';
         default:return null;
     }
 }
@@ -50,6 +51,8 @@ const colorToEntityMap= (k)=>{
         case '#fff300': return 'villager';
         case '#76428a': return 'merchant';
         case '#191919': return 'wizzard';
+        case '#a9a9a9': return 'castle';
+        case '#2e2b2b': return 'cave';
         case '#df7126': return 'spawner_deer';
         case '#d1d1d1': return 'spawner_rabbit';
         case '#898898': return 'spawner_wolf';
@@ -71,8 +74,8 @@ export default class MapGenerator {
         this.sprites_shop = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.shop,4);
         this.sprites_cave = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.cave,4);
         this.PLAYERLOCATION = [0,0];
-        this.villagers = [];
-        this.buildings = [];
+        this.VILLAGERS = [];
+        this.BUILDINGS = [];
         this.colorMatrix = [];
         this.tileMatrix = [];
         this.caves = [];
@@ -158,6 +161,7 @@ export default class MapGenerator {
         objectsmap = new Array(rows).fill(null).map(()=>new Array(cols).fill(null));
         var playerLocation= new Point(32,32);
         var villagers = [];
+        var buildings = [];
         gf.forIJMatrix(colorMatrix,(e,i,j)=>{
             tilemap[i][j] = colorToTileMap(e) || 'grass';
             objectsmap[i][j] = colorToObjectMap(e) || null;
@@ -182,6 +186,18 @@ export default class MapGenerator {
                     villagers.push(new Wizzard(this.gamescene,new Point(i*s,j*s)));
                     console.log('wizzard added');
                 }
+                else if(colorToEntityMap(e) == 'castle'){
+                    var castle = new Castle(this.gamescene,4);
+                    castle.setHeadPoint({x:i*s,y:j*s});
+                    buildings.push(castle);
+                    console.log('castle added');
+                }
+                else if(colorToEntityMap(e) == 'cave'){
+                    var cave = new Cave(this.gamescene,4);
+                    cave.setHeadPoint({x:i*s,y:j*s});
+                    buildings.push(cave);
+                    console.log('cave added');
+                }
             }
         });
         var tilemapcanvas = this.buildCanvasForMap(tilemap,s);
@@ -193,7 +209,8 @@ export default class MapGenerator {
             objectsmapcanvas : objectsmapcanvas,
             entitymap : entitymap,
             playerLocation : playerLocation,
-            villagers : villagers
+            villagers : villagers,
+            buildings : buildings
         }
 
     }
@@ -236,6 +253,7 @@ export default class MapGenerator {
         // console.log(this.mapItems.entitymap['player']);
         this.PLAYERLOCATION = this.mapItems.playerLocation;
         this.VILLAGERS = this.mapItems.villagers;
+        this.BUILDINGS = this.mapItems.buildings;
         var mapcanvas = gf.combineSprites([mapItems.tilemapcanvas,mapItems.objectsmapcanvas]);
         this.mapcanvas = mapcanvas;
         // document.body.append(mapcanvas);

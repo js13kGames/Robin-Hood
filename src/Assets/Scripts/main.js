@@ -8,7 +8,6 @@ const config = {
     framerate:1/30,
     width : parseInt(window.innerWidth/32)*32,
     height : parseInt(window.innerHeight/32)*32,
-    // height : 32*18,
     assets:"Assets",
     spritesheet: gf.querySelector('#spriteSheetMain'),
 }

@@ -2,10 +2,8 @@ import Scene from "./Scene.js";
 import * as gf from '../Utils/gf.js';
 import MusicPlayer from '../Utils/MusicPlayer.js';
 import Font from "../Sprites/Font.js";
-// const bgm = 'E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3E3E3D3E3G3G3E3E3D3E3A3A3G3G3E3E3D3E3E3E3D3E3D3D3';
 const bgm = 'E4E4D4E4E4D4E4G4G4A4A4E4E4D4E4E4D4E4G4G4A4A4G4G4E4E4D4E4E4D4E4A4A4';
-import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
-
+import {SPRITES_1} from '../Sprites/SpriteMap.js';
 export default class MainMenuScene extends Scene{
     constructor(main){
         super(main);

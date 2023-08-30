@@ -20,6 +20,7 @@ export default class SceneGame extends Scene{
         this.tileSize = 16 * this.scalemultiplier;
         this.keyboard = {};
         this.gamemap = new MapGenerator(this,this.scalemultiplier);
+
         this.miniMap = gf.Lightify(this.gamemap.map,0.7);
 
         this.player = new Player(this);
@@ -35,6 +36,7 @@ export default class SceneGame extends Scene{
         this.playername = 'robin hood';
 
         this.VILLAGERS = [...this.gamemap.VILLAGERS];
+        this.BUILDINGS = [...this.gamemap.BUILDINGS];
         this.mobs = [];
         this.drops = [];
 
@@ -67,9 +69,6 @@ export default class SceneGame extends Scene{
         return null;
     }
     checkObstacle(x,y){
-
-    }
-    checkObstacle(x,y){
         var mob = this.haveEntityAt(x,y);
         if(mob != null) return true;
         return this.gamemap.isObstacleAt(x/this.tileSize,y/this.tileSize);
@@ -88,6 +87,7 @@ export default class SceneGame extends Scene{
         // ctxmap.drawImage(this.player.currentSprite,this.player.center.x,this.player.center.y);
         [...this.mobs].forEach(obj=>{if(obj.draw) obj.draw(ctxmap);});
         [...this.VILLAGERS].forEach(obj=>{if(obj.draw) obj.draw(ctxmap);});
+        [...this.BUILDINGS].forEach(obj=>{if(obj.draw) obj.draw(ctxmap);});
         this.player.draw(ctxmap);
         if(this.pathToGo){
             for(let i in this.pathToGo){
@@ -126,6 +126,7 @@ export default class SceneGame extends Scene{
             this.difficulity++;
             this._spawnMobs();
         }
+        [...this.BUILDINGS].forEach(obj=>{if(obj.update) obj.update(time);});
     }
     _spawnMobs(){
         for(let i = 0; i < this.MOBCOUNT;i++){

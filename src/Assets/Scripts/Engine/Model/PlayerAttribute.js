@@ -45,6 +45,17 @@ export default class PlayerAttribute{
             default : return 0;
         }
     }
+    editAttrByName(n,v){
+        switch(n){
+            case 'ARCHERY':this.ARCHERY = v; return true;
+            case 'HEALTH':this.HEALTH = v; return true;
+            case 'POWER':this.POWER = v; return true;
+            case 'SPEED':this.SPEED = v; return true;
+            case 'STELTH':this.STELTH = v; return true;
+            case 'LUCK':this.LUCK = v; return true;
+            default : return false;
+        }
+    }
     getStatMenu(){
         return [
             {n:'HEALTH', v : this.HEALTH },

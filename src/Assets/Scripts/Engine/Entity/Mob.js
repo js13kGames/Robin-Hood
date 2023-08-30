@@ -65,9 +65,10 @@ export default class Mob{
         if(this.moveCountDown<=0){
             this.moveCountDown = MOBSPECS[this.type].mcd - this.scene.difficulity;
             this.moveTowardPlayer();
-            if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*2){
+            if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*1.5){
                 this.scene.player.life -= this.type+1;
-                this.scene.player.showDamageEffect = 10;
+                this.scene.player.showDamageEffect = 3;
+                console.log(this,'attacking player');
             }
         }
     }
@@ -87,6 +88,7 @@ export default class Mob{
             (this.center).x,
             (this.center).y,
         );
+        
         if(this.life < this.maxLife){
             ctx.drawImage(this.getHealthBar(),
                 (this.center).x,
