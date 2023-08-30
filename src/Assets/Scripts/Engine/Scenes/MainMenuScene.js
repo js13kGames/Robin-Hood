@@ -49,40 +49,41 @@ export default class MainMenuScene extends Scene{
         ctx.fillStyle = "green";
         ctx.font = "16px Arial";
         ctx.drawImage(this.buffer,0,0);
-
+        var ff = 'Verdana';
+        var cc = 'green';
         ctx.drawImage(
-            Font.get('█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ',24,'green',this.sprites.grass,'Verdana'),
+            Font.get('█ ⓅⓁⒶⓎ ⒼⒶⓂⒺ',24,cc,this.sprites.grass,ff),
             this.cursorLocations[0].x + 20,
             this.cursorLocations[0].y,
         );
         ctx.drawImage(
-            Font.get(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ SOUND : ${(this.sound && this.sound == true ? 'on':'off')}`,24,cc,this.sprites.water,ff),
             this.cursorLocations[1].x + 20,
             this.cursorLocations[1].y
         );
         ctx.drawImage(
-            Font.get(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ Music : ${(this.musicPlayer && this.musicPlayer.playing ? 'on':'off')}`,24,cc,this.sprites.water,ff),
             this.cursorLocations[2].x + 20,
             this.cursorLocations[2].y
         );
         
         ctx.drawImage(
-            Font.get(`█ NAME : ${this.playername}`,24,'green',this.sprites.water,'Verdana'),
+            Font.get(`█ NAME : ${this.playername}`,24,cc,this.sprites.water,ff),
             this.cursorLocations[3].x + 20,
             this.cursorLocations[3].y
         );
         ctx.drawImage(
-            Font.get(`█ Cheatmode : ${(this.cheatmode ? 'on':'off')}`,24,'green',this.sprites.snow,'Verdana'),
+            Font.get(`█ Cheatmode : ${(this.cheatmode ? 'on':'off')}`,24,cc,this.sprites.snow,ff),
             this.cursorLocations[4].x + 20,
             this.cursorLocations[4].y
         );
         ctx.drawImage(
-            Font.get('█ STATS ㋡',24,'green',this.sprites.dirt,'Roboto'),
+            Font.get('█ STATS ㋡',24,cc,this.sprites.dirt,ff),
             this.cursorLocations[5].x + 20,
             this.cursorLocations[5].y,
             );
         ctx.drawImage(
-            Font.get(`█ GOD MODE : ${(this.godmode ? 'on':'off')}`,24,'green',this.sprites.snow,'Verdana'),
+            Font.get(`█ GOD MODE : ${(this.godmode ? 'on':'off')}`,24,cc,this.sprites.snow,ff),
             this.cursorLocations[6].x + 20,
             this.cursorLocations[6].y
         );

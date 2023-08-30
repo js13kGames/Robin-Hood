@@ -47,7 +47,6 @@ export default class Game{
                 }
                 catch(e){
                     console.log(e);
-                    //alert('game crashed');
                     this.Timer.stop();
                 }
             }

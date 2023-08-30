@@ -6,18 +6,13 @@ export default class SceneStats extends Scene{
     constructor(main){
         super(main);
         this.sprites = {
-            'steel' :   SPRITES_1.steel,
-            'water' :   SPRITES_1.water,
             'grass' :   SPRITES_1.grass,
-            'dirt' :    SPRITES_1.dirt,
-            'magic' :   SPRITES_1.magic,
             'player' :  SPRITES_1.player,
         }
         this.textx = this.main.config.width < 400 ? 32 : 100;
         this.gamescene = this.main.gamescene;
-        this.attributes = this.gamescene.player.attributes;
         this.cursorLocations = [];
-        this.attrStatMenu = this.attributes.getStatMenu();
+        this.attrStatMenu = this.gamescene.player.attributes.getStatMenu();
         for(let i in this.attrStatMenu){
             this.cursorLocations.push({
                 x:this.textx,
@@ -34,7 +29,7 @@ export default class SceneStats extends Scene{
         var x1 = this.cursorLocations[0];
         var xs = x1.x+20;
 
-        ctx.drawImage( this.getText(`████ STATISTICS ████`),xs, x1.y-64);
+        ctx.drawImage( this.getText(`STATISTICS`),xs, x1.y-64);
         ctx.drawImage( this.getText(`POINTS`),xs, x1.y-32);
         for(let i in this.cursorLocations){
             var cl = this.cursorLocations[i];

@@ -35,9 +35,6 @@ export default class Mob{
         if(path && path.length >= 2){
             this.center = new Point(path[1][0] * tt,path[1][1] * tt);
         }
-        else{
-            console.log('no visible path to player');
-        }
     }
     getPossibleNextMove(){
         var tt = this.scene.tileSize;
@@ -54,7 +51,6 @@ export default class Mob{
                 this.scene.player.center.y/tt,
             );
             if(path && path.length >= 0){
-                // console.log('calculate new path',this);
                 this.pathToGo = path;
             }
         }
@@ -68,18 +64,14 @@ export default class Mob{
             if(this.center.distanceTo(this.scene.player.center) < this.scene.tileSize*1.5){
                 this.scene.player.life -= this.type+1;
                 this.scene.player.showDamageEffect = 3;
-                console.log(this,'attacking player');
             }
         }
     }
     getHealthBar(){
         var canvas = gf.makeCanvas(this.sprite.width,3);
         var ctx = gf.getCtx(canvas);
-        // ctx.fillStyle = 'white';
-        // ctx.fillRect(0,0,this.sprite.width,3);
         ctx.fillStyle = 'green';
         var barw = this.sprite.width * (this.life / this.maxLife);
-        // console.log(barw);
         ctx.fillRect(0,0,barw,3);
         return canvas;
     }

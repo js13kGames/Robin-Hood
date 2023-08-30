@@ -54,23 +54,17 @@ export default class Player{
         [...this.shots].forEach(obj=>{
             if(obj.update) obj.update(time);
         });
-        // if(time == this.time) return;
         this.time = time;
-        // this.Arrow.update(time);
         if(this.center.distanceTo(this.destination) != 0){
             this.isMoving = true;
-            // this.center = this.destination.clone();
             this.center.movetoward(this.destination,this.sprite.width/2);
             this.scene.camera.fixToCords(this.center);
         }
         else{
             this.isMoving = false;
-            // this.sprite = this.sprites[gf.DIRECTION.DOWN];
-            // this.scene.camera.fixToCords(this.center);
         }
         this.mobs = this.scene.mobs.filter(x=>x.center.distanceTo(this.center) < this.getRadius());
         if(this.mobs.length > 0){
-            // console.log(this.mobs);
             [...this.mobs].forEach(obj=>{
                 if(obj.update) obj.update(this.time);
             });
@@ -80,7 +74,6 @@ export default class Player{
     fire(){
         if(this.firecooldown > 0) return;
         this.firecooldown = 20 - this.attributes.ARCHERY*2;
-        // console.log(this.firecooldown);
         this.ArrowsCount--;
         this.shots.push(new Arrow(this));
         this.playSwooshSound();
@@ -88,7 +81,6 @@ export default class Player{
     fireMagicArrow(){
         if(this.firecooldown > 0) return;
         this.firecooldown = 20 - this.attributes.ARCHERY*2;
-        // console.log(this.firecooldown);
         this.ArrowsCount--;
         this.shots.push(new Arrow(this));
         this.playSwooshSound();
@@ -183,7 +175,6 @@ export default class Player{
         this.direction = dir;
         var distance = this.center.distanceTo(new Point(x,y));
         if(distance==0) return;
-        // console.log('moving in dir ', dir, this.center, [x,y]);
         this.sprite = this.sprites[dir];
         this.move(dir);
     }
@@ -223,40 +214,71 @@ export default class Player{
     }
     playSwooshSound() {
         if(!this.scene.main.mainmenuscene.sound) return;
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const mainOscillator = audioContext.createOscillator();
-        mainOscillator.type = "sawtooth"; // Experiment with different oscillator types
-        mainOscillator.frequency.setValueAtTime(500, audioContext.currentTime); // Adjust frequency
-        const gainNode = audioContext.createGain();
-        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); // Adjust initial volume
-        const filter = audioContext.createBiquadFilter();
-        filter.type = "lowpass"; // Apply lowpass filtering
-        filter.frequency.setValueAtTime(500, audioContext.currentTime); // Adjust cutoff frequency
-        mainOscillator.connect(gainNode);
-        gainNode.connect(filter);
-        filter.connect(audioContext.destination);
-        mainOscillator.start();
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5); // Adjust fade-out time
-        mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
+        var f = function(i){
+        var n=2e4;
+        if (i > n) return null;
+        var q = t(i,n);
+        return (Math.pow(i*50,0.7)&93)?q:-q;
+        }
+        var t=(i,n)=>(n-i)/n;
+        var A=new AudioContext()
+        var m=A.createBuffer(1,96e3,48e3)
+        var b=m.getChannelData(0)
+        for(var i=96e3;i--;)b[i]=f(i)
+        var s=A.createBufferSource()
+        s.buffer=m
+        s.connect(A.destination)
+        s.start()
+        // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // const mainOscillator = audioContext.createOscillator();
+        // mainOscillator.type = "sawtooth"; // Experiment with different oscillator types
+        // mainOscillator.frequency.setValueAtTime(500, audioContext.currentTime); // Adjust frequency
+        // const gainNode = audioContext.createGain();
+        // gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); // Adjust initial volume
+        // const filter = audioContext.createBiquadFilter();
+        // filter.type = "lowpass"; // Apply lowpass filtering
+        // filter.frequency.setValueAtTime(500, audioContext.currentTime); // Adjust cutoff frequency
+        // mainOscillator.connect(gainNode);
+        // gainNode.connect(filter);
+        // filter.connect(audioContext.destination);
+        // mainOscillator.start();
+        // gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5); // Adjust fade-out time
+        // mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
     }
     playArrowHitSound() {
-        if(!this.scene.main.mainmenuscene.sound) return;
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const mainOscillator = audioContext.createOscillator();
-        mainOscillator.type = "square"; // Adjust oscillator type
-        mainOscillator.frequency.setValueAtTime(400, audioContext.currentTime); // Adjust frequency
-        const gainNode = audioContext.createGain();
-        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); // Adjust initial volume
-        const filter = audioContext.createBiquadFilter();
-        filter.type = "lowpass"; // Apply lowpass filtering
-        filter.frequency.setValueAtTime(400, audioContext.currentTime); // Adjust cutoff frequency
-        mainOscillator.connect(gainNode);
-        gainNode.connect(filter);
-        filter.connect(audioContext.destination);
-        mainOscillator.start();
-        // Adjust the fade-out time and duration for arrow hit effect
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-        mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
+        return;
+        // if(!this.scene.main.mainmenuscene.sound) return;
+        // f = function(i){
+        // var n=2e4;
+        // if (i > n) return null;
+        // var q = t(i,n);
+        // return (Math.pow(i*50,0.7)&93)?q:-q;
+        // }
+        // t=(i,n)=>(n-i)/n;
+        // A=new AudioContext()
+        // m=A.createBuffer(1,96e3,48e3)
+        // b=m.getChannelData(0)
+        // for(i=96e3;i--;)b[i]=f(i)
+        // s=A.createBufferSource()
+        // s.buffer=m
+        // s.connect(A.destination)
+        // s.start()
+        // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // const mainOscillator = audioContext.createOscillator();
+        // mainOscillator.type = "square"; // Adjust oscillator type
+        // mainOscillator.frequency.setValueAtTime(400, audioContext.currentTime); // Adjust frequency
+        // const gainNode = audioContext.createGain();
+        // gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); // Adjust initial volume
+        // const filter = audioContext.createBiquadFilter();
+        // filter.type = "lowpass"; // Apply lowpass filtering
+        // filter.frequency.setValueAtTime(400, audioContext.currentTime); // Adjust cutoff frequency
+        // mainOscillator.connect(gainNode);
+        // gainNode.connect(filter);
+        // filter.connect(audioContext.destination);
+        // mainOscillator.start();
+        // // Adjust the fade-out time and duration for arrow hit effect
+        // gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        // mainOscillator.stop(audioContext.currentTime + 1.0); // Adjust duration
     }
     drawRadius(ctx){
         var r = this.getRadius();
@@ -270,9 +292,9 @@ export default class Player{
             Math.PI * 2,
             false
         );
-        ctx.setLineDash([5, 25]); // Set the line dash pattern: 5px dash, 5px gap
+        ctx.setLineDash([5, 25]);
         ctx.strokeStyle = 'red';
         ctx.stroke();
-        ctx.setLineDash([]); // Reset the line dash pattern to solid line
+        ctx.setLineDash([]);
     }
 }

@@ -39,11 +39,13 @@ export default class LoadingScene extends Scene{
         var g2 = gf.getGrid(steel,steel);
         var g3 = gf.getGrid(grass,water);
         var g4 = gf.getGrid(water,dirt);
+        var c = 'red';
+        var f = 'Arial Black';
         this.TextSprites = [
-            Font.get('13th CENTURY™',20,'green',g4,'Arial Black'),
-            Font.get('ROBIN➸HOOD ',40,'green',g1,'Arial Black'),
-            Font.get('THE➸OUTLAW ',28,'green',g2,'Arial Black'),
-            Font.get('★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★',15,'green',g3,'Arial Black'),
+            Font.get('13th CENTURY™',20,'green',g4,f),
+            Font.get('ROBIN➸HOOD ',40,'green',g1,f),
+            Font.get('THE➸OUTLAW ',28,'green',g2,f),
+            Font.get('★1370s∵∴∵∴∵∴∵∴∵∴∵∴∵2023★',15,'green',g3,f),
         ];
         ctx.drawImage(gf.fuseColor(this.TextSprites[0],'white') ,0,1);
         ctx.drawImage(this.TextSprites[0],1,1);
@@ -59,17 +61,11 @@ export default class LoadingScene extends Scene{
             `you step into the legendary shoes of Robin Hood.`,
             `your mission is to make the world a better place.`,
             `- explore forest and hunt animals`,
-            `- do quests and trade with merchants`,
-            `- spread the wealth to the poor`,
+            `- trade with merchants`,
+            `- take quest from villagers`,
             `- improve your stats and defend the village`,
             `a w s d / arrows for movement`,
             `e interact, q menue, space fire`,
-            `explore forest hunt animal`,
-            `trade with merchants`,
-            `- give goodies to villagers for free (gain morale)`,
-            `- take quests from villagers for extra love`,
-            `find old wizzard for a magic bow`,
-            `more instructions can be learned in game`,
         ];
         var canvas = gf.makeCanvas(360,500);
         let ctx = gf.getCtx(canvas);
@@ -102,10 +98,10 @@ export default class LoadingScene extends Scene{
         ctx.fillStyle = "black";
         ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
         ctx.drawImage(this.buffer,0,0);
-        ctx.fillStyle = "green";
-        ctx.font = "16px Arial";
-        ctx.fillText("Time " + this.time, 20 , y); y+= h;
-        ctx.fillText("use any key to load menu ", 20 , y); y+= h;
+        // ctx.fillStyle = "green";
+        // ctx.font = "16px Arial";
+        // ctx.fillText("Time " + this.time, 20 , y); y+= h;
+        // ctx.fillText("use any key to load menu ", 20 , y); y+= h;
         
         ctx.drawImage(this.castleObj.dirt,  16 + 36 * 0  ,32*6);
         ctx.drawImage(this.castleObj.grass, 16 + 36 * 2  ,32*6);

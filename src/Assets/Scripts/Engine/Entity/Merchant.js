@@ -17,7 +17,6 @@ export default class Merchant extends Mob{
         return npcman;
     }
     interact(){
-        console.log('interacting with player');
         this.giveTrade();
     }
     giveTrade(){
@@ -26,7 +25,10 @@ export default class Merchant extends Mob{
         var apples = gf.randInt(s,e);
         var orange = gf.randInt(s,e);
         var cost = (this.scene.difficulity) * (apples+orange);
-        var c = confirm(`Hello Robin, trade offer,\n${apples} apples and ${orange} oranges for ${cost} $`);
+        var discount = gf.randInt(0,this.scene.player.attributes.LUCK * cost/2);
+        cost = cost-discount;
+        if(cost <= 0) cost = 1;
+        var c = confirm(`trade offer\n${apples} apples and ${orange} oranges for ${cost} $`);
         if(c){
             if(this.scene.player.cash >= cost){
                 this.scene.player.oranges += orange;
@@ -35,12 +37,11 @@ export default class Merchant extends Mob{
                 this.timesDealtWith++;
             }
             else{
-                alert('you dont have enough cash, try hunting some animals');
+                alert('not enough cash');
             }
         }
     }
     update(time){
-        // console.log('update villager');
     }
     draw(ctx){
         ctx.drawImage(this.sprite,

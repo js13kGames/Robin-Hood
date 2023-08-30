@@ -37,7 +37,6 @@ export default class Scene{
         else if(name == 'control' && this.control) this.control(e.key);
         else if(name == 'controlts' && this.controlts) this.controlts(e.key);
         else if(name == 'controlte' && this.controlte) this.controlte(e.key);
-        else console.log(name);
     }
     mousemove(e){   }
     keyup(e){this.control(e.key);}

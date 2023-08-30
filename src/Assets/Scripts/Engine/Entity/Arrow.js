@@ -38,10 +38,6 @@ export default class Arrow extends EObject{
         var l = gf.rotateCanvasCw(canvas,4);
         var u = gf.rotateCanvasCw(canvas,6);
 
-        // document.body.append(r);
-        // document.body.append(d);
-        // document.body.append(l);
-        // document.body.append(u);
         this.w = r.width;
         this.h = r.height;
         var sprites = [

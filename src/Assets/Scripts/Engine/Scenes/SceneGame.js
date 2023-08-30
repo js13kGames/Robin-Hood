@@ -183,9 +183,6 @@ export default class SceneGame extends Scene{
         if(e && e.interact){
             e.interact();
         }
-        else{
-            console.log(e);
-        }
     }
     applyKeyboardKey(e){
         if(e === ' ' || e === 'space'){
@@ -205,7 +202,6 @@ export default class SceneGame extends Scene{
         }
         else if(!this.player.isMoving){
             var next_playerxy = this.player.center.clone();
-            // console.log(next_playerxy);
             var move = false;
             if(e === 's' || e ==='ArrowDown'){
                 next_playerxy.move(gf.DIRECTION.DOWN,this.player.height);move=true;
@@ -228,12 +224,10 @@ export default class SceneGame extends Scene{
                 }
                 else{
                     if(!this.checkObstacle(next_playerxy.x,next_playerxy.y)){
-                        // console.log('move player');
                         this.player.moveTo(next_playerxy.x,next_playerxy.y);
                     }
                     else{
                         this.player.rotateToward(next_playerxy.x,next_playerxy.y);
-                        // console.log('obstacle at',next_playerxy);
                     }
                 }
                 
@@ -276,7 +270,6 @@ export default class SceneGame extends Scene{
             this.player.center.x/this.tileSize,
             ctx.canvas.height-this.miniMap.height + this.player.center.y/this.tileSize,
             3,'green');
-        // ctx.fillText("Time " + this.time, 20 , y); y+= h;
     }
     click(e){
         var ts = this.tileSize;
@@ -284,18 +277,12 @@ export default class SceneGame extends Scene{
         var y = e.offsetY;//parseInt(e.offsetY/ts) * ts;
         var camxy = this.camera.getFxy(x,y,ts);
         var dest = new Point(camxy.x,camxy.y);
-        //this.player.direction = this.player.center.getDirectionTo(dest);
         const path = this.pathFinder.findPath(
             this.player.center.x/ts,
             this.player.center.y/ts,
             dest.x/ts,
             dest.y/ts,
         );
-        // this.pathToGo = path;
-        console.log(path);
-        // var destnext = this.player.center.moveClone(this.player.direction,this.player.height);
-        // this.player.moveTo(destnext.x,destnext.y);
-        // this.player.destination = dest;
     }
     control(e){
         this.applyKeyboardKey(e);

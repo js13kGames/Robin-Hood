@@ -79,23 +79,5 @@ export default class MusicPlayer {
             oscillator.stop(this.audioContext.currentTime + 0.02);
             this.playNextNote();
         }, 60 / this.tempo * 1000);
-        // oscillator.connect(gainNode);
-        // gainNode.connect(this.audioContext.destination);
-
-        // oscillator.frequency.setValueAtTime(this.getFrequency(note), this.audioContext.currentTime);
-        // oscillator.start();
-
-        // // Use exponential ramp for smoother transitions
-        // gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-        // gainNode.gain.exponentialRampToValueAtTime(1, this.audioContext.currentTime + 0.02);
-        
-        // setTimeout(() => {
-        //     // Use exponential ramp for smoother transitions when stopping
-        //     gainNode.gain.setValueAtTime(1, this.audioContext.currentTime);
-        //     gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.02);
-
-        //     oscillator.stop(this.audioContext.currentTime + 0.02);
-        //     this.playNextNote();
-        // }, 60 / this.tempo * 1000);
     }
 }

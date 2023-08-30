@@ -1,7 +1,6 @@
 import { SPRITECOLORMATRIX, SPRITES_1 } from '../Sprites/SpriteMap.js';
 import Point from '../Utils/Point.js';
 import * as gf from '../Utils/gf.js';
-import Mob from './Mob.js';
 import Soldier from './Soldier.js';
 export default class Castle{
     constructor(scene,mult= 2){
@@ -32,7 +31,6 @@ export default class Castle{
     update(time){
         this.time = time;
         this.mobs = this.mobs.filter(s => s.life > 0);
-        // var distance = this.center.distanceTo(this.scene.player.center);
         var distanceY = Math.abs(this.center.y - this.scene.player.center.y);
         var distanceX = Math.abs(this.center.x - this.scene.player.center.x);
         if(distanceY <= this.scene.tileSize * 8 && distanceX <= this.scene.tileSize * 6){
@@ -51,9 +49,7 @@ export default class Castle{
     }
     getSprites(mult = 2){
         var canvasOriginal = gf.colorsMatrixToSprite(SPRITECOLORMATRIX.castle,mult);
-        // var canvasOriginal = SPRITES_1.gnifiedcastle',mult);
         var skele = gf.getCanvasSkeleton(canvasOriginal);
-
         var outerprint = gf.colorsMatrixToSprite(skele['#6a6a6a']);
         var bodyprint = gf.colorsMatrixToSprite(skele['#c2c2c2']);
 

@@ -31,7 +31,6 @@ export default class VertixPoint{
         this.y += vy * this.speed;
     }
     movetoward2(obj){
-        // console.log('move to',obj);
         if(this.x > obj.x) {
             this.x -= this.speed;
         }
