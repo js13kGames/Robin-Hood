@@ -3,11 +3,15 @@ import * as gf from '../Utils/gf.js';
 import {colorsMatrixToSprite} from '../Utils/gf.js';
 import Font from "../Sprites/Font.js";
 import Castle from "../Entity/Castle.js";
-import {SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
+import {SpriteMap,SPRITECOLORMATRIX,SPRITES_1} from '../Sprites/SpriteMap.js';
 export default class LoadingScene extends Scene{
     constructor(main){
         super(main);
-
+        this.initialized = false;
+        this.loading = 0;
+    }
+    init(){
+        SpriteMap.init();
         var grass = SPRITES_1.grass;
         var dirt =  SPRITES_1.dirt;
         var steel = SPRITES_1.steel;
@@ -19,7 +23,6 @@ export default class LoadingScene extends Scene{
 
         this.player = colorsMatrixToSprite(SPRITECOLORMATRIX.player,2); 
         
-
         this.gmat = gf.getGridMatt(g1,g2,this.main.canvas.width/8,this.main.canvas.height/8);
         this.gmat = gf.Lightify(this.gmat,.2);
         this.log = this.getLogo();
@@ -27,6 +30,7 @@ export default class LoadingScene extends Scene{
         this.loading = -20;
 
         this.intro = this.getIntro();
+        this.initialized = true;
     }
     getLogo(){
         var canvas = gf.makeCanvas(400,200);
@@ -81,7 +85,10 @@ export default class LoadingScene extends Scene{
     }
     update(time){
         this.time = time;
-        this.loading += 0.8;
+        this.loading += 0.5;
+        if(!this.initialized && this.loading > 15 && document.querySelector('#spriteSheetMain').complete){
+            this.init();
+        }
     }
     getBuffer(){
         let canvas = gf.makeCanvas(this.main.config.width,this.main.config.height);
@@ -97,20 +104,22 @@ export default class LoadingScene extends Scene{
         ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
         ctx.fillStyle = "black";
         ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
-        ctx.drawImage(this.buffer,0,0);
-        // ctx.fillStyle = "green";
-        // ctx.font = "16px Arial";
-        // ctx.fillText("Time " + this.time, 20 , y); y+= h;
-        // ctx.fillText("use any key to load menu ", 20 , y); y+= h;
-        
-        ctx.drawImage(this.castleObj.dirt,  16 + 36 * 0  ,32*6);
-        ctx.drawImage(this.castleObj.grass, 16 + 36 * 2  ,32*6);
-        ctx.drawImage(this.castleObj.water, 16 + 36 * 4  ,32*6);
-        ctx.drawImage(this.castleObj.brick, 16 + 36 * 6  ,32*6);
-        ctx.drawImage(this.castleObj.steel, 16 + 36 * 8  ,32*6);
-        ctx.drawImage(this.castleObj.magic, 16 + 36 * 10 ,32*6);
-        ctx.drawImage(this.player,16,32*10);
-        ctx.drawImage( gf.crop(this.intro,0,this.loading % this.intro.height,this.intro.width,200),64,32*10);
+        if(this.initialized){
+            ctx.drawImage(this.buffer,0,0);
+            ctx.drawImage(this.castleObj.dirt,  16 + 36 * 0  ,32*6);
+            ctx.drawImage(this.castleObj.grass, 16 + 36 * 2  ,32*6);
+            ctx.drawImage(this.castleObj.water, 16 + 36 * 4  ,32*6);
+            ctx.drawImage(this.castleObj.brick, 16 + 36 * 6  ,32*6);
+            ctx.drawImage(this.castleObj.steel, 16 + 36 * 8  ,32*6);
+            ctx.drawImage(this.castleObj.magic, 16 + 36 * 10 ,32*6);
+            ctx.drawImage(this.player,16,32*10);
+            ctx.drawImage( gf.crop(this.intro,0,this.loading % this.intro.height,this.intro.width,200),64,32*10);
+        }
+        else{
+            ctx.fillStyle = "green";
+            // ctx.font = "16px Arial";
+            ctx.fillText(`loading sprites ${this.time} ${this.loading} ${document.querySelector('#spriteSheetMain').complete}`, 20 , y); y+= h;
+        }
     }
     goToMainMenuScene(){
         if(this.loading > 100){

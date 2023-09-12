@@ -85,25 +85,25 @@ export default class SceneStats extends Scene{
             var at = this.cursorLocations[this.currentcursorloc].k;
             var val = this.gamescene.player.attributes.getAttrByName(at);
             if(val >= 10){
-                alert('level max reached');
+                alert('level max');
             }
             else{
-                var cnf = confirm('spend points on upgrading skill ' + at);
+                var cnf = confirm('spend points ' + at);
                 if(cnf){
                     this.gamescene.player.attributes.editAttrByName(at, this.gamescene.player.attributes.getAttrByName(at) + 1);
                     this.gamescene.player.points -= 1;
                 }
             }
         }
-        else if(
-            e == 'd' 
-            || e === 'a' 
-            || e === 'ArrowLeft' 
-            || e === 'ArrowRight' 
-            || e === 'space' 
-            || e === ' '){
+        // else if(
+        //     e == 'd' 
+        //     || e === 'a' 
+        //     || e === 'ArrowLeft' 
+        //     || e === 'ArrowRight' 
+        //     || e === 'space' 
+        //     || e === ' '){
             
-        }
+        // }
     }
     keydown(e){}
     keyup(e){
