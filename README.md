@@ -1,5 +1,7 @@
-# Robin Hood
-> ENTRY FOR JS13K 2023 Competiton
+# Robin Hood : ENTRY FOR JS13K 2023 Competiton
+
+![Icon](./Screenshots/sc_2.png)
+
 > you step into the legendary shoes of Robin Hood.
 > your mission is to make the world a better place.
 > - explore forest and hunt animals
@@ -93,7 +95,6 @@ maybe also I'll continue journy for working on 3d games
 - Discover hidden locations and uncover the secrets of the world.
 
 ## Screenshots
-![Screenshot 2](./Screenshots/sc_2.png)
 ![Screenshot 3](./Screenshots/sc_3.png)
 ![Screenshot 4](./Screenshots/sc_4.png)
 ![Screenshot 6](./Screenshots/sc_6.png)
