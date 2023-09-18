@@ -8,6 +8,8 @@
 > - improve your stats and defend the village
 > a w s d / arrows for movement
 > e interact, q menu, space shoot arrow
+
+# Loading Scene
 ![Game Logo](./Screenshots/sc_1.png)
 
 # Idea Origin
@@ -39,7 +41,7 @@ as for the bears and soldires, it was intentional for now to make them spawn rid
 the plan was to make the castle and cave as portals to new maps but things dont go as planned 
 so make plan and do plan, plan go sideway, throw away the plan >_<
 
-# things that was planned for but did not see light
+# Things that was planned for but did not see light
 villagers were to move and perform actions, have the village more ... villagy
 instead i added 4 girl npc with random local difficulty for quests 
 so one will ask for 1$ and one will ask for 10$ per apple
@@ -51,11 +53,17 @@ quests was planned to be like hunt 2 rabbits or so, but for simplicity made it s
 the wizard was planned to have his own part of the forest, which was planned to be very large, and give legin magical bow
 magic bow was to have arrows follow mobs around and avoid obstacles but I got lazy though its easy to do with pathfind already there
 
-# sound 
+# Messed up
+firefox was not loading the spritesheet well, I had to make some changes
+but for some reason it caused some issues on mobile version
+also due to size reduction I had to remove alot of things that were otherwise cool to have
+
+
+# Sound 
 as last year I got many feedback on why not add bgm and sound I have music player and some more sound
 some sounds were later removed because of reducing size, like hit sound, should not have done that as someone mentioned it would enhance play
 will have to research more on the audio api as it was not prefect and some entries have nice sound and music
-# next step
+# Next
 I'm not done wtih this game but development for it has to wait as I'm working on something else and I lack motivation to push this more for now
 maybe also I'll continue journy for working on 3d games
 
@@ -68,7 +76,6 @@ maybe also I'll continue journy for working on 3d games
 - E: Interact with objects and villagers.
 - Q: Open the menu.
 ## Targets
-
 - Hunt animals to gather resources and improve your character's abilities.
 - Interact with villagers to take on quests and earn rewards.
 - Harvest trees to collect apples, lemons, and more.
